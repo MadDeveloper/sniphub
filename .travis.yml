@@ -2,33 +2,28 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - node
-
+- node
 notifications:
   slack:
     rooms:
-      secure: hOQgs03rR8q4XJ9ozY9NbGzrkchorK1H6tXi+RVSUnVHg7DoZ58x+nU9LCcOEEEBB2dhcAhnqK5VBiTcXHIc4tnACcf9+A4+zZ04Kf6LC05x87KgPaxtS2TsGioiwLZP+PQ9mvsvcgXujPwp2rUQcEx7tCuVzBnPOV9kN+6NA5ko7uuPBB0fHtnuOWHIdph0o2uWIQa8dMK/1ZuekHFcbkZ8iy03OkMLCU6eq7PWc6JfwGiW+jmjOGe2eHGOUHkmRAUEjSx4n6c0xscM0tBmhy0Xvw4F1t5okKdB05xsQIjt/N2cChORRBdfGKJCBe29U4ennCGfGRASQH/8Pe6zuzwgJKaUBYHsJufZgUZViuG0IeTxa3AVtKobolttFUwEpTVQJ7AV/Y/vVRoog9lutc9FvICGO5T2K6LFeiZ/WkpdI5bCivM3Fo72c48iFDFVf7e4BMD5iHS8+t8tc2sRQMt0CLK5JJ/TMqKQhwQdG+r7kXc+xXWw+uM75Y+MA/6GXY9f48isu/8RtDmJtPqtyQvEV+dsP/mz32CmfCIV9QeoIJtVQ9pzD3VypCo+aX9BrpRzCcG95HSdMdcuP1Sfb1/lY4rkAa3L6sYKxI57zenIc4jICpKd7/O75Jn8BsawzAFTfllgveok7jK09laUE8nIXHPfBF2ChOXy3qnIZEc=
-  on_success: never
-  on_failure: always
-
-addons:
+      secure: nYW3DSi02cfrdBUH5RCArraj6VhtcS8AVktHOaxf4Y8ncebQ53mcrmqkj1wHRE275obDPPiekb/OxIab0BZOtLTocLV01P4kR+PiUsDRgIJJI3YC/LY975wqHcE3Lj6XmqLI6lWEPKhLnkl0Mu3NfdZdW7Bbn05xMICsJzcgpBNiK+PZwvKIrZ6KONFXkyRUI6IJXtMSwT9yUwtZpfr/UFjEBov6wxarmwj3aWwD9jEizn728LRs+ruGzSmsbEuEQZ/cDPU5wbYBpc0GSQQ5u17jkxAP/P43UnOh7CI7H4dwDS99821m4iMekTRR8yhc9kIB5Mq6y1gtjgwFUwVTTe+EsifLqU7y+xRQLI2xn1S1WWtxmKcAD5ZJxShmXcrMTofa9BswR9sfEl9RumSBPYWeEv+g1Knipx9AlJYg1CXi3t3vZFV5gbcTI3omj0eKRCoqtr9fFV1roLmy6BfIcVCklx7YH8+w2KZWgdz2ECWc6/qFcye45S+nDmWzYV/dMp7gx5gtVOCdViKyrWHDhf4+OV49He+DCXbVKWSN6BpNM9Q1ZHy5gRKMKh9kX9QcaDZXhJsCwLEtJb09hpomkfn1mJia8UIO6i/qPxOIpNIKsb7IlYpq1N2JP60C3sLT4l4lUOxg5vMhXywJEMcAGi3lajCv1UlkDnCKwYdedY8=
+    on_success: never
+    on_failure: always
+addons: 
 apt:
   sources:
-    - google-chrome
+  - google-chrome
   packages:
-    - google-chrome-stable
-    - google-chrome-beta
-
+  - google-chrome-stable
+  - google-chrome-beta
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 before_script:
 - npm install -g @angular/cli
 - npm install @angular/cli
 - npm install -g karma
 - npm install
 - ng build
-
 script: karma start karma.conf.js --single-run
