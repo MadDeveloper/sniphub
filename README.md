@@ -1,4 +1,4 @@
-# Snipz
+# Snipz ![build](https://travis-ci.org/MadDeveloper/snipz.svg?branch=dev)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 
