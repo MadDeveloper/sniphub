@@ -7,8 +7,22 @@ import { Component, OnInit } from '@angular/core'
 })
 export class AppHeaderComponent implements OnInit {
 
-    constructor() { }
+  isAuthenticated: boolean
+  name: string
 
-    ngOnInit() {}
+  constructor() { }
+
+
+  ngOnInit() {
+  }
+
+  logIn() {
+    this.isAuthenticated = true
+    this.name = 'John Doe'
+  }
+
+  logOut() {
+    this.isAuthenticated = false
+  }
 
 }
