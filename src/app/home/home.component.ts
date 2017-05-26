@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-home',
@@ -6,9 +7,14 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+    filter = 'Snippet'
 
     constructor() { }
 
-    ngOnInit() {}
+    ngOnInit() { }
+
+    changeFilter(filter: string) {
+        this.filter = filter
+    }
 
 }

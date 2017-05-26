@@ -16,9 +16,17 @@
 <section class="mt-4">
     <div class="container">
         <div class="row">
-            <div class="col">
-                <i class="fa fa-filter" aria-hidden="true"></i>
-                <span class="ml-2">Snippets</span>
+            <div class="col" dropdown>
+                <span dropdownToggle class="clickable">
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <span class="ml-2">{{ filter }}</span>
+                </span>
+                <div *dropdownMenu class="dropdown-menu" role="menu">
+                    <h6 class="dropdown-header">Quick filters</h6>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('snippet')">Snippet</a>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('Regex')">Regex</a>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('All')">All</a>
+                </div>
             </div>
         </div>
         <div class="row mt-4">
@@ -30,6 +38,10 @@
             <div class="col-6 col-md-4 mb-3 d-flex align-items-stretch">
                 <div class="card w-10 clickable">
                     <div class="content">
+                        <div class="float-right">
+                            <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
+                            <span class="ml-1">Quentin</span>
+                        </div>
                         <div class="header">trim</div>
                         <div class="meta">2 days ago</div>
                         <div class="description" style="height: 96px; overflow: hidden;">
@@ -37,8 +49,14 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
-                        <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
+                        <span>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <span class="ml-1">3350</span>
+                        </span>
+                        <span>
+                            <i class="fa fa-comment-o ml-2" aria-hidden="true"></i>
+                            <span class="ml-1">5</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -52,7 +70,7 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
+                        <i class="fa fa-star-o" aria-hidden="true"></i><span class="ml-2">3350</span>
                         <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
                     </div>
                 </div>
@@ -67,7 +85,7 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
+                        <i class="fa fa-star-o" aria-hidden="true"></i><span class="ml-2">3350</span>
                         <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
                     </div>
                 </div>
@@ -89,7 +107,7 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
+                        <i class="fa fa-star-o" aria-hidden="true"></i><span class="ml-2">3350</span>
                         <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
                     </div>
                 </div>
@@ -104,7 +122,7 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
+                        <i class="fa fa-star-o" aria-hidden="true"></i><span class="ml-2">3350</span>
                         <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
                     </div>
                 </div>
@@ -119,7 +137,7 @@
                         </div>
                     </div>
                     <div class="content extra">
-                        <i class="fa fa-star" aria-hidden="true"></i><span class="ml-2">3350</span>
+                        <i class="fa fa-star-o" aria-hidden="true"></i><span class="ml-2">3350</span>
                         <i class="fa fa-comment-o" aria-hidden="true"></i><span class="ml-2">5</span>
                     </div>
                 </div>

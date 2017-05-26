@@ -1,6 +1,16 @@
 @import 'variables';
 
 .card {
+    background-color: #fff;
+    border: 1px solid $grey-color;
+    transition-property: all;
+    transition-duration: 300ms;
+    box-shadow: 0;
+
+    &:hover {
+        box-shadow: 0 0 0 5px rgba(200, 200, 200, .2);
+    }
+
     &::after {
         display: block;
         content: ' ';
@@ -30,7 +40,7 @@
     }
 
     .extra {
-        border-top: 1px solid $grey-color;
+        // border-top: 1px solid $grey-color;
         padding: .75rem 1rem !important;
         color: $dark-grey-color;
     }

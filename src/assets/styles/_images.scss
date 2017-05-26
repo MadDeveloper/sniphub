@@ -1,0 +1,16 @@
+.image {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    background-color: transparent;
+    border: none;
+
+    &.avatar {
+        margin-right: .25em;
+        display: inline-block;
+        width: 2em;
+        height: 2em;
+        border-radius: 500rem;
+    }
+}
