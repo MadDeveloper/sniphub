@@ -1,0 +1,10 @@
+@import '../../assets/styles/variables';
+
+#main-search {
+    width: 80%;
+    margin: auto;
+
+    @media screen and(max-width: $screen-smartphone) {
+        width: 100% !important;
+    }
+}

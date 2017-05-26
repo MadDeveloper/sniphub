@@ -1,0 +1,66 @@
+@import 'variables';
+
+input {
+    &[type="text"],
+    &[type="password"],
+    &[type="email"] {
+        border-radius: 4px;
+        border: 1px solid $grey-color;
+        padding: 5px 12px;
+        outline: none;
+
+        &.huge {
+            font-size: 25px;
+            padding: .67rem 1rem;
+        }
+    }
+}
+
+.input-icon {
+    position: relative;
+
+    &.huge {
+        input {
+            font-size: 25px;
+            padding: .67rem 1rem;
+            padding-right: 65px;
+        }
+
+        .icon {
+            font-size: 30px;
+            top: 13px;
+            right: 15px;
+        }
+    }
+
+    input {
+        padding-right: 15px;
+        width: 100% !important;
+    }
+
+    .icon {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        color: $dark-grey-color;
+        pointer-events: none;
+    }
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    $dark-grey-color;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    $dark-grey-color;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    $dark-grey-color;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    $dark-grey-color;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    color:    $dark-grey-color;
+}

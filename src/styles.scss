@@ -1,1 +1,11 @@
 @import '../node_modules/bootstrap/scss/bootstrap';
+@import 'assets/styles/all';
+
+html, body {
+    background-color: $light-color;
+    font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+p {
+    margin: 0;
+}

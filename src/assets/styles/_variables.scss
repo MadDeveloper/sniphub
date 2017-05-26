@@ -1,0 +1,29 @@
+//== Colors
+$default-color: #292b2c;
+$primary-color: #2980b9;
+$secondary-color: #446CB3;
+$light-color: #f2f2f2;
+$grey-color: rgba(34, 36, 38, .15);
+$dark-grey-color: rgba(0, 0, 0, .4);
+
+//== Media queries breakpoints
+
+// Small screen smartphones
+$screen-xs: 575px;
+$screen-sm: 767px;
+
+// Medium screen / desktop
+$screen-md: 991px;
+
+// Large screen / wide desktop
+$screen-lg: 1199px;
+
+// Extra large screen / wide desktop
+$screen-xl: 1200px;
+
+// Devices
+$screen-smartphone: $screen-xs;
+$screen-tablet: $screen-sm;
+$screen-desktop: $screen-md;
+$screen-lg-desktop: $screen-lg;
+$screen-xl-desktop: $screen-xl;

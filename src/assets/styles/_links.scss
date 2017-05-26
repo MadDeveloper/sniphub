@@ -1,0 +1,17 @@
+@import 'variables';
+
+a {
+    &:hover {
+        text-decoration: none;
+    }
+
+    &.link {
+        &.white {
+            color: #fff;
+
+            &:hover {
+                color: $light-color;
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+@import 'variables';
+
+.card {
+    &::after {
+        display: block;
+        content: ' ';
+        height: 0;
+        clear: both;
+        overflow: hidden;
+        visibility: hidden
+    }
+
+    .content {
+        padding: 1rem !important;
+
+        .header {
+            font-weight: 700;
+            font-size: 1.28571429rem;
+            margin-top: -.21425rem;
+            line-height: 1.28571429rem
+        }
+
+        .meta {
+            color: $dark-grey-color;
+        }
+
+        .description {
+            margin-top: .5rem
+        }
+    }
+
+    .extra {
+        border-top: 1px solid $grey-color;
+        padding: .75rem 1rem !important;
+        color: $dark-grey-color;
+    }
+}
