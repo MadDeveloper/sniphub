@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 
 @Component({
   selector: 'app-header',
@@ -7,22 +8,26 @@ import { Component, OnInit } from '@angular/core'
 })
 export class AppHeaderComponent implements OnInit {
 
-  isAuthenticated: boolean
-  name: string
+    isAuthenticated: boolean
+    name: string
+    displayed = false
 
-  constructor() { }
+    constructor(private router: Router) { }
 
+    ngOnInit() {
+        this.router
+            .events
+            .filter(event => event instanceof NavigationEnd)
+            .subscribe( (event: NavigationEnd) => this.displayed = '/' !== event.url )
+    }
 
-  ngOnInit() {
-  }
+    logIn() {
+        this.isAuthenticated = true
+        this.name = 'John Doe'
+    }
 
-  logIn() {
-    this.isAuthenticated = true
-    this.name = 'John Doe'
-  }
-
-  logOut() {
-    this.isAuthenticated = false
-  }
+    logOut() {
+        this.isAuthenticated = false
+    }
 
 }

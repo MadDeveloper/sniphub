@@ -3,8 +3,22 @@
 #main-search {
     width: 80%;
     margin: auto;
+    text-align: center;
 
     @media screen and(max-width: $screen-smartphone) {
         width: 100% !important;
+    }
+
+    input#main-search-input {
+        background-color: transparent;
+        border: none;
+        // border-bottom: 1px solid #fff;
+        color: #fff;
+        padding-left: 0;
+        padding-right: 0;
+        border-radius: 0;
+        max-width: 250px;
+        font-size: 2rem;
+        margin-left: 5px;
     }
 }

@@ -4,31 +4,30 @@
             <span>Snipz</span>
             <a routerLink="signin" class="link white float-right">Sign in</a>
         </div>
-        <div class="mt-5 mb-4 d-flex flex-column justify-content-center">
-            <h1 class="text-center h2 mb-3">I don't want code</h1>
+        <div class="mt-3 d-flex flex-column justify-content-center">
             <div id="main-search" class="input-icon huge">
-                <input type="text" placeholder="trim, uppercase, replace, ...">
-                <i class="icon fa fa-search" aria-hidden="true"></i>
+                <h1 class="text-center h2 d-inline-block mb-3 clickable" (click)="focusSearchInput($event)">I don't want code</h1>
+                <input id="main-search-input" type="text" placeholder="trim, uppercase...">
             </div>
         </div>
     </div>
 </section>
 <section class="mt-4">
     <div class="container">
-        <div class="row">
+        <!--<div class="row">
             <div class="col" dropdown>
                 <span dropdownToggle class="clickable">
-                    <i class="fa fa-filter" aria-hidden="true"></i>
+                    <i class="fa fa-filter" aria-hidden="true" style="font-size: 20px"></i>
                     <span class="ml-2">{{ filter }}</span>
                 </span>
                 <div *dropdownMenu class="dropdown-menu" role="menu">
                     <h6 class="dropdown-header">Quick filters</h6>
-                    <a class="dropdown-item" href="#" (click)="changeFilter('snippet')">Snippet</a>
-                    <a class="dropdown-item" href="#" (click)="changeFilter('Regex')">Regex</a>
-                    <a class="dropdown-item" href="#" (click)="changeFilter('All')">All</a>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('Snippet', $event)">Snippet</a>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('Regex', $event)">Regex</a>
+                    <a class="dropdown-item" href="#" (click)="changeFilter('All', $event)">All</a>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="row mt-4">
             <div class="col">
                 <h3>Derniers ajouts</h3>
@@ -36,7 +35,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-6 col-md-4 mb-3 d-flex align-items-stretch">
-                <div class="card w-10 clickable">
+                <div class="card w-10 clickable" (click)="snippetDetails(1)">
                     <div class="content">
                         <div class="float-right">
                             <img src="/assets/images/unknown.jpg" alt="" class="image avatar">

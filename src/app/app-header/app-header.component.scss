@@ -1,0 +1,15 @@
+@import '../../assets/styles/variables';
+
+#main-navbar {
+    background-color: #fff;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,.0975);
+
+    * {
+        color: $default-color;
+    }
+
+    .icon-menu {
+        font-size: 23px;
+    }
+}
