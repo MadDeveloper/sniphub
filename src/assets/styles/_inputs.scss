@@ -9,14 +9,22 @@ input {
         padding: 5px 12px;
         outline: none;
 
+        &.unbordered {
+            border: none;
+        }
+
         &.huge {
             font-size: 25px;
             padding: .67rem 1rem;
         }
 
         &.backgrounded {
-            border: none;
-            background-color: $light-color;
+            &.light {
+                background-color: $light-color;
+            }
+            &.dark-primary {
+                background-color: $dark-primary-color;
+            }
         }
     }
 }

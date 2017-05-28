@@ -11,10 +11,12 @@ export class AppHeaderComponent implements OnInit {
     isAuthenticated: boolean
     name: string
     displayed = false
+    searchEnabled: boolean
 
     constructor(private router: Router) { }
 
     ngOnInit() {
+        this.searchEnabled = false
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
@@ -28,6 +30,10 @@ export class AppHeaderComponent implements OnInit {
 
     logOut() {
         this.isAuthenticated = false
+    }
+
+    toggleSearch() {
+        this.searchEnabled = !this.searchEnabled
     }
 
 }

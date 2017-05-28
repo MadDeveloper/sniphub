@@ -1,12 +1,12 @@
 @import '../../assets/styles/variables';
 
 #main-navbar {
-    background-color: #fff;
+    background-color: $primary-color;
     padding: 1rem;
     border-bottom: 1px solid rgba(0,0,0,.0975);
 
-    * {
-        color: $default-color;
+    a {
+        color: #fff;
     }
 
     .icon-menu {
