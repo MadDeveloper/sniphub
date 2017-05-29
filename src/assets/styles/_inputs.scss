@@ -8,6 +8,13 @@ input {
         border: 1px solid $grey-color;
         padding: 5px 12px;
         outline: none;
+        width: 100%;
+        transition-property: all;
+        transition-duration: 300ms;
+
+        &:focus:not(.unbordered) {
+            border: 1px solid $primary-color;
+        }
 
         &.unbordered {
             border: none;
@@ -58,6 +65,10 @@ input {
         color: $dark-grey-color !important;
         pointer-events: none;
     }
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
