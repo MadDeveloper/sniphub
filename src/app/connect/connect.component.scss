@@ -1,0 +1,53 @@
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+
+    .line{
+        background-color: #7f8c8d;
+        height: 1px;
+        width: 100%;
+        flex-shrink:1;
+        margin: 10px 0px;
+    }
+    .line-text
+    {
+        font-size: 13px;
+        text-align: center;
+
+    }
+
+    .social-connect{
+        button{
+            width: 100%;
+            // font-size: 14px;
+            margin: 5px 0px;
+            color: white;
+            i{
+                margin-right: 8px;
+            }
+
+        }
+        .btn-facebook{
+            background-color: #0288D1;
+        }
+        .btn-facebook:hover{
+                background-color:#0277BD;
+        }
+
+        .btn-google{
+            background-color: #E64A19;
+        }
+
+        .btn-google:hover{
+            background-color: #D84315;
+        }
+    }
+}
+
+.row-line{
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+
+}
