@@ -11,7 +11,8 @@ import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
 import { HomeComponent } from './home/home.component';
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component';
-import { ConnectComponent } from './connect/connect.component'
+import { ConnectComponent } from './connect/connect.component';
+import { SignupComponent } from './signup/signup.component'
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ConnectComponent } from './connect/connect.component'
     AppHeaderComponent,
     HomeComponent,
     SnippetDetailsComponent,
-    ConnectComponent
+    ConnectComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
