@@ -9,10 +9,11 @@ import { BsDropdownModule } from 'ngx-bootstrap'
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
-import { HomeComponent } from './home/home.component';
-import { SnippetDetailsComponent } from './snippet-details/snippet-details.component';
-import { ConnectComponent } from './connect/connect.component';
+import { HomeComponent } from './home/home.component'
+import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
+import { ConnectComponent } from './connect/connect.component'
 import { SignupComponent } from './signup/signup.component'
+import { ProfileComponent } from './profile/profile.component'
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SignupComponent } from './signup/signup.component'
     HomeComponent,
     SnippetDetailsComponent,
     ConnectComponent,
-    SignupComponent
+    SignupComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
