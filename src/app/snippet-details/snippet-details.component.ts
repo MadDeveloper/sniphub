@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core'
 export class SnippetDetailsComponent implements OnInit {
 
     @Input()
-    private snippetId: number
+    private snippet: number
 
     constructor() { }
 

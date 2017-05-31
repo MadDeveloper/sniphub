@@ -17,6 +17,9 @@
         &.light {
             color: $light-color;
         }
+        &.meta {
+            color: $dark-grey-color;
+        }
     }
 }
 
