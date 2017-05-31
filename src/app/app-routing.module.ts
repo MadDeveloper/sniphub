@@ -13,5 +13,5 @@ export const routes: Routes = [
     { path: 'connect', component:  ConnectComponent },
     { path: 'signUp', component:  SignupComponent },
     { path: 'profile', component: ProfileComponent },
-    { path: 'editprofile', component: EditProfileComponent }
+    { path: 'profile/edit', component: EditProfileComponent }
 ]

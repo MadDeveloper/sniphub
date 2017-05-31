@@ -1,63 +1,63 @@
-<div class="container">
+<div class="container mt-4">
 	<div class="row">
-        <div class="col segment mt-2 editprofile">
+        <div class="col segment editprofile">
             <div class="row">
-                <div class="col-4 menu">
+                <div class="col-md-3 col-sm-4 col-12 menu pl-0">
                     <nav class="nav flex-column tabs">
-                        <a class="nav-link" (click)="changeTab('profile');" [ngClass]="{active: activeTab == 'profile'}" click>Edit profile</a>
-                        <a class="nav-link" (click)="changeTab('password');" [ngClass]="{active: activeTab == 'password'}">Change password</a>
+                        <a class="nav-link" (click)="changeTab('profile')" [ngClass]="activeTab === 'profile' ? 'active': ''" click>Edit profile</a>
+                        <a class="nav-link" (click)="changeTab('password')" [ngClass]="activeTab === 'password' ? 'active' : ''">Change password</a>
                     </nav>
                 </div>
-                <div class="col tab-content">
+                <div class="col-md-9 col-sm-8 col-12 tab-content px-5 py-4">
                     <div class="row mb-3 ">
                         <div class="col">
                             <div class="d-flex align-items-center">
-                                <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image">
+                                <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image avatar medium">
                                 <h2 class="ml-1">John Doe</h2>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane mx-auto" [ngClass]="{active: activeTab == 'profile'}" >
-                        <form class="form-profile ">
+                        <form class="form-profile">
                             <div class="form-group row">
-                                <label for="username" class="col-2 col-form-label">Username</label>
+                                <label for="username" class="col-4 col-form-label text-right">Username</label>
                                 <div class="col">
                                     <input type="text" value="John Doe" id="Username">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="email" class="col-2 col-form-label">Email</label>
+                                <label for="email" class="col-4 col-form-label text-right">Email</label>
                                 <div class="col">
                                     <input type="email" value="johndoe@snipz.com" id="email">
                                 </div>
                             </div>
-                            <div class="col-12 mt-2">
-                                <button class="btn btn-primary btn-block mx-auto" type="submit">Save</button>
+                            <div class="offset-4 col-8 mt-2">
+                                <button class="btn btn-primary btn-block" type="submit">Save</button>
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane" [ngClass]="{active: activeTab == 'password'}" >
                         <form class="form-password ">
                             <div class="form-group row">
-                                <label for="oldpassword" class="col-3 col-form-label">Old password</label>
+                                <label for="oldpassword" class="col-4 col-form-label text-right">Old password</label>
                                 <div class="col">
-                                    <input type="password"  id="oldpassword">
+                                    <input type="password" id="oldpassword">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="password" class="col-3 col-form-label">New password</label>
+                                <label for="password" class="col-4 col-form-label text-right">New password</label>
                                 <div class="col">
-                                    <input type="password"  id="password">
+                                    <input type="password" id="password">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="passwordagain" class="col-3 col-form-label">Confirm password</label>
+                                <label for="passwordagain" class="col-4 col-form-label text-right">Confirm password</label>
                                 <div class="col">
-                                    <input type="password"  id="passwordagain">
+                                    <input type="password" id="passwordagain">
                                 </div>
                             </div>
-                            <div class="col-12 mt-2">
-                                <button class="btn btn-primary btn-block mx-auto" type="submit">Save</button>
+                            <div class="offset-4 col-8 mt-2">
+                                <button class="btn btn-primary btn-block" type="submit">Save</button>
                             </div>
                         </form>
                     </div>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { SnippetService } from 'app/services/snippet/snippet.service'
+import { Snippet } from 'app/interfaces/snippet'
 
 @Component({
   selector: 'app-profile',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core'
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+    private snippets: Snippet[]
 
-  constructor() { }
+    constructor(private snippetService: SnippetService) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.snippets = this.snippetService.all()
+    }
 
 }

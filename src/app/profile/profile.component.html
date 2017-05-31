@@ -1,41 +1,36 @@
-<div class="container">
+<div class="container mt-4">
 	<div class="row">
-        <div class="col segment mt-2">
-            <div class="user-details mx-5">
+        <div class="col-12">
+            <div class="user-details">
                 <div class="row">
-                    <div class="col-3 user-image">
-                        <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image">
+                    <div class="col-lg-2 col-md-3 col-sm-5">
+                        <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image avatar large">
                     </div>
-                    <div class="col user-info">
-                        <div class="row pt-5">
-                            <div class="col">
-                                <h3>John Doe</h3>
-                            </div>
-                             <div class="col-8">
-                                <a class="btn" href="\editprofile">Edit profile</a>
-                            </div>
-                        </div>
+                    <div class="col-lg-6 col-md-5 col-sm-7 user-info d-flex align-items-center">
                         <div class="row">
-                            <div class="col-12 text color meta">
-                                Administrator
+                            <div class="col-12 d-flex align-items-center">
+                                <h3 class="mr-4">John Doe</h3>
+                                <a class="btn" routerLink="/profile/edit">Edit profile</a>
                             </div>
-                        </div>
-                        <div class="row mt-3">
                             <div class="col-12">
-                                <span>
-                                    <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                    <span class="ml-1">3350</span>
-                                </span>
-                                <span>
-                                    <i class="fa fa-code ml-2" aria-hidden="true"></i>
-                                    <span class="ml-1">5</span>
-                                </span>
+                                <div class="text color meta">
+                                    <span>
+                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        <span class="ml-1">3350</span>
+                                    </span>
+                                    <span>
+                                        <i class="fa fa-code ml-2" aria-hidden="true"></i>
+                                        <span class="ml-1">5</span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 	        </div>
-
+        </div>
+        <div class="mt-4">
+            <app-snippets-list [snippets]="snippets"></app-snippets-list>
         </div>
 	</div>
 </div>

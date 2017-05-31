@@ -8,14 +8,13 @@ import { Component, OnInit } from '@angular/core'
 export class EditProfileComponent implements OnInit {
 
     private activeTab = 'profile'
-  constructor() { }
 
-  ngOnInit() {
-  }
+    constructor() { }
 
-  changeTab(tab)
-  {
-      this.activeTab = tab
-  }
+    ngOnInit() { }
+
+    changeTab(tab: string) {
+        this.activeTab = tab
+    }
 
 }
