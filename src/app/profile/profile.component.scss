@@ -1,38 +1,14 @@
 .user-details{
-    max-width: 300px;
-    padding: 15px;
-    margin: 0 auto;
-
     .user-image{
-        text-align: center;
-    }
-    .user-info-block{
-        .user-heading{
-            text-align: center;
+        img{
+            border-radius: 500rem;
         }
-
-        .navigation{
-            float: left;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            border-bottom: 1px solid #428BCA;
-            border-top: 1px solid #428BCA;
-            li{
-                float: left;
-                margin: 0;
-                padding: 0;
-
-                a{
-                    padding: 20px 30px; float: left;
-                }
-            }
-            li.active{
-                a{
-                    background: #428BCA; color: #fff;
-                }
-            }
+    }
+    .user-info{
+        .btn{
+            background-color: transparent;
+            border-color: #757575;
+            color: black;
         }
     }
 }
