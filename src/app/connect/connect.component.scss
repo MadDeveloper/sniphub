@@ -9,10 +9,8 @@
 
     .row-line{
         max-width: 330px;
-        padding: 15px;
-        margin: 0 auto;
 
-        .line{
+        .line {
             background-color: #7f8c8d;
             height: 1px;
             width: 100%;
@@ -20,14 +18,14 @@
             margin: 10px 0px;
         }
 
-        .line-text{
+        .line-text {
             font-size: 13px;
             text-align: center;
         }
 
     }
 
-    .social-connect{
+    .social-connect {
         button{
             width: 100%;
             // font-size: 14px;
@@ -60,8 +58,3 @@
         }
     }
 }
-
-.signUp{
-    text-align: center;
-}
-

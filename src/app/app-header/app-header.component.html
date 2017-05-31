@@ -1,17 +1,21 @@
 <nav id="main-navbar" *ngIf="displayed" class="navbar">
     <div class="container">
         <div class="row">
-            <div class="col-md-1 col-3">
+            <div class="col-md-2 col-sm-2 col d-flex align-items-center">
                 <a class="navbar-brand py-0" routerLink="/">Snipz</a>
             </div>
-            <div class="col-md-8 col-6">
-                <form class="form-inline my-2 my-md-0 input-icon">
+            <div class="col d-flex align-items-center justify-content-end hidden-sm-up">
+                <a routerLink="connect" (click)="logIn()">Sign in</a>
+                <i *ngIf="isAuthenticated" class="fa fa-user-o icon-menu" aria-hidden="true"></i>
+            </div>
+            <div class="col-md-8 col-sm-8 col-12 d-flex align-items-center">
+                <form class="form-inline my-2 my-md-0 input-icon w-100">
                     <input type="text" class="unbordered backgrounded" [ngClass]="searchEnabled ? '' : 'dark-primary clickable'" placeholder="I don't want code..." (focus)="toggleSearch()" (blur)="toggleSearch()">
                     <i class="icon fa fa-search" aria-hidden="true"></i>
                 </form>
             </div>
-            <div class="col-md-3 col-3 d-flex align-items-center">
-                <a routerLink="connect" (click)="logIn()">Log In</a>
+            <div class="col-md-2 col d-flex align-items-center justify-content-end hidden-xs-down">
+                <a routerLink="connect" (click)="logIn()">Sign in</a>
                 <i *ngIf="isAuthenticated" class="fa fa-user-o icon-menu" aria-hidden="true"></i>
             </div>
         </div>
