@@ -3,4 +3,5 @@ export interface Snippet {
     name: string
     description: string
     date: Date
+    author: string
 }

@@ -1,0 +1,31 @@
+<div class="row">
+    <div *ngFor="let snippet of snippets" class="col-12 col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
+        <div class="card w-10 clickable" (click)="snippetDetails(snippet)">
+            <div class="content">
+                <div class="float-right">
+                    <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
+                    <span class="ml-1">{{ snippet.author }}</span>
+                </div>
+                <div class="header">{{ snippet.name }}</div>
+                <div class="meta">{{ snippet.date }}</div>
+                <div class="description" style="height: 96px; overflow: hidden;">
+                    <p>{{ snippet.description }}</p>
+                </div>
+            </div>
+            <div class="content extra">
+                <span>
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <span class="ml-1">3350</span>
+                </span>
+                <span>
+                    <i class="fa fa-comment-o ml-2" aria-hidden="true"></i>
+                    <span class="ml-1">156</span>
+                </span>
+                <span>
+                    <i class="fa fa-code ml-2" aria-hidden="true"></i>
+                    <span class="ml-1">5</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,8 +13,10 @@ import { HomeComponent } from './home/home.component'
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
 import { ConnectComponent } from './connect/connect.component'
 import { SignupComponent } from './signup/signup.component'
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
+import { SnippetsListComponent } from './snippets-list/snippets-list.component'
+import { SnippetService } from './services/snippet/snippet.service'
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component'
     ConnectComponent,
     SignupComponent,
     ProfileComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    SnippetsListComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,9 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component'
     RouterModule.forRoot( routes ),
     BsDropdownModule.forRoot()
   ],
-  providers: [],
+  providers: [
+      SnippetService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
