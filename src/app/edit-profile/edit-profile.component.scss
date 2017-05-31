@@ -1,0 +1,33 @@
+.editprofile {
+    .menu{
+        border-right: 1px solid #E0E0E0;
+        .tabs{
+            a{
+                cursor: pointer;
+                &.active{
+                    border-left: 2px solid  black;
+
+                }
+
+
+            }
+        }
+    }
+    .tab-content{
+        img{
+            max-width: 100px;
+            border-radius: 500rem;
+        }
+        .tab-pane{
+            form{
+                label{
+                    font-weight: bold;
+                }
+            }
+            .btn{
+                max-width: 150px;
+            }
+        }
+    }
+
+}

@@ -13,7 +13,8 @@ import { HomeComponent } from './home/home.component'
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
 import { ConnectComponent } from './connect/connect.component'
 import { SignupComponent } from './signup/signup.component'
-import { ProfileComponent } from './profile/profile.component'
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component'
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ProfileComponent } from './profile/profile.component'
     SnippetDetailsComponent,
     ConnectComponent,
     SignupComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
