@@ -29,8 +29,17 @@
                 </div>
 	        </div>
         </div>
-        <div class="mt-4">
-            <app-snippets-list [snippets]="snippets"></app-snippets-list>
+        <div class="row mt-4 mb-3">
+            <div class="col">
+                <h3>Authors</h3>
+            </div>
         </div>
+        <app-snippets-list [snippets]="snippets"></app-snippets-list>
+        <div class="row mt-3 mb-3">
+            <div class="col">
+                <h3>Contributors</h3>
+            </div>
+        </div>
+        <app-snippets-list [snippets]="snippets"></app-snippets-list>
 	</div>
 </div>
