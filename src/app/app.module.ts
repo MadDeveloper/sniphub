@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
 import { BsDropdownModule } from 'ngx-bootstrap'
+import { AceEditorModule } from 'ng2-ace-editor';
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { MarkdownModule } from 'angular2-markdown'
@@ -41,7 +42,8 @@ import { CommentService } from './services/comment/comment.service'
     HttpModule,
     RouterModule.forRoot( routes ),
     BsDropdownModule.forRoot(),
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    AceEditorModule
   ],
   providers: [
       SnippetService,
