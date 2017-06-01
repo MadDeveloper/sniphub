@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
-
 import { BsDropdownModule } from 'ngx-bootstrap'
-
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
+import { MarkdownModule } from 'angular2-markdown'
 import { AppHeaderComponent } from './app-header/app-header.component'
 import { HomeComponent } from './home/home.component'
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
@@ -16,7 +15,7 @@ import { SignupComponent } from './signup/signup.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetsListComponent } from './snippets-list/snippets-list.component'
-import { SnippetService } from './services/snippet/snippet.service';
+import { SnippetService } from './services/snippet/snippet.service'
 import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 
 @NgModule({
@@ -30,14 +29,15 @@ import { AddSnippetComponent } from './add-snippet/add-snippet.component'
     ProfileComponent,
     EditProfileComponent,
     SnippetsListComponent,
-    AddSnippetComponent
+    AddSnippetComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot( routes ),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    MarkdownModule.forRoot()
   ],
   providers: [
       SnippetService
