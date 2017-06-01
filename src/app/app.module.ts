@@ -16,7 +16,8 @@ import { SignupComponent } from './signup/signup.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetsListComponent } from './snippets-list/snippets-list.component'
-import { SnippetService } from './services/snippet/snippet.service'
+import { SnippetService } from './services/snippet/snippet.service';
+import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SnippetService } from './services/snippet/snippet.service'
     SignupComponent,
     ProfileComponent,
     EditProfileComponent,
-    SnippetsListComponent
+    SnippetsListComponent,
+    AddSnippetComponent
   ],
   imports: [
     BrowserModule,

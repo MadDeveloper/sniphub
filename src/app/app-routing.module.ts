@@ -4,12 +4,14 @@ import { HomeComponent } from './home/home.component'
 import { ConnectComponent } from './connect/connect.component'
 import { SignupComponent } from './signup/signup.component'
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
+import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'snippet/:id', component: SnippetDetailsComponent },
+    { path: 'add', component: AddSnippetComponent },
     { path: 'connect', component:  ConnectComponent },
     { path: 'signUp', component:  SignupComponent },
     { path: 'profile', component: ProfileComponent },
