@@ -13,5 +13,12 @@ a {
                 color: $light-color;
             }
         }
+        &.meta {
+            color: $dark-grey-color;
+
+            &:hover {
+                color: $default-color;
+            }
+        }
     }
 }

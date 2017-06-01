@@ -1,0 +1,16 @@
+<div class="comments">
+    <div *ngFor="let comment of comments" class="comment">
+        <div class="profile">
+            <img [src]="comment.author.avatar" alt="avatar" class="image avatar">
+        </div>
+        <div class="content">
+            <div class="header">
+                <span class="author">{{ comment.author.username }}</span>
+                <span class="date ml-2">{{ comment.date }}</span>
+            </div>
+            <div class="comment-content">
+                {{ comment.content }}
+            </div>
+        </div>
+    </div>
+</div>

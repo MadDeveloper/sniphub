@@ -36,6 +36,43 @@ input {
     }
 }
 
+textarea {
+    border-radius: 4px;
+    border: 1px solid $grey-color;
+    padding: 5px 12px;
+    outline: none;
+    width: 100%;
+    transition-property: all;
+    transition-duration: 300ms;
+
+    &:focus:not(.unbordered):not(.flat) {
+        border: 1px solid $primary-color;
+    }
+
+    &.unbordered {
+        border: none;
+    }
+
+    &.huge {
+        font-size: 25px;
+        padding: .67rem 1rem;
+    }
+
+    &.not-resizable {
+        resize: none;
+    }
+
+    &.as-input {
+        height: 31px;
+    }
+
+    &.flat {
+        padding-left: 0;
+        padding-right: 0;
+        border: none;
+    }
+}
+
 .input-icon {
     position: relative;
 

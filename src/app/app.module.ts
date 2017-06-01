@@ -15,8 +15,11 @@ import { SignupComponent } from './signup/signup.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetsListComponent } from './snippets-list/snippets-list.component'
-import { SnippetService } from './services/snippet/snippet.service'
 import { AddSnippetComponent } from './add-snippet/add-snippet.component'
+import { CommentsComponent } from './comments/comments.component'
+
+import { SnippetService } from './services/snippet/snippet.service'
+import { CommentService } from './services/comment/comment.service'
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { AddSnippetComponent } from './add-snippet/add-snippet.component'
     EditProfileComponent,
     SnippetsListComponent,
     AddSnippetComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,8 @@ import { AddSnippetComponent } from './add-snippet/add-snippet.component'
     MarkdownModule.forRoot()
   ],
   providers: [
-      SnippetService
+      SnippetService,
+      CommentService
   ],
   bootstrap: [AppComponent]
 })

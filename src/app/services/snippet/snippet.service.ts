@@ -4,8 +4,6 @@ import { Snippet } from 'app/interfaces/snippet'
 @Injectable()
 export class SnippetService {
 
-    constructor() { }
-
     all(): Snippet[] {
         return [
             {
