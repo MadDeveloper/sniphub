@@ -20,7 +20,8 @@
       "prefix": "app",
       "styles": [
         "styles.scss",
-        "../node_modules/codemirror/lib/codemirror.css"
+        "../node_modules/codemirror/lib/codemirror.css",
+        "../node_modules/codemirror/theme/dracula.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
