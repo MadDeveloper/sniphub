@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, ViewChild } from '@angular/core'
 import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'
 import { CommentService } from 'app/services/comment/comment.service'
+import 'codemirror/mode/javascript/javascript'
 
 @Component({
   selector: 'app-snippet-details',
@@ -15,6 +16,12 @@ export class SnippetDetailsComponent implements OnInit {
     private likes: number
     private liked: boolean
     private comments: Comment[]
+    private code: string
+    private codemirrorConfig = {
+        lineNumbers: true,
+        smartIndent: true,
+        mode: 'javascript'
+    }
 
     constructor(private commentService: CommentService) { }
 
@@ -22,6 +29,11 @@ export class SnippetDetailsComponent implements OnInit {
         this.likes = 158
         this.liked = false
         this.comments = this.commentService.all()
+        this.code = 'str.replace(/\s/g, "")'
+    }
+
+    onChange(code) {
+        console.log("new code", code);
     }
 
     focusComment() {

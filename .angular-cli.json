@@ -20,13 +20,9 @@
       "prefix": "app",
       "styles": [
         "styles.scss",
-        "../node_modules/prismjs/themes/prism-okaidia.css"
+        "../node_modules/codemirror/lib/codemirror.css"
       ],
-      "scripts": [
-          "../node_modules/ace-builds/src-min/ace.js",
-          "../node_modules/ace-builds/src-min/theme-github.js",
-          "../node_modules/ace-builds/src-min/mode-javascript.js"
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
