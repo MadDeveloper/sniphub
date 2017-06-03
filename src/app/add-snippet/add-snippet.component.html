@@ -1,5 +1,5 @@
 <div class="container mt-4">
-	<div class="row">
+    <div class="row">
         <div class="col segment">
             <div class="row mx-auto mt-3">
                 <div class="col">
@@ -10,52 +10,45 @@
             </div>
             <div class="row mt-3">
                 <form class="col-12 mx-auto">
-                    <div class="form-group row">
-                        <label for="name" class="col-3 col-form-label text-right">Name</label>
+                    <div class="form-group row mx-3">
+                        <label for="name" class="col-2 col-form-label text-right">Name</label>
                         <div class="col">
                             <input type="text" value="" id="name">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="desc" class="col-3 col-form-label text-right">Description</label>
+                    <div class="form-group row mx-3">
+                        <label for="desc" class="col-2 col-form-label text-right">Description</label>
                         <div class="col">
-                            <input type="text" value="" id="desc">
+                            <textarea value="" id="desc"></textarea>
                         </div>
                     </div>
                     <div class="row mx-3">
                         <div class="col-12 d-flex">
                             <h3>Codes</h3>
-                                <i (click)="addCodeBlock()" class="fa fa-plus my-auto ml-3" aria-hidden="true"></i>
+                            <i (click)="addCodeBlock()" class="fa fa-plus my-auto ml-3" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div *ngFor='let row of rowData'>
+                    <div *ngFor='let row of rowData;let in = index'>
                         <div class="row mx-3">
                             <div class="col-3">
-                                <select class="form-control" id="language">
-                                    <option>JS</option>
-                                    <option>C#</option>
-                                    <option>Java</option>
-                                    <option>PHP</option>
-                                    <option>GO</option>
+                                <select name="language-{{in}}" [(ngModel)]="row.selectedValue" (change)="onChangeLanguage(in)" class="form-control">
+                                    <option  *ngFor="let l of language" [ngValue]="l">{{l.name}}</option>
                                 </select>
                             </div>
-                            <div class="col my-auto">
-                                <!--TODO: Afficher seulement sur le second-->
+                            <div *ngIf="rowData.length > 1" class="col my-auto">
                                 <i (click)="removeCodeBlock(row)" class="fa fa-minus ml-3" aria-hidden="true"></i>
                             </div>
                         </div>
                         <div class="row mx-3 mt-2">
                             <div class="col-12 ">
-                                <textarea class="code-editor" name="content" rows="10" col="300">{{row.code}}</textarea>
+                                <codemirror name="code-{{in}}" [(ngModel)]="row.code" [config]="row.codemirrorConfig"></codemirror>
                             </div>
                         </div>
-                        <!--TODO: Ne pas afficher la ligne sur le dernier bloc et afficher seulement si deux blocs -->
-                        <div class="row mt-2">
+                        <div *ngIf="rowData.length > 1 && in+1 < rowData.length" class="row mt-2">
                             <div class="col line mx-2">
                             </div>
                         </div>
                     </div>
-
 
                     <div class="offset-5 col-2 mt-3 mb-3">
                         <button class="btn btn-primary btn-block" type="submit">Save</button>
@@ -63,5 +56,5 @@
                 </form>
             </div>
         </div>
-	</div>
+    </div>
 </div>
