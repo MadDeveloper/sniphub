@@ -7,7 +7,6 @@ import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
-import { MarkdownModule } from 'angular2-markdown'
 import { AppHeaderComponent } from './app-header/app-header.component'
 import { HomeComponent } from './home/home.component'
 import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
@@ -42,7 +41,6 @@ import { CommentService } from './services/comment/comment.service'
     HttpModule,
     RouterModule.forRoot( routes ),
     BsDropdownModule.forRoot(),
-    MarkdownModule.forRoot(),
     CodemirrorModule
   ],
   providers: [
