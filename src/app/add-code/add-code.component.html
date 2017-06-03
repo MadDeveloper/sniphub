@@ -1,0 +1,27 @@
+<div class="row mx-3">
+    <div class="col-12 d-flex">
+        <h3>Codes</h3>
+        <i (click)="addCodeBlock()" class="fa fa-plus my-auto ml-3" aria-hidden="true"></i>
+    </div>
+</div>
+<div *ngFor='let row of rowData;let in = index'>
+    <div class="row mx-3">
+        <div class="col-3">
+            <select name="language-{{in}}" [(ngModel)]="row.selectedValue" (change)="onChangeLanguage(in)" class="form-control">
+                                    <option  *ngFor="let l of languages" [ngValue]="l">{{l.name}}</option>
+                                </select>
+        </div>
+        <div *ngIf="rowData.length > 1" class="col my-auto">
+            <i (click)="removeCodeBlock(row)" class="fa fa-minus ml-3" aria-hidden="true"></i>
+        </div>
+    </div>
+    <div class="row mx-3 mt-2">
+        <div class="col-12 ">
+            <codemirror name="code-{{in}}" [(ngModel)]="row.code" [config]="row.codemirrorConfig"></codemirror>
+        </div>
+    </div>
+    <div *ngIf="rowData.length > 1 && in+1 < rowData.length" class="row mt-2">
+        <div class="col line mx-2">
+        </div>
+    </div>
+</div>

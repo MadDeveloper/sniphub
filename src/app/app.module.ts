@@ -20,7 +20,8 @@ import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 import { CommentsComponent } from './comments/comments.component'
 
 import { SnippetService } from './services/snippet/snippet.service'
-import { CommentService } from './services/comment/comment.service'
+import { CommentService } from './services/comment/comment.service';
+import { AddCodeComponent } from './add-code/add-code.component'
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CommentService } from './services/comment/comment.service'
     EditProfileComponent,
     SnippetsListComponent,
     AddSnippetComponent,
-    CommentsComponent
+    CommentsComponent,
+    AddCodeComponent
   ],
   imports: [
     BrowserModule,
