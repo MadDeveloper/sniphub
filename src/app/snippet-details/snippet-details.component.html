@@ -31,25 +31,17 @@
             </div>
             <div class="row my-4">
                 <div class="col" style="max-width: 230px">
-                    <!--<select class="form-control selectpicker">
-                        <option value="JS">JS</option>
-                        <option value="C#">C#</option>
-                        <option value="Java">Java</option>
-                        <option value="PHP">PHP</option>
-                        <option value="Go">Go</option>
-                    </select>-->
                     <ng-select [allowClear]="true"
                         [items]="languages"
-                        [disabled]="disabled"
-                        (data)="refreshValue($event)"
-                        (selected)="selected($event)"
-                        (removed)="removed($event)"
+                        (selected)="changeLanguage($event)"
                         placeholder="No language selected"></ng-select>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <codemirror [(ngModel)]="code" [config]="codemirrorConfig"></codemirror>
+                    <codemirror #codemirror
+                        [(ngModel)]="code"
+                        [(config)]="codemirrorConfig"></codemirror>
                 </div>
             </div>
             <hr class="w-100 mt-2">

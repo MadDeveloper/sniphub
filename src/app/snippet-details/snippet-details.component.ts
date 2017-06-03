@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core'
 import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'
 import { CommentService } from 'app/services/comment/comment.service'
+import { CodemirrorComponent } from 'ng2-codemirror'
 
 @Component({
   selector: 'app-snippet-details',
@@ -16,19 +17,14 @@ export class SnippetDetailsComponent implements OnInit {
     private liked: boolean
     private comments: Comment[]
     private code: string
-    private codemirrorConfig = {
-        lineNumbers: true,
-        smartIndent: true,
-        mode: {
-            name: 'javascript',
-            typescript: true
-        },
-        theme: 'dracula'
-    }
-    public languages: Array<string>
-    private language: string
+    private codemirrorConfig: any
+    public languages: Array<any>
+    private language: any
     @ViewChild('comment')
     private comment: ElementRef
+
+    @ViewChild(CodemirrorComponent)
+    private codemirror: CodemirrorComponent
 
     constructor(private commentService: CommentService) { }
 
@@ -36,8 +32,18 @@ export class SnippetDetailsComponent implements OnInit {
         this.likes = 158
         this.liked = false
         this.comments = this.commentService.all()
-        this.code = 'interface Http {\n\tstatus: number\n\tstatusCode: number\n}'
-        this.languages = ['JavaScript', 'TypeScript', 'PHP', 'C#', 'Java', 'Swift', 'Scala', 'Python', 'Ruby']
+        this.languages = [
+            { id: 1, text: 'JavaScript', value: 'javascript' },
+            { id: 2, text: 'C#', value: 'clike' },
+            { id: 3, text: 'PHP', value: 'php' },
+            { id: 4, text: 'Java', value: 'clike' }
+        ]
+        this.codemirrorConfig = {
+            lineNumbers: true,
+            smartIndent: true,
+            mode: null,
+            theme: 'dracula'
+        }
     }
 
     onChange(code: string) {
@@ -62,8 +68,23 @@ export class SnippetDetailsComponent implements OnInit {
         this.liked = false
     }
 
-    changeLanguage(language: string) {
+    changeLanguage(language: any) {
         this.language = language
+        const foundLanguage = this.findLanguage(language)
+
+        if (foundLanguage) {
+            this.codemirror.instance.setOption('mode', foundLanguage.value)
+        }
+    }
+
+    private findLanguage(language: any) {
+        const extractedLanguage = this.languages.filter(current => current.id === language.id)
+
+        if (extractedLanguage.length > 0) {
+            return extractedLanguage[0]
+        }
+
+        return null
     }
 
 }
