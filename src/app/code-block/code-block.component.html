@@ -1,0 +1,13 @@
+<div class="my-4">
+    <div style="max-width: 230px">
+        <ng-select [allowClear]="true"
+            [items]="languages"
+            (selected)="changeLanguage($event)"
+            placeholder="No language selected"></ng-select>
+    </div>
+</div>
+<div>
+    <codemirror #codemirror
+        [(ngModel)]="code"
+        [config]="config"></codemirror>
+</div>

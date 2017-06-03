@@ -40,7 +40,7 @@ input {
 textarea {
     border-radius: 4px;
     border: 1px solid $grey-color;
-    padding: 5px 12px;
+    padding: 0.5rem 1rem;
     outline: none;
     width: 100%;
     transition-property: all;
@@ -61,10 +61,6 @@ textarea {
 
     &.not-resizable {
         resize: none;
-    }
-
-    &.as-input {
-        height: 31px;
     }
 
     &.flat {

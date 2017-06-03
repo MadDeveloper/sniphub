@@ -18,10 +18,14 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetsListComponent } from './snippets-list/snippets-list.component'
 import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 import { CommentsComponent } from './comments/comments.component'
+import { AddCodeComponent } from './add-code/add-code.component'
+import { CodeBlockComponent } from './code-block/code-block.component'
 
 import { SnippetService } from './services/snippet/snippet.service'
-import { CommentService } from './services/comment/comment.service';
-import { AddCodeComponent } from './add-code/add-code.component'
+import { CommentService } from './services/comment/comment.service'
+import { LanguageService } from './services/language/language.service'
+import { UserService } from './services/user/user.service'
+import { AuthenticationService } from './services/authentication/authentication.service'
 
 @NgModule({
   declarations: [
@@ -36,7 +40,8 @@ import { AddCodeComponent } from './add-code/add-code.component'
     SnippetsListComponent,
     AddSnippetComponent,
     CommentsComponent,
-    AddCodeComponent
+    AddCodeComponent,
+    CodeBlockComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,10 @@ import { AddCodeComponent } from './add-code/add-code.component'
   ],
   providers: [
       SnippetService,
-      CommentService
+      CommentService,
+      LanguageService,
+      UserService,
+      AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

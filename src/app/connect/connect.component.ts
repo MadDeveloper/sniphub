@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+import { AuthenticationService } from 'app/services/authentication/authentication.service'
+import { Router } from '@angular/router';
+import { User } from 'app/interfaces/user';
 
 @Component({
   selector: 'app-connect',
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConnectComponent implements OnInit {
 
-  constructor() { }
+    constructor(
+        private authentication: AuthenticationService,
+        private router: Router) { }
 
-  ngOnInit() {
-  }
+    ngOnInit() { }
+
+    login() {
+        const user: User = {
+            id: 1,
+            avatar: '/assets/images/unknown.jpg',
+            username: 'Madeveloper'
+        }
+        this.authentication.login(user)
+        this.router.navigate(['/'])
+    }
 
 }
