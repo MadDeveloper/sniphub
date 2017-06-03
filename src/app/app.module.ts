@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
+import { SelectModule } from 'ng2-select'
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
@@ -41,7 +42,8 @@ import { CommentService } from './services/comment/comment.service'
     HttpModule,
     RouterModule.forRoot( routes ),
     BsDropdownModule.forRoot(),
-    CodemirrorModule
+    CodemirrorModule,
+    SelectModule
   ],
   providers: [
       SnippetService,

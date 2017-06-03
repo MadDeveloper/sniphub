@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core'
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core'
 import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'
 import { CommentService } from 'app/services/comment/comment.service'
@@ -25,6 +25,10 @@ export class SnippetDetailsComponent implements OnInit {
         },
         theme: 'dracula'
     }
+    public languages: Array<string>
+    private language: string
+    @ViewChild('comment')
+    private comment: ElementRef
 
     constructor(private commentService: CommentService) { }
 
@@ -33,14 +37,15 @@ export class SnippetDetailsComponent implements OnInit {
         this.liked = false
         this.comments = this.commentService.all()
         this.code = 'interface Http {\n\tstatus: number\n\tstatusCode: number\n}'
+        this.languages = ['JavaScript', 'TypeScript', 'PHP', 'C#', 'Java', 'Swift', 'Scala', 'Python', 'Ruby']
     }
 
-    onChange(code) {
-        console.log('new code', code)
+    onChange(code: string) {
+        this.code = code
     }
 
     focusComment() {
-        $('#comment').focus()
+        this.comment.nativeElement.focus()
     }
 
     like() {
@@ -55,6 +60,10 @@ export class SnippetDetailsComponent implements OnInit {
     unlike() {
         this.likes--
         this.liked = false
+    }
+
+    changeLanguage(language: string) {
+        this.language = language
     }
 
 }
