@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
 import { SelectModule } from 'ng2-select'
+import { MomentModule } from 'angular2-moment'
 import { routes } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
@@ -20,13 +21,13 @@ import { AddSnippetComponent } from './add-snippet/add-snippet.component'
 import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
+import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 
 import { SnippetService } from './services/snippet/snippet.service'
 import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
-import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons
     RouterModule.forRoot( routes ),
     BsDropdownModule.forRoot(),
     CodemirrorModule,
-    SelectModule
+    SelectModule,
+    MomentModule
   ],
   providers: [
       SnippetService,

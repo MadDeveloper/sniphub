@@ -6,7 +6,7 @@
         <div class="content">
             <div class="header">
                 <span class="author">{{ comment.author.username }}</span>
-                <span class="date ml-2">{{ comment.date }}</span>
+                <span class="date ml-2">{{ comment.date | amTimeAgo }}</span>
             </div>
             <div class="comment-content">
                 {{ comment.content }}
