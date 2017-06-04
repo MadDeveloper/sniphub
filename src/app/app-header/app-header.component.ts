@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
-import { AuthenticationService } from 'app/services/authentication/authentication.service'
-import { User } from 'app/interfaces/user'
 
 @Component({
   selector: 'app-header',
@@ -15,27 +13,18 @@ export class AppHeaderComponent implements OnInit {
     displayed = false
     searchEnabled: boolean
 
-    constructor(
-        private router: Router,
-        private authentication: AuthenticationService) { }
+    constructor(private router: Router) { }
 
     ngOnInit() {
         this.searchEnabled = false
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
-            .subscribe( (event: NavigationEnd) => {
-                this.displayed = '/' !== event.url
-                this.isAuthenticated = this.authentication.isAuthenticated()
-            })
+            .subscribe( (event: NavigationEnd) => this.displayed = '/' !== event.url)
     }
 
     toggleSearch() {
         this.searchEnabled = !this.searchEnabled
-    }
-
-    goProfile() {
-        this.router.navigate(['/profile'])
     }
 
 }

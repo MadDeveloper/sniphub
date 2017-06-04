@@ -70,7 +70,10 @@
     }
 }
 
-.ui-select-choices.dropdown-menu {
-    display: block;
+.dropdown-menu {
+    &.ui-select-choices {
+        display: block;
+    }
+
     box-shadow: 0 0 50px rgba(150, 150, 150, 0.2)
 }

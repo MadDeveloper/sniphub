@@ -3,6 +3,7 @@ import * as $ from 'jquery'
 import { Router } from '@angular/router'
 import { SnippetService } from 'app/services/snippet/snippet.service'
 import { Snippet } from 'app/interfaces/snippet'
+import { AuthenticationService } from 'app/services/authentication/authentication.service'
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,8 @@ export class HomeComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private snippetService: SnippetService) { }
+        private snippetService: SnippetService,
+        private authentication: AuthenticationService) { }
 
     ngOnInit() {
         this.snippets = this.snippetService.all()

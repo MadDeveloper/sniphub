@@ -26,6 +26,7 @@ import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
+import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AuthenticationService } from './services/authentication/authentication
     AddSnippetComponent,
     CommentsComponent,
     AddCodeComponent,
-    CodeBlockComponent
+    CodeBlockComponent,
+    HeaderIconsActionsComponent
   ],
   imports: [
     BrowserModule,

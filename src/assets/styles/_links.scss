@@ -1,7 +1,9 @@
 @import 'variables';
 
 a {
-    &:hover {
+    &:hover,
+    &:active,
+    &:focus {
         text-decoration: none;
     }
 

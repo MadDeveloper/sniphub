@@ -27,7 +27,7 @@ export class SnippetDetailsComponent implements OnInit {
 
 
     codeBlockChange(event: any) {
-        console.log('here', event)
+
     }
 
     focusComment() {

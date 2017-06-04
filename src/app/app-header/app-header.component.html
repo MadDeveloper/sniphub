@@ -1,26 +1,17 @@
 <nav id="main-navbar" *ngIf="displayed" class="navbar">
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-2 col d-flex align-items-center">
+            <div class="col-md-2 col-sm-2 col-6 d-flex align-items-center">
                 <a class="navbar-brand py-0" routerLink="/">Snipz</a>
             </div>
-            <div class="col d-flex align-items-center justify-content-end hidden-sm-up">
-                <a *ngIf="!isAuthenticated" routerLink="connect" (click)="logIn()">Sign in</a>
-                <i *ngIf="isAuthenticated" class="fa fa-user-o icon-menu clickable" (click)="goProfile()" aria-hidden="true"></i>
-                <span class="ml-5"></span>
-                <i *ngIf="isAuthenticated" class="fa fa-angle-down icon-menu clickable" aria-hidden="true"></i>
+            <div class="col-md-3 col-sm-4 col-6 push-md-7 push-sm-6 d-flex align-items-center justify-content-end">
+                <app-header-icons-actions></app-header-icons-actions>
             </div>
-            <div class="col-md-8 col-sm-8 col-12 d-flex align-items-center">
+            <div class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center">
                 <form class="form-inline my-2 my-md-0 input-icon w-100">
                     <input type="text" class="unbordered backgrounded" [ngClass]="searchEnabled ? '' : 'dark-primary clickable'" placeholder="I don't want code..." (focus)="toggleSearch()" (blur)="toggleSearch()">
                     <i class="icon fa fa-search" aria-hidden="true"></i>
                 </form>
-            </div>
-            <div class="col-md-2 col-sm-2 d-flex align-items-center justify-content-end hidden-xs-down">
-                <a *ngIf="!isAuthenticated"routerLink="connect" (click)="logIn()">Sign in</a>
-                <i *ngIf="isAuthenticated" class="fa fa-user icon-menu clickable" (click)="goProfile()" aria-hidden="true"></i>
-                <span class="ml-5 hidden-xs-down"></span>
-                <i *ngIf="isAuthenticated" class="fa fa-cog icon-menu clickable" aria-hidden="true"></i>
             </div>
         </div>
     </div>

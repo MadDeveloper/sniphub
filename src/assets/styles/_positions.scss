@@ -1,0 +1,17 @@
+.position {
+    &.relative {
+        position: relative;
+    }
+
+    &.fixed {
+        position: fixed;
+    }
+
+    &.absolute {
+        position: absolute
+    }
+
+    &.sticky {
+        position: sticky;
+    }
+}
