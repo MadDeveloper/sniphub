@@ -5,7 +5,8 @@
     </div>
 </div>
 <div *ngFor='let row of rowData;let in = index'>
-    <div class="row mx-3">
+    <app-code-block></app-code-block>
+    <!--<div class="row mx-3">
         <div class="col-3">
             <select name="language-{{in}}" [(ngModel)]="row.selectedValue" (change)="onChangeLanguage(in)" class="form-control">
                                     <option  *ngFor="let l of languages" [ngValue]="l">{{l.name}}</option>
@@ -19,7 +20,7 @@
         <div class="col-12 ">
             <codemirror name="code-{{in}}" [(ngModel)]="row.code" [config]="row.codemirrorConfig"></codemirror>
         </div>
-    </div>
+    </div>-->
     <div *ngIf="rowData.length > 1 && in+1 < rowData.length" class="row mt-2">
         <div class="col line mx-2">
         </div>
