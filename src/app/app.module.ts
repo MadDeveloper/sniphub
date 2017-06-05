@@ -28,7 +28,8 @@ import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
-import { CodeRequestComponent } from './code-request/code-request.component'
+import { CodeRequestComponent } from './code-request/code-request.component';
+import { AppFooterComponent } from './app-footer/app-footer.component'
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { CodeRequestComponent } from './code-request/code-request.component'
     AddCodeComponent,
     CodeBlockComponent,
     HeaderIconsActionsComponent,
-    CodeRequestComponent
+    CodeRequestComponent,
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
