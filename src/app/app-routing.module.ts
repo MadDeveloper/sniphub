@@ -11,7 +11,8 @@ import { CodeRequestComponent } from './code-request/code-request.component'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'snippet/add', component: EditSnippetComponent },
+    { path: 'snippet/new', component: EditSnippetComponent },
+    { path: 'snippet/edit/:id', component: EditSnippetComponent },
     { path: 'snippet/:id', component: SnippetDetailsComponent },
     { path: 'connect', component: ConnectComponent },
     { path: 'signUp', component: SignupComponent },

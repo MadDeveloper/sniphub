@@ -2,6 +2,7 @@
 
 .btn {
     font-family: inherit;
+    min-width: 90px;
 
     &:hover {
         cursor: pointer;
@@ -13,5 +14,21 @@
         &:hover {
             background-color: $dark-primary-color;
         }
+    }
+
+    &.danger {
+        border-color: $danger-color !important;
+        color: $danger-color !important;
+    }
+
+    &.primary {
+        border-color: $primary-color !important;
+        color: $primary-color !important;
+    }
+
+    &.outlined {
+        background-color: transparent;
+        border-color: #757575;
+        color: black;
     }
 }

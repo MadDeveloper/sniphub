@@ -10,7 +10,7 @@ import { CommentService } from 'app/services/comment/comment.service'
 })
 export class SnippetDetailsComponent implements OnInit {
     @Input()
-    private snippet: number
+    private snippetId: number
     private likes: number
     private liked: boolean
     private comments: Comment[]

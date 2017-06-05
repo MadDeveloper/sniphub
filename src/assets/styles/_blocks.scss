@@ -1,5 +1,11 @@
 @import 'variables';
 
+.container {
+    @media screen and(min-width: $screen-md-min) {
+        max-width: $max-container-width;
+    }
+}
+
 .segment {
     background-color: #fff;
     border: 1px solid $grey-color;
