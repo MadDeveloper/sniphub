@@ -27,7 +27,8 @@ import { SnippetService } from './services/snippet/snippet.service'
 import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
-import { AuthenticationService } from './services/authentication/authentication.service'
+import { AuthenticationService } from './services/authentication/authentication.service';
+import { CodeRequestComponent } from './code-request/code-request.component'
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AuthenticationService } from './services/authentication/authentication
     CommentsComponent,
     AddCodeComponent,
     CodeBlockComponent,
-    HeaderIconsActionsComponent
+    HeaderIconsActionsComponent,
+    CodeRequestComponent
   ],
   imports: [
     BrowserModule,

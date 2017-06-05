@@ -1,0 +1,39 @@
+<div class="container mt-4">
+    <div class="row">
+        <div class="col segment">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Snippet</th>
+                        <th>Language</th>
+                        <th>Date</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody *ngFor='let request of codeRequests;let in = index'>
+                    <tr>
+                        <td>{{request.username}}</td>
+                        <td>{{request.name}}</td>
+                        <td>{{request.language}}</td>
+                        <td>{{request.date}}</td>
+                        <td><button class="btn" (click)="showCode(in)">
+                            <span *ngIf="!request.showCode">Show </span>
+                            <span *ngIf="request.showCode">Hide </span>
+                            code</button></td>
+                        <td class="d-flex my-auto">
+                            <i class="fa fa-check mr-3 icon-code clickable" (click)="accept(in)"aria-hidden="true"></i>
+                            <i class="fa fa-times icon-code clickable" (click)="reject(in)" aria-hidden= "true"></i>
+                        </td>
+                    </tr>
+                    <tr *ngIf="request.showCode">
+                        <td colspan="6">
+                            <codemirror name="code-{{in}}" [(ngModel)]="request.code" [config]="request.codemirrorConfig"></codemirror>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
