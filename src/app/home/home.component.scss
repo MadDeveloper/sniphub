@@ -1,23 +1,23 @@
 @import '../../assets/styles/variables';
 
-#main-search {
-    width: 80%;
-    margin: auto;
-    text-align: center;
+input#main-search-input {
+    // background-color: transparent;
+    border: none;
+    // border-bottom: 1px solid #fff;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    max-width: 350px;
+    font-size: 2rem;
+    margin-left: 5px;
 
-    @media screen and(max-width: $screen-smartphone) {
-        width: 100% !important;
+    @media screen and(max-width: $screen-xs) {
+        margin-left: 0;
     }
+}
 
-    input#main-search-input {
-        // background-color: transparent;
-        border: none;
-        // border-bottom: 1px solid #fff;
-        color: #fff;
-        padding: 4px 10px;
-        border-radius: 6px;
-        max-width: 300px;
-        font-size: 2rem;
-        margin-left: 5px;
+#search-wrapper {
+    @media screen and(max-width: $screen-xs) {
+        flex-direction: column;
     }
 }

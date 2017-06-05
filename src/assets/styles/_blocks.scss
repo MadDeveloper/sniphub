@@ -1,7 +1,7 @@
 @import 'variables';
 
 .container {
-    @media screen and(min-width: $screen-md-min) {
+    @media screen and(min-width: $screen-lg-min) {
         max-width: $max-container-width;
     }
 }

@@ -1,9 +1,8 @@
 @import '../../assets/styles/variables';
 
-#main-navbar {
+nav#main-navbar {
     background-color: $primary-color;
     padding: 1rem;
-    border-bottom: 1px solid rgba(0,0,0,.0975);
 
     a {
         color: #fff;

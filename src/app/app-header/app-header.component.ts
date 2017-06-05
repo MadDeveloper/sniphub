@@ -10,7 +10,7 @@ export class AppHeaderComponent implements OnInit {
 
     isAuthenticated: boolean
     name: string
-    displayed = false
+    homePage = false
     searchEnabled: boolean
 
     constructor(private router: Router) { }
@@ -20,7 +20,7 @@ export class AppHeaderComponent implements OnInit {
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
-            .subscribe( (event: NavigationEnd) => this.displayed = '/' !== event.url)
+            .subscribe( (event: NavigationEnd) => this.homePage = '/' !== event.url )
     }
 
     toggleSearch() {

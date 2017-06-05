@@ -10,21 +10,21 @@ $dark-grey-color: rgba(0, 0, 0, .4);
 $danger-color: #d9534f;
 
 //== Sizes
-$max-container-width: 800px;
+$max-container-width: 900px;
 
 //== Media queries breakpoints
 
 // Small screen smartphones
 $screen-xs: 575px;
+$screen-sm-min: 576px;
 $screen-sm: 767px;
 
 // Medium screen / desktop
 $screen-md: 991px;
-$screen-md-min: 992px;
 
 // Large screen / wide desktop
+$screen-lg-min: 992px;
 $screen-lg: 1199px;
-$screen-lg-min: 1200px;
 
 // Extra large screen / wide desktop
 $screen-xl: 1200px;

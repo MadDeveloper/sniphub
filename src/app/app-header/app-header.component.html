@@ -1,13 +1,13 @@
-<nav id="main-navbar" *ngIf="displayed" class="navbar">
+<nav id="main-navbar" class="navbar">
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-2 col-6 d-flex align-items-center">
+            <div class="col-md-2 col-sm-2 col-3 d-flex align-items-center">
                 <a class="navbar-brand py-0" routerLink="/">Snipz</a>
             </div>
-            <div class="col-md-3 col-sm-4 col-6 push-md-7 push-sm-6 d-flex align-items-center justify-content-end">
+            <div class="col-md-3 col-sm-4 col-9 push-md-7 push-sm-6 d-flex align-items-center justify-content-end">
                 <app-header-icons-actions></app-header-icons-actions>
             </div>
-            <div class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center">
+            <div *ngIf="homePage" class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center">
                 <form class="form-inline my-2 my-md-0 input-icon w-100">
                     <input type="text" class="unbordered backgrounded" [ngClass]="searchEnabled ? '' : 'dark-primary clickable'" placeholder="I don't want code..." (focus)="toggleSearch()" (blur)="toggleSearch()">
                     <i class="icon fa fa-search" aria-hidden="true"></i>
