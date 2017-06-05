@@ -17,7 +17,7 @@ import { SignupComponent } from './signup/signup.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetsListComponent } from './snippets-list/snippets-list.component'
-import { AddSnippetComponent } from './add-snippet/add-snippet.component'
+import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
@@ -27,7 +27,7 @@ import { SnippetService } from './services/snippet/snippet.service'
 import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
-import { AuthenticationService } from './services/authentication/authentication.service';
+import { AuthenticationService } from './services/authentication/authentication.service'
 import { CodeRequestComponent } from './code-request/code-request.component'
 
 @NgModule({
@@ -41,7 +41,7 @@ import { CodeRequestComponent } from './code-request/code-request.component'
     ProfileComponent,
     EditProfileComponent,
     SnippetsListComponent,
-    AddSnippetComponent,
+    EditSnippetComponent,
     CommentsComponent,
     AddCodeComponent,
     CodeBlockComponent,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddSnippetComponent } from './add-snippet.component';
+import { EditSnippetComponent } from './edit-snippet.component';
 
 describe('AddSnippetComponent', () => {
-  let component: AddSnippetComponent;
-  let fixture: ComponentFixture<AddSnippetComponent>;
+  let component: EditSnippetComponent;
+  let fixture: ComponentFixture<EditSnippetComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddSnippetComponent ]
+      declarations: [ EditSnippetComponent ]
     })
-    .compileComponents();
+    .compileComponents()
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddSnippetComponent);
+    fixture = TestBed.createComponent(EditSnippetComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -22,4 +22,4 @@ describe('AddSnippetComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-});
+})
