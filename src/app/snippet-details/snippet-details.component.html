@@ -22,7 +22,7 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vehicula purus id eleifend elementum. Cras tempor nisl rutrum, rhoncus erat quis, mollis odio. Quisque vehicula, massa at porta dictum, ipsum libero sollicitudin dui, quis porta sem tortor eget magna. Vestibulum ut diam dui. Etiam vel lacus turpis.
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col unselectable">
                     <span class="h4 clickable" (click)="like()">
                         <i class="fa" [ngClass]="liked ? 'fa-heart' : 'fa-heart-o'" aria-hidden="true"></i>
@@ -38,11 +38,11 @@
                 </div>
             </div>
             <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" id="1"></app-code-block>
-            <hr class="w-100 mt-3">
+            <hr class="mt-3">
             <div>
                 <textarea #comment
                     rows="2"
-                    class="flat not-resizable"
+                    class="flat not-resizable background color none"
                     placeholder="Add a comment..."
                     (keyup.enter)="addComment($event)"></textarea>
             </div>

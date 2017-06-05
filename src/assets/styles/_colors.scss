@@ -40,5 +40,8 @@
         &.light {
             background-color: $light-color;
         }
+        &.none {
+            background-color: transparent !important;
+        }
     }
 }

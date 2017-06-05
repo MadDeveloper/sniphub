@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core'
 export class EditSnippetComponent implements OnInit {
     private id: number
     private name: string
+    private snapshotName: string
     private description: string
     private codeBlocks: Array<any>
 
@@ -15,6 +16,7 @@ export class EditSnippetComponent implements OnInit {
 
     ngOnInit() {
         this.name = ''
+        this.snapshotName = ''
         this.description = ''
         this.id = 1
     }
