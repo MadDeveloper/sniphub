@@ -9,15 +9,17 @@ import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { CodeRequestComponent } from './code-request/code-request.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
+import { SnippetResolverGuard } from './guards/snippet/index'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'snippet/new', component: EditSnippetComponent, canActivate: [ AuthenticationGuard ] },
-    { path: 'snippet/edit/:id', component: EditSnippetComponent, canActivate: [ AuthenticationGuard ] },
-    { path: 'snippet/:id', component: SnippetDetailsComponent },
+    { path: 'snippet/edit/:id', component: EditSnippetComponent, canActivate: [ AuthenticationGuard ], resolve: [ SnippetResolverGuard ] },
+    { path: 'snippet/:id', component: SnippetDetailsComponent, resolve: [ SnippetResolverGuard ] },
     { path: 'signin', component: ConnectComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'profile/edit', component: EditProfileComponent, canActivate: [ AuthenticationGuard ] },
+    { path: 'profile/:id', component: ProfileComponent },
     { path: 'request', component: CodeRequestComponent, canActivate: [ AuthenticationGuard ] }
 ]

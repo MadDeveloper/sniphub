@@ -20,7 +20,10 @@ export class HomeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        this.snippets = this.snippetService.all()
+        this.snippets = []
+        this.snippetService
+            .all()
+            .then( snippets => this.snippets = snippets )
     }
 
     changeFilter(filter: string, event: Event) {
@@ -31,5 +34,4 @@ export class HomeComponent implements OnInit {
     focusSearchInput(event: Event) {
         $(event.target).next().focus()
     }
-
 }

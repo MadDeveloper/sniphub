@@ -13,7 +13,10 @@ export class ProfileComponent implements OnInit {
     constructor(private snippetService: SnippetService) { }
 
     ngOnInit() {
-        this.snippets = this.snippetService.all()
+        this.snippets = []
+        this.snippetService
+            .all()
+            .then( snippets => this.snippets = snippets )
     }
 
 }

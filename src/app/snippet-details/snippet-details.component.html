@@ -1,25 +1,25 @@
-<div class="container mt-4">
+<div *ngIf="snippet" class="container mt-4">
     <div class="row">
         <div class="col segment p-4">
             <div class="row">
                 <div class="col">
                     <div class="d-flex align-items-center">
-                        <h1 class="h3">Trim </h1>
+                        <h1 class="h3">{{ snippet.name }}</h1>
                         <a routerLink="/snippet/edit/1" class="btn outlined ml-3">Edit</a>
                         <button class="btn danger outlined btn-danger ml-3">Delete</button>
                     </div>
-                    <div class="text color meta mr-3">2 days ago</div>
+                    <div class="text color meta mr-3">{{ snippet.date | amTimeAgo }}</div>
                 </div>
                 <div class="col">
                     <div class="float-right d-flex align-items-center">
                         <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
-                        <span class="ml-1">John Doe</span>
+                        <span class="ml-1">{{ snippet.author.username }}</span>
                     </div>
                 </div>
             </div>
             <div class="row py-3">
                 <div class="col">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vehicula purus id eleifend elementum. Cras tempor nisl rutrum, rhoncus erat quis, mollis odio. Quisque vehicula, massa at porta dictum, ipsum libero sollicitudin dui, quis porta sem tortor eget magna. Vestibulum ut diam dui. Etiam vel lacus turpis.
+                    {{ snippet.description }}
                 </div>
             </div>
             <div class="row mb-4">

@@ -2,6 +2,8 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core'
 import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'
 import { CommentService } from 'app/services/comment/comment.service'
+import { Snippet } from '../interfaces/snippet/index'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-snippet-details',
@@ -9,17 +11,21 @@ import { CommentService } from 'app/services/comment/comment.service'
   styleUrls: ['./snippet-details.component.scss']
 })
 export class SnippetDetailsComponent implements OnInit {
-    @Input()
-    private snippetId: number
+    private snippet: Snippet
     private likes: number
     private liked: boolean
     private comments: Comment[]
     @ViewChild('comment')
     private comment: ElementRef
 
-    constructor(private commentService: CommentService) { }
+    constructor(
+        private commentService: CommentService,
+        private route: ActivatedRoute) { }
 
     ngOnInit() {
+        this.route
+            .data
+            .subscribe((data: { snippet: Snippet }) => this.snippet = data[0] )
         this.likes = 158
         this.liked = false
         this.comments = this.commentService.all()
