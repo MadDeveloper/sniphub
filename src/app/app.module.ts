@@ -10,6 +10,19 @@ import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
 import { routes } from './app-routing.module'
 
+// === Guards
+import { AuthenticationGuard } from './guards/authentication'
+import { SnippetResolverGuard } from './guards/snippet'
+import { UserResolverGuard } from './guards/user'
+
+// === Services
+import { SnippetService } from './services/snippet/snippet.service'
+import { CommentService } from './services/comment/comment.service'
+import { LanguageService } from './services/language/language.service'
+import { UserService } from './services/user/user.service'
+import { AuthenticationService } from './services/authentication/authentication.service'
+import { Snippet } from './interfaces/snippet/index'
+
 // === Components
 import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
@@ -27,16 +40,7 @@ import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 import { CodeRequestComponent } from './code-request/code-request.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
-
-// === Guards
-import { AuthenticationGuard } from './guards/authentication'
-
-// === Services
-import { SnippetService } from './services/snippet/snippet.service'
-import { CommentService } from './services/comment/comment.service'
-import { LanguageService } from './services/language/language.service'
-import { UserService } from './services/user/user.service'
-import { AuthenticationService } from './services/authentication/authentication.service'
+import { SearchComponent } from './search/search.component'
 
 @NgModule({
   declarations: [
@@ -55,7 +59,8 @@ import { AuthenticationService } from './services/authentication/authentication
     CodeBlockComponent,
     HeaderIconsActionsComponent,
     CodeRequestComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +78,9 @@ import { AuthenticationService } from './services/authentication/authentication
       LanguageService,
       UserService,
       AuthenticationService,
-      AuthenticationGuard
+      AuthenticationGuard,
+      SnippetResolverGuard,
+      UserResolverGuard
   ],
   bootstrap: [AppComponent]
 })
