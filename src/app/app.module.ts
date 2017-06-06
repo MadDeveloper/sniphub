@@ -1,3 +1,4 @@
+// === Modules
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
@@ -8,6 +9,8 @@ import { CodemirrorModule } from 'ng2-codemirror'
 import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
 import { routes } from './app-routing.module'
+
+// === Components
 import { AppComponent } from './app.component'
 import { AppHeaderComponent } from './app-header/app-header.component'
 import { HomeComponent } from './home/home.component'
@@ -22,14 +25,18 @@ import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
+import { CodeRequestComponent } from './code-request/code-request.component'
+import { AppFooterComponent } from './app-footer/app-footer.component'
 
+// === Guards
+import { AuthenticationGuard } from './guards/authentication'
+
+// === Services
 import { SnippetService } from './services/snippet/snippet.service'
 import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
-import { CodeRequestComponent } from './code-request/code-request.component';
-import { AppFooterComponent } from './app-footer/app-footer.component'
 
 @NgModule({
   declarations: [
@@ -65,7 +72,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component'
       CommentService,
       LanguageService,
       UserService,
-      AuthenticationService
+      AuthenticationService,
+      AuthenticationGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -22,8 +22,8 @@ export class ConnectComponent implements OnInit {
             avatar: '/assets/images/unknown.jpg',
             username: 'Madeveloper'
         }
+
         this.authentication.login(user)
-        this.router.navigate(['/'])
     }
 
 }

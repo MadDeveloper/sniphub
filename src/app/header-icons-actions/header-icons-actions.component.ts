@@ -30,7 +30,6 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
 
     signOut() {
         this.authentication.logout()
-        this.router.navigate(['/'])
     }
 
 }
