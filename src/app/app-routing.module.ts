@@ -8,6 +8,7 @@ import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { CodeRequestComponent } from './code-request/code-request.component'
+import { ContactComponent } from './contact/contact.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet/index'
 
@@ -21,5 +22,6 @@ export const routes: Routes = [
     { path: 'profile', component: ProfileComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'profile/edit', component: EditProfileComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'profile/:id', component: ProfileComponent },
+    { path: 'contact', component: ContactComponent },
     { path: 'request', component: CodeRequestComponent, canActivate: [ AuthenticationGuard ] }
 ]

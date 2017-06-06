@@ -40,7 +40,8 @@ import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 import { CodeRequestComponent } from './code-request/code-request.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
-import { SearchComponent } from './search/search.component'
+import { SearchComponent } from './search/search.component';
+import { ContactComponent } from './contact/contact.component'
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { SearchComponent } from './search/search.component'
     HeaderIconsActionsComponent,
     CodeRequestComponent,
     AppFooterComponent,
-    SearchComponent
+    SearchComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
