@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core'
 import { User } from 'app/interfaces/user'
-import { LocalUser } from 'app/interfaces/user/LocalUser'
 import { Router } from '@angular/router'
 
 @Injectable()
@@ -10,21 +9,17 @@ export class AuthenticationService {
     constructor(private router: Router) { }
 
     isAuthenticated() {
-        return this.user && this.user.logged
+        return !!this.user
     }
 
-    currentUser(): LocalUser {
+    currentUser(): User {
         return this.user
     }
 
     login(user: User) {
-        const localUser: LocalUser = {
-            user,
-            logged: true
-        }
         const url = this.redirectUrl || '/'
 
-        this.user = localUser
+        this.user = user
         this.router.navigate([url])
     }
 
@@ -33,11 +28,11 @@ export class AuthenticationService {
         this.router.navigate(['/'])
     }
 
-    set user(user: LocalUser) {
+    set user(user: User) {
         localStorage.setItem('user', JSON.stringify(user))
     }
 
-    get user() {
+    get user(): User {
         try {
             return JSON.parse(localStorage.getItem('user'))
         } catch (e) {

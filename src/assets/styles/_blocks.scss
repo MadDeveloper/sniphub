@@ -59,6 +59,11 @@
             .header {
                 .author {
                     font-weight: bold;
+                    color: $default-color;
+
+                    &:hover {
+                        color: $default-color;
+                    }
                 }
 
                 .date {

@@ -1,16 +1,16 @@
-<div class="container mt-4">
+<div *ngIf="user" class="container mt-4">
 	<div class="row">
         <div class="col-12">
             <div class="user-details">
                 <div class="row">
                     <div class="col-lg-2 col-md-3 col-sm-4 col-4">
-                        <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image avatar large">
+                        <img [src]="user.avatar" alt="" class="image avatar large">
                     </div>
                     <div class="col-lg-6 col-md-5 col-sm-8 col-8 user-info d-flex align-items-center">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center">
-                                <h3 class="mr-4">John Doe</h3>
-                                <a class="btn outlined" routerLink="/profile/edit">Edit profile</a>
+                                <h3 class="mr-4">{{ user.username }}</h3>
+                                <a *ngIf="ownProfile()" class="btn outlined" routerLink="/profile/edit">Edit profile</a>
                             </div>
                             <div class="col-12 h5 unselectable">
                                 <div class="text color meta">
@@ -35,7 +35,7 @@
                     <h3>Authors</h3>
                 </div>
             </div>
-            <div class="mb-3">
+            <div *ngIf="ownProfile()" class="mb-3">
                 <a class="btn outlined" routerLink="/snippet/new">New snippet</a>
             </div>
             <app-snippets-list [snippets]="snippets"></app-snippets-list>

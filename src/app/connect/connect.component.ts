@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
-import { Router } from '@angular/router';
-import { User } from 'app/interfaces/user';
+import { Router } from '@angular/router'
+import { User } from 'app/interfaces/user'
 
 @Component({
   selector: 'app-connect',
@@ -19,8 +19,9 @@ export class ConnectComponent implements OnInit {
     login() {
         const user: User = {
             id: 1,
-            avatar: '/assets/images/unknown.jpg',
-            username: 'Madeveloper'
+            avatar: '/assets/images/unknown-2.jpg',
+            username: 'Madeveloper',
+            email: 'sergent.julien@icloud.com'
         }
 
         this.authentication.login(user)

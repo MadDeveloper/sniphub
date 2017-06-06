@@ -10,8 +10,9 @@ export class CommentService {
                 id: 1,
                 author: {
                     id: 1,
-                    avatar: '/assets/images/unknown.jpg',
-                    username: 'Madeveloper'
+                    avatar: '/assets/images/unknown-2.jpg',
+                    username: 'John Doe',
+                    email: 'sergent.julien@icloud.com'
                 },
                 date: new Date(),
                 content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -22,7 +23,8 @@ export class CommentService {
                 author: {
                     id: 2,
                     avatar: '/assets/images/unknown.jpg',
-                    username: 'Thapple'
+                    username: 'Matt',
+                    email: 'matt@vdb.com'
                 },
                 date: new Date(),
                 content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -32,8 +34,9 @@ export class CommentService {
                 id: 3,
                 author: {
                     id: 3,
-                    avatar: '/assets/images/unknown.jpg',
-                    username: 'Matt'
+                    avatar: '/assets/images/unknown-2.jpg',
+                    username: 'Zully',
+                    email: 'chez@pompo.te'
                 },
                 date: new Date(),
                 content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,

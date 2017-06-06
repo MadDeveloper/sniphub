@@ -11,6 +11,7 @@ import { CodeRequestComponent } from './code-request/code-request.component'
 import { ContactComponent } from './contact/contact.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet/index'
+import { UserResolverGuard } from './guards/user/index'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -21,7 +22,7 @@ export const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'profile/edit', component: EditProfileComponent, canActivate: [ AuthenticationGuard ] },
-    { path: 'profile/:id', component: ProfileComponent },
+    { path: 'profile/:id', component: ProfileComponent, resolve: [ UserResolverGuard ] },
     { path: 'contact', component: ContactComponent },
     { path: 'request', component: CodeRequestComponent, canActivate: [ AuthenticationGuard ] }
 ]

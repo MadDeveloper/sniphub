@@ -14,7 +14,8 @@ export class SnippetService {
                 author: {
                     id: 1,
                     avatar: '/assets/images/unknown.jpg',
-                    username: 'John Doe'
+                    username: 'John Doe',
+                    email: 'sergent.julien@icloud.com'
                 }
             },
             {
@@ -24,9 +25,10 @@ export class SnippetService {
                 description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
                 author: {
-                    id: 41,
+                    id: 2,
                     avatar: '/assets/images/unknown.jpg',
-                    username: 'Matt'
+                    username: 'Matt',
+                    email: 'matt@vdb.com'
                 }
             },
             {
@@ -38,31 +40,8 @@ export class SnippetService {
                 author: {
                     id: 3,
                     avatar: '/assets/images/unknown.jpg',
-                    username: 'Zully'
-                }
-            },
-            {
-                id: 4,
-                date: new Date(),
-                name: 'Trim',
-                description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-                author: {
-                    id: 2,
-                    avatar: '/assets/images/unknown.jpg',
-                    username: 'Quentinove'
-                }
-            },
-            {
-                id: 5,
-                date: new Date(),
-                name: 'Trim',
-                description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
-                author: {
-                    id: 1,
-                    avatar: '/assets/images/unknown.jpg',
-                    username: 'Madeveloper'
+                    username: 'Zully',
+                    email: 'chez@pompo.te'
                 }
             }
         ]
