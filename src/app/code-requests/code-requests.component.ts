@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
-    selector: 'app-code-request',
-    templateUrl: './code-request.component.html',
-    styleUrls: ['./code-request.component.scss']
+    selector: 'app-code-requests',
+    templateUrl: './code-requests.component.html',
+    styleUrls: ['./code-requests.component.scss']
 })
-export class CodeRequestComponent implements OnInit {
+export class CodeRequestsComponent implements OnInit {
 
     // codemirrorConfig: {
     //     lineNumbers: true,

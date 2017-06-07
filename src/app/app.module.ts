@@ -38,10 +38,11 @@ import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
-import { CodeRequestComponent } from './code-request/code-request.component'
+import { CodeRequestsComponent } from './code-requests/code-requests.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
-import { SearchComponent } from './search/search.component';
+import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
+import { NotificationsComponent } from './notifications/notifications.component'
 
 @NgModule({
   declarations: [
@@ -59,10 +60,11 @@ import { ContactComponent } from './contact/contact.component'
     AddCodeComponent,
     CodeBlockComponent,
     HeaderIconsActionsComponent,
-    CodeRequestComponent,
+    CodeRequestsComponent,
     AppFooterComponent,
     SearchComponent,
-    ContactComponent
+    ContactComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,

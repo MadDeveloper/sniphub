@@ -27,9 +27,4 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.routerEvent.unsubscribe()
     }
-
-    signOut() {
-        this.authentication.logout()
-    }
-
 }

@@ -7,7 +7,7 @@ import { SnippetDetailsComponent } from './snippet-details/snippet-details.compo
 import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
-import { CodeRequestComponent } from './code-request/code-request.component'
+import { NotificationsComponent } from './notifications/notifications.component'
 import { ContactComponent } from './contact/contact.component'
 import { SearchComponent } from './search/search.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
@@ -26,5 +26,5 @@ export const routes: Routes = [
     { path: 'profile/edit', component: EditProfileComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'profile/:id', component: ProfileComponent, resolve: [ UserResolverGuard ] },
     { path: 'contact', component: ContactComponent },
-    { path: 'request', component: CodeRequestComponent, canActivate: [ AuthenticationGuard ] }
+    { path: 'notifications', component: NotificationsComponent, canActivate: [ AuthenticationGuard ] }
 ]

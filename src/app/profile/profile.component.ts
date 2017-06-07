@@ -56,4 +56,8 @@ export class ProfileComponent implements OnInit {
     ownProfile() {
         return this.loggedUser && this.user && this.loggedUser.id === this.user.id
     }
+
+    signOut() {
+        this.authentication.logout()
+    }
 }

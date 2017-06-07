@@ -2,17 +2,9 @@
 <a *ngIf="isAuthenticated" class="clickable" routerLink="/snippet/new">
     <i class="fa fa-plus icon-menu ml-0" aria-hidden="true"></i>
 </a>
+<a *ngIf="isAuthenticated" class="clickable" routerLink="/notifications">
+    <i class="fa fa-bell icon-menu" aria-hidden="true"></i>
+</a>
 <a *ngIf="isAuthenticated" class="clickable" routerLink="/profile">
     <i class="fa fa-user icon-menu" aria-hidden="true"></i>
 </a>
-<span dropdown class="position relative">
-    <a dropdownToggle *ngIf="isAuthenticated" (click)="false" class="fa fa-cog icon-menu clickable" aria-hidden="true"></a>
-    <ul *dropdownMenu class="dropdown-menu">
-        <li>
-            <a class="dropdown-item" routerLink="/profile/edit">Edit profile</a>
-        </li>
-        <li>
-            <a class="dropdown-item clickable" (click)="signOut()">Sign out</a>
-        </li>
-    </ul>
-</span>
