@@ -9,7 +9,14 @@
             </div>
             <div *ngIf="homePage" class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center">
                 <form class="form-inline my-2 my-md-0 input-icon w-100">
-                    <input type="text" class="unbordered backgrounded" [ngClass]="searchEnabled ? '' : 'dark-primary clickable'" placeholder="I don't want code..." (focus)="toggleSearch()" (blur)="toggleSearch()">
+                    <input #searchInput
+                        type="text"
+                        class="unbordered backgrounded"
+                        (keyup)="goSearch(searchInput.value)"
+                        [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
+                        placeholder="I don't want code..."
+                        (focus)="toggleSearch()"
+                        (blur)="toggleSearch()">
                     <i class="icon fa fa-search" aria-hidden="true"></i>
                 </form>
             </div>

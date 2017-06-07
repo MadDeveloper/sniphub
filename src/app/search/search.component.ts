@@ -13,7 +13,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     private snippets: Snippet[]
     private routeParamsObserver: Subscription
     @Input()
-    private searchTerms: string
+    private terms: string
 
     constructor(
         private route: ActivatedRoute,
@@ -23,8 +23,10 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         this.routeParamsObserver = this
             .route
             .params
-            .subscribe((data: any) => {
-                // console.log(data)
+            .subscribe((data: { terms: string }) => {
+                if (data.terms) {
+                    this.terms = data.terms
+                }
             })
         this.snippets = []
         this.snippetService
@@ -33,7 +35,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.searchTerms = changes.searchTerms.currentValue
+        this.terms = changes.terms.currentValue
     }
 
     ngOnDestroy() {

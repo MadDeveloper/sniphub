@@ -1,8 +1,13 @@
 <section class="background color primary pt-4 pb-5">
     <div class="text color white">
-        <div id="search-wrapper" class="d-flex align-items-center justify-content-center">
-            <h1 class="h2 d-inline-block clickable" (click)="focusSearchInput()">I don't want code</h1>
-            <input #searchInput (keyup)="search(searchInput.value)" [(ngModel)]="searchTerms" id="main-search-input" class="unbordered backgrounded dark-primary" type="text" placeholder="email regex...">
+        <div id="search-wrapper" class="d-flex align-items-center justify-content-center flex-column mx-3">
+            <h1 class="h2 mb-3 clickable" (click)="focusSearchInput()">I don't want code</h1>
+            <input #searchInput
+                (keyup)="search(searchTerms)"
+                id="main-search-input"
+                class="unbordered backgrounded dark-primary clickable"
+                type="text"
+                placeholder="email regex, clone array...">
         </div>
     </div>
 </section>
@@ -23,7 +28,5 @@
     </div>
 </section>
 <ng-template #searchView>
-    <section class="mt-4">
-        <app-search [searchTerms]="searchTerms"></app-search>
-    </section>
+    <app-search [terms]="searchTerms"></app-search>
 </ng-template>

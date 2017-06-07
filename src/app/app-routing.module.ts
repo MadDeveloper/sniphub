@@ -9,12 +9,14 @@ import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { CodeRequestComponent } from './code-request/code-request.component'
 import { ContactComponent } from './contact/contact.component'
+import { SearchComponent } from './search/search.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet/index'
 import { UserResolverGuard } from './guards/user/index'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
+    { path: 'search', component: SearchComponent },
     { path: 'snippet/new', component: EditSnippetComponent, canActivate: [ AuthenticationGuard ] },
     { path: 'snippet/edit/:id', component: EditSnippetComponent, canActivate: [ AuthenticationGuard ], resolve: [ SnippetResolverGuard ] },
     { path: 'snippet/:id', component: SnippetDetailsComponent, resolve: [ SnippetResolverGuard ] },
