@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import * as $ from 'jquery'
 import { Router } from '@angular/router'
 import { SnippetService } from 'app/services/snippet/snippet.service'
@@ -11,8 +11,11 @@ import { AuthenticationService } from 'app/services/authentication/authenticatio
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-    filter = 'Snippet'
-    snippets: Snippet[]
+    private snippets: Snippet[]
+    private searching: boolean
+    @ViewChild('searchInput')
+    private searchInput: ElementRef
+    private searchTerms: string
 
     constructor(
         private router: Router,
@@ -20,18 +23,20 @@ export class HomeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
+        this.searchTerms = ''
         this.snippets = []
         this.snippetService
             .all()
             .then( snippets => this.snippets = snippets )
-    }
-
-    changeFilter(filter: string, event: Event) {
-        this.filter = filter
-        event.preventDefault()
+        this.searching = false
     }
 
     focusSearchInput(event: Event) {
-        $(event.target).next().focus()
+        this.searchInput.nativeElement.focus()
+    }
+
+    search(terms: string) {
+        this.searching = true
+        this.searchTerms = terms
     }
 }

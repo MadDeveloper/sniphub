@@ -3,8 +3,8 @@
         <div class="col segment">
             <div class="row mt-4 mb-3">
                 <div class="col">
-                    <h1 *ngIf="!editing;else header_edit" class="h2">Create a new snippet</h1>
-                    <ng-template #header_edit>
+                    <h1 *ngIf="!editing;else headerEdit" class="h2">Create a new snippet</h1>
+                    <ng-template #headerEdit>
                         <h1 class="h2">Editing the snippet <span class="text color primary">{{ snapshot.name }}</span></h1>
                     </ng-template>
                     <span class="text color meta">A snippet contains a small region of re-usable source code available in one or many languages.</span>
