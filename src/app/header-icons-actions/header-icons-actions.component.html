@@ -2,8 +2,9 @@
 <a *ngIf="isAuthenticated" class="clickable" routerLink="/snippet/new">
     <i class="fa fa-plus-square-o icon-menu ml-0" aria-hidden="true"></i>
 </a>
-<a *ngIf="isAuthenticated" class="clickable" routerLink="/notifications">
+<a *ngIf="isAuthenticated" class="clickable notification-group" routerLink="/notifications">
     <i class="fa fa-bell-o icon-menu" aria-hidden="true"></i>
+    <span class="notification-alert"></span>
 </a>
 <a *ngIf="isAuthenticated" class="clickable" routerLink="/profile">
     <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>

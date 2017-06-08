@@ -13,14 +13,16 @@ export class CodeBlockComponent implements OnInit {
     @Input()
     private config: any
     @Output()
-    private onChangeCodeBlock: EventEmitter<any> = new EventEmitter()
+    private onChangeCodeBlock: EventEmitter<any>
     @Input()
     private id: any
     public languages: Array<any>
     private language: any
     private code: string
 
-    constructor(private languageService: LanguageService) { }
+    constructor(private languageService: LanguageService) {
+        this.onChangeCodeBlock = new EventEmitter()
+    }
 
     ngOnInit() {
         if (!this.config) {

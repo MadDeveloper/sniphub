@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core'
+import { LanguageService } from '../services/language/language.service'
+import { Language } from '../interfaces/language/index'
 
 @Component({
     selector: 'app-add-code',
@@ -6,34 +8,14 @@ import { Component, OnInit } from '@angular/core'
     styleUrls: ['./add-code.component.scss']
 })
 export class AddCodeComponent implements OnInit {
+    private rowData: any[]
+    private languages: Language[]
 
-
-    rowData = [
-         {
-            code: '',
-            language: null,
-            selectedValue: null,
-            codemirrorConfig: {
-                lineNumbers: true,
-                smartIndent: true,
-                mode: {
-                    name: 'php',
-                    typescript: true
-                },
-                theme: 'dracula'
-            }
-        }
-    ]
-    languages = [
-        { id: 1, name: 'JS', value: 'javascript' },
-        { id: 2, name: 'C#', value: 'clike' },
-        { id: 3, name: 'PHP', value: 'php' },
-        { id: 4, name: 'Java', value: 'clike' }
-    ]
-
-    constructor() { }
+    constructor(private languageService: LanguageService) { }
 
     ngOnInit() {
+        this.rowData = []
+        this.languages = this.languageService.all()
     }
 
     addCodeBlock() {
@@ -64,6 +46,4 @@ export class AddCodeComponent implements OnInit {
         this.rowData[i].codemirrorConfig.mode.name = this.rowData[i].selectedValue.value
         this.rowData[i].language = this.rowData[i].selectedValue.name
     }
-
-
 }

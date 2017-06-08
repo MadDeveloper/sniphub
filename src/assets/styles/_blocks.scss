@@ -76,14 +76,14 @@
                     font-size: .875em;
                 }
             }
-
-            .metas {
-                .link {
-                    font-size: .875em;
-                    margin-right: .5rem;
-                }
-            }
         }
+    }
+}
+
+.metas {
+    .link {
+        font-size: .875em;
+        margin-right: .5rem;
     }
 }
 
@@ -97,4 +97,19 @@
 
 hr {
     width: 100%;
+}
+
+.notification-group {
+    position: relative;
+
+    .notification-alert {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: $warning-color;
+        border-radius: 20px;
+        position: absolute;
+        right: 0;
+        bottom: -8px;
+    }
 }

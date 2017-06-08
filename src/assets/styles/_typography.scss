@@ -11,3 +11,16 @@
         font-size: 25px;
     }
 }
+
+.author {
+    font-weight: bold;
+    color: $default-color;
+
+    &:hover {
+        color: $default-color;
+    }
+}
+
+.meta {
+    color: $dark-grey-color;
+}

@@ -8,10 +8,10 @@
         </div>
         <div class="col">
             <div class="float-right d-flex align-items-center">
-                <a routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
-                <button class="btn danger outlined btn-danger mr-3">Delete</button>
+                <a *ngIf="ownSnippet" routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
+                <button *ngIf="ownSnippet" class="btn danger outlined btn-danger mr-3">Delete</button>
                 <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
-                <span class="ml-1">{{ snippet.author.username }}</span>
+                <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
             </div>
         </div>
     </div>
@@ -36,6 +36,10 @@
         </div>
     </div>
     <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" id="1"></app-code-block>
+    <hr class="my-3">
+    <h4>Propose the snippet in another language</h4>
+    <div class="text color meta mb-4">You can propose to the author your version of the snippet in the languages you want.</div>
+    <app-add-code></app-add-code>
     <hr class="mt-3">
     <div>
         <textarea #comment

@@ -20,6 +20,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('comment')
     private comment: ElementRef
     private routeDataObserver: Subscription
+    private ownSnippet: boolean
 
     constructor(
         private commentService: CommentService,
@@ -27,13 +28,22 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        this.routeDataObserver = this
-            .route
-            .data
-            .subscribe((data: { snippet: Snippet }) => this.snippet = data[0] )
         this.likes = 158
         this.liked = false
         this.comments = this.commentService.all()
+        this.ownSnippet = false
+        this.routeDataObserver = this
+            .route
+            .data
+            .subscribe((data: { snippet: Snippet }) => {
+                const user = this.authentication.currentUser()
+
+                this.snippet = data[0]
+
+                if (user) {
+                    this.ownSnippet = user.id === this.snippet.author.id
+                }
+            })
     }
 
     ngOnDestroy() {

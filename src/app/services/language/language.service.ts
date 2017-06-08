@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
+import { Language } from '../../interfaces/language/index'
 
 @Injectable()
 export class LanguageService {
-
-    all() {
+    all(): Language[] {
         return [
             { id: 1, text: 'JavaScript', value: 'javascript' },
             { id: 2, text: 'C#', value: 'clike' },
@@ -11,5 +11,4 @@ export class LanguageService {
             { id: 4, text: 'Java', value: 'clike' }
         ]
     }
-
 }
