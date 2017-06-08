@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
     @ViewChild('searchInput')
     private searchInput: ElementRef
     private searchTerms: string
+    private searchEnabled: boolean
 
     constructor(
         private router: Router,
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
+        this.searchEnabled = false
         this.searchTerms = ''
         this.snippets = []
         this.snippetService
@@ -38,5 +40,11 @@ export class HomeComponent implements OnInit {
     search(terms: string) {
         this.searching = true
         this.searchTerms = terms
+    }
+
+    toggleSearch() {
+        if (this.searchInput.nativeElement.value.length === 0) {
+            this.searchEnabled = !this.searchEnabled
+        }
     }
 }

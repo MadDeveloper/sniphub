@@ -1,13 +1,21 @@
 <section class="background color primary pt-4 pb-5">
-    <div class="text color white">
-        <div id="search-wrapper" class="d-flex align-items-center justify-content-center flex-column mx-3">
-            <h1 class="h2 mb-3 clickable" (click)="focusSearchInput()">I don't want code</h1>
-            <input #searchInput
-                (keyup)="search(searchTerms)"
-                id="main-search-input"
-                class="unbordered backgrounded dark-primary clickable"
-                type="text"
-                placeholder="email regex, clone array...">
+    <div class="container">
+        <div class="row text color white">
+            <div id="search-wrapper" class="col">
+                <h1 id="input-title" class="mb-3 clickable" (click)="focusSearchInput()">I don't want code</h1>
+                <div class="input-icon huge">
+                    <input #searchInput
+                        (keyup)="search(searchTerms)"
+                        (focus)="toggleSearch()"
+                        (blur)="toggleSearch()"
+                        [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
+                        id="main-search-input"
+                        class="unbordered backgrounded"
+                        type="text"
+                        placeholder="email regex, clone array...">
+                    <i class="fa fa-search icon"></i>
+                </div>
+            </div>
         </div>
     </div>
 </section>
