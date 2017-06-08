@@ -1,6 +1,8 @@
-footer{
-    a{
-        color:#003569;
+@import '../../assets/styles/variables';
+
+footer {
+    a {
+        color: $primary-color;
         text-transform: uppercase;
         font-size: 13px;
     }

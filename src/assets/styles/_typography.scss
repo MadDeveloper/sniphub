@@ -1,3 +1,13 @@
 .bold {
     font-weight: bold;
 }
+
+.uppercased {
+    text-transform: uppercase;
+}
+
+.font-icon {
+    &.huge {
+        font-size: 25px;
+    }
+}
