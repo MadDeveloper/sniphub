@@ -21,7 +21,7 @@ import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
-import { Snippet } from './interfaces/snippet/index'
+import { NotificationService } from './services/notification'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -38,7 +38,7 @@ import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
-import { CodeRequestsComponent } from './code-requests/code-requests.component'
+import { CodeRequestComponent } from './code-request/code-request.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
@@ -60,7 +60,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     AddCodeComponent,
     CodeBlockComponent,
     HeaderIconsActionsComponent,
-    CodeRequestsComponent,
+    CodeRequestComponent,
     AppFooterComponent,
     SearchComponent,
     ContactComponent,
@@ -84,7 +84,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
       AuthenticationService,
       AuthenticationGuard,
       SnippetResolverGuard,
-      UserResolverGuard
+      UserResolverGuard,
+      NotificationService
   ],
   bootstrap: [AppComponent]
 })

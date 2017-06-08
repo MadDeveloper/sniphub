@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
-    selector: 'app-code-requests',
-    templateUrl: './code-requests.component.html',
-    styleUrls: ['./code-requests.component.scss']
+    selector: 'app-code-request',
+    templateUrl: './code-request.component.html',
+    styleUrls: ['./code-request.component.scss']
 })
-export class CodeRequestsComponent implements OnInit {
+export class CodeRequestComponent implements OnInit {
 
     // codemirrorConfig: {
     //     lineNumbers: true,
@@ -68,8 +68,7 @@ export class CodeRequestsComponent implements OnInit {
         this.codeRequests.splice(index, 1)
     }
 
-    reject(index)
-    {
+    reject(index) {
         // implémenter confirmation dans boite de dialogue
         this.codeRequests.splice(index, 1)
     }

@@ -4,6 +4,12 @@
     @media screen and(min-width: $screen-lg-min) {
         max-width: $max-container-width;
     }
+
+    &.container-small {
+        @media screen and(min-width: $screen-lg-min) {
+            max-width: $max-small-container-width;
+        }
+    }
 }
 
 .segment {
