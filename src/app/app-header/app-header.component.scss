@@ -7,4 +7,12 @@ nav#main-navbar {
     a {
         color: #fff;
     }
+
+    .container {
+        @media screen and(max-width: $screen-sm) {
+            margin: 0 !important;
+            max-width: 100%;
+            width: 100%;
+        }
+    }
 }
