@@ -15,6 +15,10 @@ export class CodeBlockComponent implements OnInit {
     @Output()
     private onChangeCodeBlock: EventEmitter<any>
     @Input()
+    private hideLanguage: boolean
+    @Input()
+    private readonly: boolean
+    @Input()
     private id: any
     public languages: Array<any>
     private language: any
@@ -24,18 +28,19 @@ export class CodeBlockComponent implements OnInit {
         this.onChangeCodeBlock = new EventEmitter()
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         if (!this.config) {
             this.config = {
                 lineNumbers: true,
                 smartIndent: true,
                 mode: null,
                 theme: 'dracula',
-                change: this.changeCode
+                change: this.changeCode,
+                readOnly: this.readonly ? 'nocursor' : false
             }
         }
 
-        this.languages = this.languageService.all()
+        this.languages = await this.languageService.all()
     }
 
     changeCode = (code: string) => {

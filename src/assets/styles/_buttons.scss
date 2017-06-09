@@ -21,6 +21,11 @@
         color: $danger-color !important;
     }
 
+    &.success {
+        border-color: $success-color !important;
+        color: $success-color !important;
+    }
+
     &.primary {
         border-color: $primary-color !important;
         color: $primary-color !important;

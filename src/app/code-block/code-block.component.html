@@ -1,4 +1,4 @@
-<div class="mb-4">
+<div *ngIf="!hideLanguage" class="mb-4">
     <div style="max-width: 230px">
         <ng-select [allowClear]="true"
             [items]="languages"

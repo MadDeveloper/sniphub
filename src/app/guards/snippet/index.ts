@@ -16,7 +16,7 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
 
         return this
             .snippet
-            .find(id)
+            .find({ id })
             .then(snippet => {
                 if (snippet) {
                     return snippet

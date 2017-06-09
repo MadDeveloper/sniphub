@@ -10,7 +10,7 @@
             <div class="float-right d-flex align-items-center">
                 <a *ngIf="ownSnippet" routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
                 <button *ngIf="ownSnippet" class="btn danger outlined btn-danger mr-3">Delete</button>
-                <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
+                <img [src]="snippet.author.avatar" alt="" class="image avatar">
                 <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
             </div>
         </div>

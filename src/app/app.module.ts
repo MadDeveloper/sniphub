@@ -13,6 +13,8 @@ import { routes } from './app-routing.module'
 // === Guards
 import { AuthenticationGuard } from './guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet'
+import { SnippetsRequestsResolverGuard } from './guards/snippet/snippets-requests-resolver.guard'
+import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-resolver.guard'
 import { UserResolverGuard } from './guards/user'
 
 // === Services
@@ -22,6 +24,8 @@ import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
 import { NotificationService } from './services/notification'
+import { CodeEditorService } from './services/code-editor'
+import { RequestService } from './services/request'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -42,7 +46,7 @@ import { SnippetRequestComponent } from './snippet-request/snippet-request.compo
 import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
-import { NotificationsComponent } from './notifications/notifications.component';
+import { NotificationsComponent } from './notifications/notifications.component'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 
 @NgModule({
@@ -86,8 +90,12 @@ import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests
       AuthenticationService,
       AuthenticationGuard,
       SnippetResolverGuard,
+      SnippetsRequestsResolverGuard,
+      SnippetRequestResolverGuard,
       UserResolverGuard,
-      NotificationService
+      NotificationService,
+      CodeEditorService,
+      RequestService
   ],
   bootstrap: [AppComponent]
 })

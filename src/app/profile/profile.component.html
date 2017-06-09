@@ -32,27 +32,27 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-12 h5 unselectable">
-                                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    <div class="mb-3">You have awaiting code requests for your snippets.</div>
-                                    <a routerLink="/snipppets/requests" class="btn outlined">See requests</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
 	        </div>
         </div>
-        <div class="col-12">
-            <div class="row mt-4 mb-3">
+        <div class="col-md-8 col-12 mt-4">
+            <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="mb-3">You have awaiting code requests for your snippets.</div>
+                <a routerLink="/snippets/requests" class="btn outlined">See requests</a>
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <div class="row">
                 <div class="col">
                     <h3>Authors</h3>
                 </div>
             </div>
-            <div *ngIf="ownProfile()" class="mb-3">
+            <div *ngIf="ownProfile()" class="my-3">
                 <a class="btn outlined" routerLink="/snippet/new">New snippet</a>
             </div>
             <app-snippets-list [snippets]="snippets"></app-snippets-list>

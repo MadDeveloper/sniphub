@@ -3,8 +3,7 @@ import { Comment } from '../../interfaces/comment'
 
 @Injectable()
 export class CommentService {
-
-    all(): Comment[] {
+    async all(): Promise<Comment[]> {
         return [
             {
                 id: 1,
@@ -44,5 +43,4 @@ export class CommentService {
             }
         ]
     }
-
 }

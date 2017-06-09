@@ -29,7 +29,7 @@ export class UserService {
         ]
     }
 
-    find( props: any ): Promise<User> {
+    async find( props: any ): Promise<User> {
         return Promise.resolve(find(this.users, props ))
     }
 }

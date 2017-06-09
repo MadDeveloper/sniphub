@@ -26,12 +26,12 @@ export class ProfileComponent implements OnInit {
         private authentication: AuthenticationService,
         private notification: NotificationService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
+        const notifications = await this.notification.all()
+
         this.snippets = []
-        this.snippetService
-            .all()
-            .then( snippets => this.snippets = snippets )
-        this.pendingNotifications = this.notification.all().length > 0
+        this.snippets = await this.snippetService.all()
+        this.pendingNotifications = notifications.length > 0
 
         if (this.authentication.isAuthenticated()) {
             this.loggedUser = this.user = this.authentication.currentUser()

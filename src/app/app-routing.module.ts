@@ -15,6 +15,8 @@ import { SearchComponent } from './search/search.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet/index'
 import { UserResolverGuard } from './guards/user/index'
+import { SnippetsRequestsResolverGuard } from './guards/snippet/snippets-requests-resolver.guard'
+import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-resolver.guard'
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -27,16 +29,16 @@ export const routes: Routes = [
         resolve: [ SnippetResolverGuard ]
     },
     {
-        path: 'snippet/requests',
+        path: 'snippets/requests',
         component: SnippetsRequestsComponent,
         canActivate: [ AuthenticationGuard ],
-        resolve: [ SnippetResolverGuard ]
+        resolve: [ SnippetsRequestsResolverGuard ]
     },
     {
-        path: 'snippet/requests/:id',
+        path: 'snippets/requests/:id',
         component: SnippetRequestComponent,
         canActivate: [ AuthenticationGuard ],
-        resolve: [ SnippetResolverGuard ]
+        resolve: [ SnippetRequestResolverGuard ]
     },
     { path: 'snippet/:id', component: SnippetDetailsComponent, resolve: [ SnippetResolverGuard ] },
     { path: 'signin', component: ConnectComponent },

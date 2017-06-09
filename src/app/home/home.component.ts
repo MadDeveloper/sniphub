@@ -23,13 +23,11 @@ export class HomeComponent implements OnInit {
         private snippetService: SnippetService,
         private authentication: AuthenticationService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.searchEnabled = false
         this.searchTerms = ''
         this.snippets = []
-        this.snippetService
-            .all()
-            .then( snippets => this.snippets = snippets )
+        this.snippets = await this.snippetService.all()
         this.searching = false
     }
 

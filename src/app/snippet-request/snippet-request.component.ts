@@ -1,63 +1,42 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core'
+import { RequestService } from '../services/request/index'
+import { Request } from '../interfaces/request/index'
+import { Subscription } from 'rxjs/Subscription'
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
     selector: 'app-snippet-request',
     templateUrl: './snippet-request.component.html',
     styleUrls: ['./snippet-request.component.scss']
 })
-export class SnippetRequestComponent implements OnInit {
-    codeRequests = [{
-        name: 'trim',
-        username: 'John Doe',
-        language: 'VB',
-        code: 'Test',
-        date: '2 days ago',
-        showCode: false,
-        codemirrorConfig: {
-            lineNumbers: true,
-            smartIndent: true,
-            mode: {
-                name: 'php',
-                typescript: true
-            },
-            theme: 'dracula'
-        }
+export class SnippetRequestComponent implements OnInit, OnDestroy {
+    private request: Request
+    private routeDataObserver: Subscription
+    private loaded = false
 
-    }]
-
-    constructor() { }
+    constructor(
+        private requestService: RequestService,
+        private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.codeRequests.push({
-            name: 'Uppercase',
-            username: 'John Doe',
-            language: 'PHP',
-            code: 'Test',
-            date: '2 days ago',
-            showCode: false,
-            codemirrorConfig: {
-                lineNumbers: true,
-                smartIndent: true,
-                mode: {
-                    name: 'php',
-                    typescript: true
-                },
-                theme: 'dracula'
-            }
-        })
+        this.routeDataObserver = this
+            .route
+            .data
+            .subscribe((data: { request: Request }) => {
+                this.request = data[0]
+                this.loaded = true
+            })
     }
 
-    showCode(index) {
-        this.codeRequests[index].showCode = !this.codeRequests[index].showCode
+    ngOnDestroy() {
+        this.routeDataObserver.unsubscribe()
     }
 
-    accept(index) {
-        this.codeRequests.splice(index, 1)
+    accept() {
+
     }
 
-    reject(index) {
-        // implémenter confirmation dans boite de dialogue
-        this.codeRequests.splice(index, 1)
-    }
+    reject() {
 
+    }
 }

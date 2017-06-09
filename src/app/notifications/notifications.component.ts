@@ -12,8 +12,8 @@ export class NotificationsComponent implements OnInit {
 
     constructor(private notificationService: NotificationService) { }
 
-    ngOnInit() {
-        this.notifications = this.notificationService.all()
+    async ngOnInit() {
+        this.notifications = await this.notificationService.all()
     }
 
     isRequestNotification(notification: Notification) {

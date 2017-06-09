@@ -13,9 +13,9 @@ export class AddCodeComponent implements OnInit {
 
     constructor(private languageService: LanguageService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.rowData = []
-        this.languages = this.languageService.all()
+        this.languages = await this.languageService.all()
     }
 
     addCodeBlock() {

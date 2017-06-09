@@ -27,10 +27,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private authentication: AuthenticationService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.likes = 158
         this.liked = false
-        this.comments = this.commentService.all()
+        this.comments = await this.commentService.all()
         this.ownSnippet = false
         this.routeDataObserver = this
             .route

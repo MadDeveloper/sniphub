@@ -4,7 +4,7 @@ import { NotificationType } from '../../interfaces/notification/notification-typ
 
 @Injectable()
 export class NotificationService {
-    all(): Notification[] {
+    async all(): Promise<Notification[]> {
         return [
             {
                 id: 1,

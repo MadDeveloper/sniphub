@@ -46,12 +46,12 @@ export class SnippetService {
             }
         ]
 
-    all(): Promise<Snippet[]> {
+    async all(): Promise<Snippet[]> {
         return Promise.resolve(this.snippets)
     }
 
-    find(id: number): Promise<Snippet> {
-        return Promise.resolve(find(this.snippets, { id }))
+    async find(props: any): Promise<Snippet> {
+        return Promise.resolve(find(this.snippets, props))
     }
 
     mockOne(): Snippet {

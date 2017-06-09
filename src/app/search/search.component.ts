@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
         private route: ActivatedRoute,
         private snippetService: SnippetService) { }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.routeParamsObserver = this
             .route
             .params
@@ -29,9 +29,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                 }
             })
         this.snippets = []
-        this.snippetService
-            .all()
-            .then( snippets => this.snippets = snippets )
+        this.snippets = await this.snippetService.all()
     }
 
     ngOnChanges(changes: SimpleChanges) {
