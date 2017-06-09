@@ -28,6 +28,29 @@ export class NotificationService {
                     },
                     date: new Date()
                 }
+            },
+            {
+                id: 1,
+                type: NotificationType.LIKE,
+                user: {
+                    id: 1,
+                    username: 'John Doe',
+                    avatar: '/assets/images/unknown-2.jpg',
+                    email: 'sergent.julien@icloud.com'
+                },
+                content: 'liked your snippet',
+                snippet: {
+                    id: 1,
+                    name: 'Trim',
+                    description: '',
+                    author: {
+                        id: 1,
+                        username: 'Matt',
+                        avatar: '/assets/images/unknown.jpg',
+                        email: 'sergent.julien@icloud.com'
+                    },
+                    date: new Date()
+                }
             }
         ]
     }

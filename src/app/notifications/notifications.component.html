@@ -1,19 +1,26 @@
 <!--<app-code-requests></app-code-requests>-->
 <div class="container segment container-small mt-4 py-2">
-    <div *ngFor="let notification of notifications" class="row py-2">
-        <div class="col">
-            <div class="d-flex align-items-center">
-                <a [routerLink]="'/profile/' + notification.user.id" class="author d-flex align-items-center mr-1">
-                    <img [src]="notification.user.avatar" alt="" class="image avatar mr-2">
-                    <span>{{ notification.user.username }}</span>
-                </a>
-                <span>{{ notification.content }}</span>
-                <span *ngIf="notification.snippet" class="ml-1">
-                    <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a>
-                </span>
+    <div *ngFor="let notification of notifications; let i = index">
+        <div class="row py-2">
+            <div class="col">
+                <div class="d-flex align-items-center">
+                    <a [routerLink]="'/profile/' + notification.user.id" class="author d-flex align-items-center mr-1">
+                        <img [src]="notification.user.avatar" alt="" class="image avatar mr-2">
+                        <span>{{ notification.user.username }}</span>
+                    </a>
+                    <span>{{ notification.content }}</span>
+                    <span *ngIf="notification.snippet" class="ml-1">
+                        <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a>
+                    </span>
+                </div>
+                <div *ngIf="isRequestNotification(notification)" class="mt-2">
+                    <a [routerLink]="'/snippet/request/' + notification.id" class="btn outlined">Show code</a>
+                </div>
             </div>
-            <div *ngIf="isRequestNotification(notification)" class="mt-2">
-                <button class="btn outlined">Show code</button>
+        </div>
+        <div *ngIf="i < notifications.length - 1" class="row">
+            <div class="col">
+                <hr>
             </div>
         </div>
     </div>

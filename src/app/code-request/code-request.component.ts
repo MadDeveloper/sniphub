@@ -6,19 +6,6 @@ import { Component, OnInit } from '@angular/core'
     styleUrls: ['./code-request.component.scss']
 })
 export class CodeRequestComponent implements OnInit {
-
-    // codemirrorConfig: {
-    //     lineNumbers: true,
-    //     smartIndent: true,
-    //     mode: {
-    //         name: 'php',
-    //         typescript: true
-    //     },
-    //     theme: 'dracula'
-    // }
-
-    // code = 'test'
-
     codeRequests = [{
         name: 'trim',
         username: 'John Doe',

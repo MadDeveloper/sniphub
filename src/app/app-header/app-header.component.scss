@@ -14,5 +14,11 @@ nav#main-navbar {
             max-width: 100%;
             width: 100%;
         }
+
+        .search-col {
+            @media screen and(max-width: $screen-xs) {
+                margin-top: 1rem;
+            }
+        }
     }
 }

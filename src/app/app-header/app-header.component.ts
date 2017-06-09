@@ -21,7 +21,7 @@ export class AppHeaderComponent implements OnInit {
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
-            .subscribe( (event: NavigationEnd) => this.homePage = '/' !== event.url )
+            .subscribe( (event: NavigationEnd) => this.homePage = '/' === event.url )
     }
 
     toggleSearch() {
