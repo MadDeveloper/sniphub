@@ -38,11 +38,12 @@ import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
 import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
-import { CodeRequestComponent } from './code-request/code-request.component'
+import { SnippetRequestComponent } from './snippet-request/snippet-request.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
-import { NotificationsComponent } from './notifications/notifications.component'
+import { NotificationsComponent } from './notifications/notifications.component';
+import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 
 @NgModule({
   declarations: [
@@ -60,11 +61,12 @@ import { NotificationsComponent } from './notifications/notifications.component'
     AddCodeComponent,
     CodeBlockComponent,
     HeaderIconsActionsComponent,
-    CodeRequestComponent,
+    SnippetRequestComponent,
     AppFooterComponent,
     SearchComponent,
     ContactComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    SnippetsRequestsComponent
   ],
   imports: [
     BrowserModule,

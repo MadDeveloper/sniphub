@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
-    selector: 'app-code-request',
-    templateUrl: './code-request.component.html',
-    styleUrls: ['./code-request.component.scss']
+    selector: 'app-snippet-request',
+    templateUrl: './snippet-request.component.html',
+    styleUrls: ['./snippet-request.component.scss']
 })
-export class CodeRequestComponent implements OnInit {
+export class SnippetRequestComponent implements OnInit {
     codeRequests = [{
         name: 'trim',
         username: 'John Doe',

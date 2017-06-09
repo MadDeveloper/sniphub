@@ -5,6 +5,7 @@ import { User } from '../interfaces/user/index'
 import { ActivatedRoute, Router } from '@angular/router'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
+import { NotificationService } from '../services/notification/index'
 
 @Component({
   selector: 'app-profile',
@@ -16,18 +17,21 @@ export class ProfileComponent implements OnInit {
     private snippets: Snippet[]
     private user: User
     private loggedUser: User
+    private pendingNotifications: boolean
 
     constructor(
         private snippetService: SnippetService,
         private route: ActivatedRoute,
         private router: Router,
-        private authentication: AuthenticationService) { }
+        private authentication: AuthenticationService,
+        private notification: NotificationService) { }
 
     ngOnInit() {
         this.snippets = []
         this.snippetService
             .all()
             .then( snippets => this.snippets = snippets )
+        this.pendingNotifications = this.notification.all().length > 0
 
         if (this.authentication.isAuthenticated()) {
             this.loggedUser = this.user = this.authentication.currentUser()
