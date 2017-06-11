@@ -7,17 +7,18 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent implements OnInit {
-    isAuthenticated: boolean
-    name: string
-    homePage = false
-    searchEnabled: boolean
+    private isAuthenticated: boolean
+    private name: string
+    private homePage = false
+    private searchEnabled: boolean
+    private searchTerms = ''
     @ViewChild('searchInput')
     private searchInput: ElementRef
 
     constructor(private router: Router) { }
 
     ngOnInit() {
-        this.searchEnabled = false
+        this.searchEnabled = this.searchTerms.length > 0
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
@@ -30,7 +31,7 @@ export class AppHeaderComponent implements OnInit {
         }
     }
 
-    goSearch(terms) {
-        this.router.navigate(['/search', { terms }])
+    goSearch() {
+        this.router.navigate(['/search', { terms: this.searchTerms }])
     }
 }

@@ -12,8 +12,9 @@
                     <input #searchInput
                         type="text"
                         class="unbordered backgrounded"
-                        (keyup)="goSearch(searchInput.value)"
+                        (keyup)="goSearch()"
                         [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
+                        [(ngModel)]="searchTerms"
                         placeholder="I don't want to code..."
                         (focus)="toggleSearch()"
                         (blur)="toggleSearch()">
