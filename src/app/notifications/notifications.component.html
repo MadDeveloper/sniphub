@@ -13,7 +13,7 @@
                     </span>
                 </div>
                 <div *ngIf="isRequestNotification(notification)" class="mt-2">
-                    <a [routerLink]="'/snippets/requests/' + notification.request.id" class="btn outlined">See request</a>
+                    <a [routerLink]="'/snippets/requests/' + notification.id" class="btn outlined">See request</a>
                 </div>
             </div>
         </div>

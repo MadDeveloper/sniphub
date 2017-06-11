@@ -1,25 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { SnippetService } from 'app/services/snippet/snippet.service'
 import { Snippet } from 'app/interfaces/snippet'
-import { User } from '../interfaces/user'
+import { User } from '../interfaces/user/index'
 import { ActivatedRoute, Router } from '@angular/router'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
-import { NotificationService } from '../services/notification'
-import { Notification } from '../interfaces/notification'
+import { NotificationService } from '../services/notification/index'
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit {
     private routeDataObserver: Subscription
     private snippets: Snippet[]
     private user: User
     private loggedUser: User
     private pendingNotifications: boolean
-    private notifications: Notification[]
 
     constructor(
         private snippetService: SnippetService,
@@ -29,11 +27,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private notification: NotificationService) { }
 
     async ngOnInit() {
-        this.notifications = await this.notification.all()
+        const notifications = await this.notification.all()
 
         this.snippets = []
         this.snippets = await this.snippetService.all()
-        this.pendingNotifications = this.notifications.length > 0
+        this.pendingNotifications = notifications.length > 0
 
         if (this.authentication.isAuthenticated()) {
             this.loggedUser = this.user = this.authentication.currentUser()
@@ -65,9 +63,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     signOut() {
         this.authentication.logout()
-    }
-
-    containsRequestsNotifications() {
-        return this.notification.containsRequestsNotifications(this.notifications)
     }
 }

@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core'
 import { Notification } from '../../interfaces/notification/index'
 import { NotificationType } from '../../interfaces/notification/notification-type.enum'
-import { RequestService } from '../request'
-import { find } from 'lodash'
 
 @Injectable()
 export class NotificationService {
-    constructor(private request: RequestService) { }
-
     async all(): Promise<Notification[]> {
         return [
             {
@@ -31,8 +27,7 @@ export class NotificationService {
                         email: 'sergent.julien@icloud.com'
                     },
                     date: new Date()
-                },
-                request: await this.request.find({ id: 1 })
+                }
             },
             {
                 id: 1,
@@ -70,9 +65,5 @@ export class NotificationService {
 
     isCommentNotification(notification: Notification) {
         return notification.type === NotificationType.COMMENT
-    }
-
-    containsRequestsNotifications(notifications: Notification[]) {
-        return !!find(notifications, { type: NotificationType.REQUEST })
     }
 }
