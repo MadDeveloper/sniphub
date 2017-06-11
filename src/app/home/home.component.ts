@@ -36,8 +36,9 @@ export class HomeComponent implements OnInit {
     }
 
     search(terms: string) {
-        this.searching = true
+        this.searching = terms.length > 0
         this.searchTerms = terms
+        console.log(this.searching)
     }
 
     toggleSearch() {

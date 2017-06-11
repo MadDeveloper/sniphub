@@ -5,7 +5,7 @@
                 <h1 id="input-title" class="mb-3 clickable" (click)="focusSearchInput()">I don't want to code</h1>
                 <div class="input-icon huge">
                     <input #searchInput
-                        (keyup)="search(searchTerms)"
+                        (keyup)="search(searchInput.value)"
                         (focus)="toggleSearch()"
                         (blur)="toggleSearch()"
                         [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
