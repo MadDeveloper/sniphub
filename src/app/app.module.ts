@@ -47,7 +47,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
 import { NotificationsComponent } from './notifications/notifications.component'
-import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
+import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component';
+import { NotFoundComponent } from './not-found/not-found.component'
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests
     SearchComponent,
     ContactComponent,
     NotificationsComponent,
-    SnippetsRequestsComponent
+    SnippetsRequestsComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
