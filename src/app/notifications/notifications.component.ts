@@ -8,12 +8,14 @@ import { Notification } from '../interfaces/notification/index'
   styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit {
-    private notifications: Notification[]
+    private notifications: Notification[] = []
+    private loaded = false
 
     constructor(private notificationService: NotificationService) { }
 
     async ngOnInit() {
         this.notifications = await this.notificationService.all()
+        this.loaded = true
     }
 
     isRequestNotification(notification: Notification) {
