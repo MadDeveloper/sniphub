@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
+import { TooltipModule } from 'ngx-bootstrap'
 import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
 import { routes } from './app-routing.module'
@@ -26,6 +27,7 @@ import { AuthenticationService } from './services/authentication/authentication
 import { NotificationService } from './services/notification'
 import { CodeEditorService } from './services/code-editor'
 import { RequestService } from './services/request'
+import { GuidService } from './services/guid/guid.service'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -47,7 +49,7 @@ import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
 import { NotificationsComponent } from './notifications/notifications.component'
-import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component';
+import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 
 @NgModule({
@@ -82,7 +84,8 @@ import { NotFoundComponent } from './not-found/not-found.component'
     BsDropdownModule.forRoot(),
     CodemirrorModule,
     SelectModule,
-    MomentModule
+    MomentModule,
+    TooltipModule.forRoot()
   ],
   providers: [
       SnippetService,
@@ -97,7 +100,8 @@ import { NotFoundComponent } from './not-found/not-found.component'
       UserResolverGuard,
       NotificationService,
       CodeEditorService,
-      RequestService
+      RequestService,
+      GuidService
   ],
   bootstrap: [AppComponent]
 })

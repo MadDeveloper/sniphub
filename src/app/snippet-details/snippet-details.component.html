@@ -8,8 +8,19 @@
         </div>
         <div class="col">
             <div class="float-right d-flex align-items-center">
-                <a *ngIf="ownSnippet" routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
-                <button *ngIf="ownSnippet" class="btn danger outlined btn-danger mr-3">Delete</button>
+                <div *ngIf="ownSnippet" class="btn-group mr-3" dropdown>
+                    <i dropdownToggle class="fa fa-cog clickable font-icon huge" aria-hidden="true"></i>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <li class="clickable" role="menuitem">
+                            <a class="dropdown-item" [routerLink]="'/snippet/edit/' + snippet.id ">Edit the snippet</a>
+                        </li>
+                        <li class="clickable" role="menuitem">
+                            <button class="dropdown-item" (click)="delete()">Delete the snippet</button>
+                        </li>
+                    </ul>
+                </div>
+                <!--<a *ngIf="ownSnippet" routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
+                <button *ngIf="ownSnippet" class="btn danger outlined btn-danger mr-3">Delete</button>-->
                 <img [src]="snippet.author.avatar" alt="" class="image avatar">
                 <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
             </div>
@@ -26,7 +37,7 @@
                 <i class="fa" [ngClass]="liked ? 'fa-heart' : 'fa-heart-o'" aria-hidden="true"></i>
                 <span class="ml-1">{{ likes }}</span>
             </span>
-            <span class="h4">
+            <span class="h4" tooltip="Languages availables for the snippet">
                 <i class="fa fa-code ml-2" aria-hidden="true"></i>
                 <span class="ml-1">5</span>
             </span>
@@ -36,10 +47,12 @@
         </div>
     </div>
     <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" id="1"></app-code-block>
-    <hr class="my-3">
-    <h4>Propose the snippet in another language</h4>
-    <div class="text color meta mb-4">You can propose to the author your version of the snippet in the languages you want.</div>
-    <app-add-code></app-add-code>
+    <div *ngIf="!ownSnippet">
+        <hr class="my-3">
+        <h4>Propose the snippet in another language</h4>
+        <div class="text color meta mb-3">You can propose to the author your version of the snippet in the languages you want.</div>
+        <app-add-code [configs]="[]" asRequest="true"></app-add-code>
+    </div>
     <hr class="mt-3">
     <div>
         <textarea #comment

@@ -55,4 +55,12 @@ export class RequestService {
 
         return Promise.resolve(find(requests, props ))
     }
+
+    async accept(request: Request): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    async reject(request: Request): Promise<boolean> {
+        return Promise.resolve(true)
+    }
 }

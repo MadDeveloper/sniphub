@@ -26,7 +26,7 @@
                                         <i class="fa fa-heart-o" aria-hidden="true"></i>
                                         <span class="ml-1">3350</span>
                                     </span>
-                                    <span>
+                                    <span tooltip="Languages availables for the snippet">
                                         <i class="fa fa-code ml-2" aria-hidden="true"></i>
                                         <span class="ml-1">5</span>
                                     </span>
@@ -39,11 +39,11 @@
         </div>
         <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-md-8 col-12 mt-4 clickable" (click)="goToRequests()">
             <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
-                <span><i class="fa fa-bell-o mr-2"></i> You have awaiting code requests for your snippets.</span>
-                <a routerLink="/snippets/requests" class="ml-1">See requests</a>
+                <span><i class="fa fa-bell-o"></i> You have awaiting code requests for your snippets.</span>
+                <a routerLink="/snippets/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
-        <div class="col-12 mt-4">
+        <div *ngIf="snippets.length > 0;else noSnippets" class="col-12 mt-4">
             <div class="row">
                 <div class="col">
                     <h3>Authors</h3>
@@ -60,5 +60,14 @@
             </div>
             <app-snippets-list [snippets]="snippets"></app-snippets-list>
         </div>
+        <ng-template #noSnippets>
+            <div class="col-12 my-5 meta">
+                <h1 class="display-3 text-center"><i class="fa fa-code" aria-hidden="true"></i></h1>
+                <div class="text-center">You don't have created or contributed to snippets for the moment</div>
+                <div class="text-center mt-3">
+                    <a class="btn outlined" routerLink="/snippet/new">Create your first snippet</a>
+                </div>
+            </div>
+        </ng-template>
 	</div>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core'
 import { LanguageService } from '../services/language/language.service'
 import { Language } from '../interfaces/language'
 import { CodeEditorService } from '../services/code-editor'
+import { GuidService } from '../services/guid/guid.service'
 
 @Component({
     selector: 'app-add-code',
@@ -11,24 +12,28 @@ import { CodeEditorService } from '../services/code-editor'
 export class AddCodeComponent implements OnInit {
     @Input()
     private configs: any[]
+    @Input()
+    private asRequest = false
 
     constructor(
         private languageService: LanguageService,
-        private codeEditor: CodeEditorService) { }
+        private codeEditor: CodeEditorService,
+        private guid: GuidService) { }
 
     async ngOnInit() {
         if (!this.configs) {
-            this.configs = [
-                ...this.codeEditor.config
-            ]
+            this.add()
         }
     }
 
-    addCodeBlock() {
-        this.configs.push(...this.codeEditor.config)
+    add() {
+        this.configs.push({
+            id: this.guid.newGuid(),
+            ...this.codeEditor.config
+        })
     }
 
-    removeCodeBlock(id: any) {
-        this.configs = this.configs.filter(config => config.id !== id)
+    remove(config: any) {
+        this.configs = this.configs.filter(current => current.id !== config.id)
     }
 }

@@ -13,6 +13,8 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     private request: Request
     private routeDataObserver: Subscription
     private loaded = false
+    private accepted = false
+    private rejected = false
 
     constructor(
         private requestService: RequestService,
@@ -33,10 +35,12 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     }
 
     accept() {
-
+        this.requestService.accept(this.request)
+        this.accepted = true
     }
 
     reject() {
-
+        this.requestService.reject(this.request)
+        this.rejected = true
     }
 }
