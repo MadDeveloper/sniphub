@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, Input } from '@angular/core'
 import { LanguageService } from '../services/language/language.service'
-import { Language } from '../interfaces/language/index'
+import { Language } from '../interfaces/language'
+import { CodeEditorService } from '../services/code-editor'
 
 @Component({
     selector: 'app-add-code',
@@ -8,42 +9,26 @@ import { Language } from '../interfaces/language/index'
     styleUrls: ['./add-code.component.scss']
 })
 export class AddCodeComponent implements OnInit {
-    private rowData: any[]
-    private languages: Language[]
+    @Input()
+    private configs: any[]
 
-    constructor(private languageService: LanguageService) { }
+    constructor(
+        private languageService: LanguageService,
+        private codeEditor: CodeEditorService) { }
 
     async ngOnInit() {
-        this.rowData = []
-        this.languages = await this.languageService.all()
-    }
-
-    addCodeBlock() {
-        this.rowData.push({
-            language: null,
-            code: '',
-            selectedValue: null,
-            codemirrorConfig: {
-                lineNumbers: true,
-                smartIndent: true,
-                mode: {
-                    name: 'javascript',
-                    typescript: true
-                },
-                theme: 'dracula'
-            }
-        })
-    }
-
-    removeCodeBlock(row) {
-        const index: number = this.rowData.indexOf(row)
-        if (index !== -1) {
-            this.rowData.splice(index, 1)
+        if (!this.configs) {
+            this.configs = [
+                ...this.codeEditor.config
+            ]
         }
     }
 
-    onChangeLanguage(i) {
-        this.rowData[i].codemirrorConfig.mode.name = this.rowData[i].selectedValue.value
-        this.rowData[i].language = this.rowData[i].selectedValue.name
+    addCodeBlock() {
+        this.configs.push(...this.codeEditor.config)
+    }
+
+    removeCodeBlock(id: any) {
+        this.configs = this.configs.filter(config => config.id !== id)
     }
 }

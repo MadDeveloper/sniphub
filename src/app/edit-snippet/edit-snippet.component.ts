@@ -3,6 +3,7 @@ import { Snippet } from 'app/interfaces/snippet'
 import { ActivatedRoute, RouterStateSnapshot } from '@angular/router'
 import { SnippetService } from '../services/snippet/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
+import { CodeEditorService } from '../services/code-editor/index'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -13,14 +14,18 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private routeDataObserver: Subscription
     private snippet: Snippet
     private snapshot: Snippet
-    private codeBlocks: Array<any>
+    private codeBlocks: any[]
     private editing: boolean
+    private codeEditorConfig: any
 
     constructor(
         private route: ActivatedRoute,
-        private snippetService: SnippetService) { }
+        private snippetService: SnippetService,
+        private codeEditor: CodeEditorService) { }
 
     ngOnInit() {
+        this.codeEditorConfig = this.codeEditor.config
+
         if (this.route.snapshot.params['id']) {
             this.editing = true
             this.routeDataObserver = this
@@ -41,4 +46,6 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             this.routeDataObserver.unsubscribe()
         }
     }
+
+    changeCodeBlockEditing(event: any) { }
 }

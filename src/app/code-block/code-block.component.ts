@@ -20,7 +20,7 @@ export class CodeBlockComponent implements OnInit {
     private readonly: boolean
     @Input()
     private id: any
-    public languages: Array<any>
+    public languages: any[]
     private language: any
     private code: string
 

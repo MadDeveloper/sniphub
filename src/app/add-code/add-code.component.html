@@ -1,7 +1,7 @@
 <div>
-    <div *ngFor='let row of rowData;let in = index' class="mb-4">
-        <app-code-block></app-code-block>
-        <div *ngIf="rowData.length > 1 && in+1 < rowData.length" class="row my-2">
+    <div *ngFor='let config of configs;let in = index' class="mb-4">
+        <app-code-block [config]="config"></app-code-block>
+        <div *ngIf="configs.length > 1 && in+1 < configs.length" class="row my-2">
             <div class="col">
                 <hr>
             </div>
