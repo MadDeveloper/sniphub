@@ -70,4 +70,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     containsRequestsNotifications() {
         return this.notification.containsRequestsNotifications(this.notifications)
     }
+
+    goToRequests() {
+        this.router.navigate(['/snippets/requests'])
+    }
 }

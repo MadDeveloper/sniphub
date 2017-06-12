@@ -7,13 +7,10 @@
                         <img [src]="request.user.avatar" alt="" class="image avatar mr-2">
                         <span>{{ request.user.username }}</span>
                     </a>
-                    <span>has added a new language code for your snippet</span>
+                    <span>has developed your <a [routerLink]="'/snippet/' + request.snippet.id">{{ request.snippet.name }}</a> snippet in a new code.</span>
                     <span class="ml-1">
-                        <a [routerLink]="'/snippet/' + request.snippet.id">{{ request.snippet.name }}</a>
+                        <a [routerLink]="'/snippets/requests/' + request.id" class="ml-1">See request</a>
                     </span>
-                </div>
-                <div class="mt-2">
-                    <a [routerLink]="'/snippets/requests/' + request.id" class="btn outlined">See request</a>
                 </div>
             </div>
         </div>

@@ -19,7 +19,6 @@ export class NotificationService {
                     avatar: '/assets/images/unknown.jpg',
                     email: 'sergent.julien@icloud.com'
                 },
-                content: 'has added a new language code for your snippet',
                 snippet: {
                     id: 1,
                     name: 'Trim',
@@ -43,7 +42,6 @@ export class NotificationService {
                     avatar: '/assets/images/unknown-2.jpg',
                     email: 'sergent.julien@icloud.com'
                 },
-                content: 'liked your snippet',
                 snippet: {
                     id: 1,
                     name: 'Trim',

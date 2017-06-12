@@ -21,4 +21,12 @@ export class NotificationsComponent implements OnInit {
     isRequestNotification(notification: Notification) {
         return this.notificationService.isRequestNotification(notification)
     }
+
+    isCommentNotification(notification: Notification) {
+        return this.notificationService.isCommentNotification(notification)
+    }
+
+    isLikeNotification(notification: Notification) {
+        return this.notificationService.isLikeNotification(notification)
+    }
 }

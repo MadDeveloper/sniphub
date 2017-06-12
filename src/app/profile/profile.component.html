@@ -37,13 +37,10 @@
                 </div>
 	        </div>
         </div>
-        <div *ngIf="containsRequestsNotifications()" class="col-md-8 col-12 mt-4">
-            <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="mb-3">You have awaiting code requests for your snippets.</div>
-                <a routerLink="/snippets/requests" class="btn outlined">See requests</a>
+        <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-md-8 col-12 mt-4 clickable" (click)="goToRequests()">
+            <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
+                <span><i class="fa fa-bell-o mr-2"></i> You have awaiting code requests for your snippets.</span>
+                <a routerLink="/snippets/requests" class="ml-1">See requests</a>
             </div>
         </div>
         <div class="col-12 mt-4">

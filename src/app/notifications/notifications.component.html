@@ -8,13 +8,16 @@
                             <img [src]="notification.user.avatar" alt="" class="image avatar mr-2">
                             <span>{{ notification.user.username }}</span>
                         </a>
-                        <span>{{ notification.content }}</span>
-                        <span *ngIf="notification.snippet" class="ml-1">
-                            <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a>
-                        </span>
-                    </div>
-                    <div *ngIf="isRequestNotification(notification)" class="mt-2">
-                        <a [routerLink]="'/snippets/requests/' + notification.request.id" class="btn outlined">See request</a>
+                        <div *ngIf="isCommentNotification(notification)">
+                             has commented your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
+                        </div>
+                        <div *ngIf="isLikeNotification(notification)">
+                             has liked your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
+                        </div>
+                        <div *ngIf="isRequestNotification(notification)">
+                            <span>has developed your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet in a new code.</span>
+                            <a  [routerLink]="'/snippets/requests/' + notification.request.id" class="ml-1">See request</a>
+                        </div>
                     </div>
                 </div>
             </div>

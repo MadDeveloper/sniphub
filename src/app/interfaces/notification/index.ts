@@ -7,7 +7,6 @@ export interface Notification {
     id: number
     type: NotificationType
     user: User
-    content: string
     snippet: Snippet
     request?: Request
 }
