@@ -7,6 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { AuthenticationService } from '../services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
 import { RequestService } from '../services/request/index'
+import { LikeService } from '../services/like/like.service'
+import { CodeService } from '../services/code/code.service'
+import { Code } from '../interfaces/snippet/code'
 
 @Component({
   selector: 'app-snippet-details',
@@ -14,11 +17,13 @@ import { RequestService } from '../services/request/index'
   styleUrls: ['./snippet-details.component.scss']
 })
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
-    notification: any
+    private notification: any
     private snippet: Snippet
-    private likes: number
-    private liked: boolean
-    private comments: Comment[]
+    private likes = 0
+    private liked = false
+    private codes: Code[] = []
+    private code = ''
+    private comments: Comment[] = []
     @ViewChild('comment')
     private comment: ElementRef
     private routeDataObserver: Subscription
@@ -30,12 +35,11 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private authentication: AuthenticationService,
         private request: RequestService,
-        private router: Router) { }
+        private router: Router,
+        private likeService: LikeService,
+        private codeService: CodeService) { }
 
     async ngOnInit() {
-        this.likes = 158
-        this.liked = false
-        this.comments = await this.commentService.all()
         this.routeDataObserver = this
             .route
             .data
@@ -43,6 +47,9 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 const user = this.authentication.currentUser()
 
                 this.snippet = data[0]
+                this.comments = await this.commentService.all(this.snippet)
+                this.likes = await this.likeService.all(this.snippet)
+                this.codes = await this.codeService.all(this.snippet)
 
                 if (user) {
                     this.ownSnippet = user.id === this.snippet.author.id

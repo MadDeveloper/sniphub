@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Snippet } from 'app/interfaces/snippet'
 import { find } from 'lodash'
+import { CodeService } from '../code/code.service'
 
 @Injectable()
 export class SnippetService {
@@ -16,7 +17,16 @@ export class SnippetService {
                     avatar: '/assets/images/unknown.jpg',
                     username: 'John Doe',
                     email: 'sergent.julien@icloud.com'
-                }
+                },
+                codes: [{
+                    id: 1,
+                    language: {
+                        id: 1,
+                        text: 'JavaScript',
+                        value: 'javascript'
+                    },
+                    code: 'const snipz = "building..."'
+                }]
             },
             {
                 id: 2,
@@ -29,7 +39,16 @@ export class SnippetService {
                     avatar: '/assets/images/unknown.jpg',
                     username: 'Matt',
                     email: 'matt@vdb.com'
-                }
+                },
+                codes: [{
+                    id: 1,
+                    language: {
+                        id: 1,
+                        text: 'JavaScript',
+                        value: 'javascript'
+                    },
+                    code: 'const snipz = "building..."'
+                }]
             },
             {
                 id: 3,
@@ -42,7 +61,16 @@ export class SnippetService {
                     avatar: '/assets/images/unknown.jpg',
                     username: 'Zully',
                     email: 'chez@pompo.te'
-                }
+                },
+                codes: [{
+                    id: 1,
+                    language: {
+                        id: 1,
+                        text: 'JavaScript',
+                        value: 'javascript'
+                    },
+                    code: 'const snipz = "building..."'
+                }]
             }
         ]
 
@@ -54,13 +82,22 @@ export class SnippetService {
         return Promise.resolve(find(this.snippets, props))
     }
 
+    async edit(snippet: Snippet): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    async delete(snippet: Snippet): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
     mockOne(): Snippet {
         return {
             id: null,
             name: null,
             description: null,
             date: null,
-            author: null
+            author: null,
+            codes: null
         }
     }
 }

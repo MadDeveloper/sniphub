@@ -29,6 +29,8 @@ import { CodeEditorService } from './services/code-editor'
 import { RequestService } from './services/request'
 import { GuidService } from './services/guid/guid.service'
 import { SearchService } from './services/search/search.service'
+import { LikeService } from './services/like/like.service'
+import { CodeService } from './services/code/code.service'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -103,7 +105,9 @@ import { NotFoundComponent } from './not-found/not-found.component'
       CodeEditorService,
       RequestService,
       GuidService,
-      SearchService
+      SearchService,
+      LikeService,
+      CodeService
   ],
   bootstrap: [AppComponent]
 })

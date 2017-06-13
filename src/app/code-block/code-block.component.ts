@@ -20,8 +20,10 @@ export class CodeBlockComponent implements OnInit {
     private readonly: boolean
     @Input()
     private id: any
+    @Input()
     public languages: any[]
     private language: any
+    @Input()
     private code: string
 
     constructor(private languageService: LanguageService) {
@@ -40,7 +42,9 @@ export class CodeBlockComponent implements OnInit {
             }
         }
 
-        this.languages = await this.languageService.all()
+        if (!Array.isArray(this.languages)) {
+            this.languages = await this.languageService.all()
+        }
     }
 
     changeCode = (code: string) => {

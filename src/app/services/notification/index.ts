@@ -29,6 +29,15 @@ export class NotificationService {
                         avatar: '/assets/images/unknown.jpg',
                         email: 'sergent.julien@icloud.com'
                     },
+                    codes: [{
+                        id: 1,
+                        language: {
+                            id: 1,
+                            text: 'JavaScript',
+                            value: 'javascript'
+                        },
+                        code: 'const snipz = "building..."'
+                    }],
                     date: new Date()
                 },
                 request: await this.request.find({ id: 1 })
@@ -52,10 +61,23 @@ export class NotificationService {
                         avatar: '/assets/images/unknown.jpg',
                         email: 'sergent.julien@icloud.com'
                     },
+                    codes: [{
+                        id: 1,
+                        language: {
+                            id: 1,
+                            text: 'JavaScript',
+                            value: 'javascript'
+                        },
+                        code: 'const snipz = "building..."'
+                    }],
                     date: new Date()
                 }
             }
         ])
+    }
+
+    async markAllAsRead(notifications: Notification[]): Promise<boolean> {
+        return Promise.resolve(true)
     }
 
     isRequestNotification(notification: Notification) {

@@ -1,4 +1,5 @@
 import { User } from 'app/interfaces/user'
+import { Code } from './code'
 
 export interface Snippet {
     id: number
@@ -6,4 +7,5 @@ export interface Snippet {
     description: string
     date: Date
     author: User
+    codes: Code[]
 }

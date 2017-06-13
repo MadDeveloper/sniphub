@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Comment } from '../../interfaces/comment'
+import { Snippet } from 'app/interfaces/snippet'
+import { User } from 'app/interfaces/user'
 
 @Injectable()
 export class CommentService {
-    async all(): Promise<Comment[]> {
+    async all(snippet: Snippet): Promise<Comment[]> {
         return [
             {
                 id: 1,
@@ -42,5 +44,9 @@ export class CommentService {
                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
             }
         ]
+    }
+
+    async add(snippet: Snippet, comment: string, user: User): Promise<boolean> {
+        return Promise.resolve(true)
     }
 }
