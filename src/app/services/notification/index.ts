@@ -9,7 +9,7 @@ export class NotificationService {
     constructor(private request: RequestService) { }
 
     async all(): Promise<Notification[]> {
-        return [
+        return Promise.resolve([
             {
                 id: 1,
                 type: NotificationType.REQUEST,
@@ -55,7 +55,7 @@ export class NotificationService {
                     date: new Date()
                 }
             }
-        ]
+        ])
     }
 
     isRequestNotification(notification: Notification) {

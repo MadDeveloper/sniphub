@@ -26,20 +26,6 @@ export class RequestService {
             language: await this.language.find({ text: 'JavaScript' }),
             code: 'Test',
             snippet: await this.snippet.find({ id: 1 })
-        }, {
-            id: 1,
-            user: await this.user.find({ id: 1 }),
-            date: new Date(),
-            language: await this.language.find({ text: 'JavaScript' }),
-            code: 'Test',
-            snippet: await this.snippet.find({ id: 1 })
-        }, {
-            id: 1,
-            user: await this.user.find({ id: 1 }),
-            date: new Date(),
-            language: await this.language.find({ text: 'JavaScript' }),
-            code: 'Test',
-            snippet: await this.snippet.find({ id: 1 })
         }])
     }
 
