@@ -28,6 +28,7 @@ import { NotificationService } from './services/notification'
 import { CodeEditorService } from './services/code-editor'
 import { RequestService } from './services/request'
 import { GuidService } from './services/guid/guid.service'
+import { SearchService } from './services/search/search.service'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -101,7 +102,8 @@ import { NotFoundComponent } from './not-found/not-found.component'
       NotificationService,
       CodeEditorService,
       RequestService,
-      GuidService
+      GuidService,
+      SearchService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,23 +1,31 @@
-<div *ngIf="loaded" class="container segment container-small mt-4 py-2">
-    <div *ngFor="let request of requests;let i = index">
-        <div class="row py-2">
-            <div class="col">
-                <div class="d-flex align-items-center">
-                    <a [routerLink]="'/profile/' + request.user.id" class="author d-flex align-items-center mr-1">
-                        <img [src]="request.user.avatar" alt="" class="image avatar mr-2">
-                        <span>{{ request.user.username }}</span>
-                    </a>
-                    <span>has developed your <a [routerLink]="'/snippet/' + request.snippet.id">{{ request.snippet.name }}</a> snippet in a new code.</span>
-                    <span class="ml-1">
-                        <a [routerLink]="'/snippets/requests/' + request.id" class="ml-1">See request</a>
-                    </span>
+<div *ngIf="loaded">
+    <div *ngIf="requests.length > 0;else noRequests" class="container segment container-small mt-4 py-2">
+        <div *ngFor="let request of requests;let i = index">
+            <div class="row py-2">
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <a [routerLink]="'/profile/' + request.user.id" class="author d-flex align-items-center mr-1">
+                            <img [src]="request.user.avatar" alt="" class="image avatar mr-2">
+                            <span>{{ request.user.username }}</span>
+                        </a>
+                        <span>has developed your <a [routerLink]="'/snippet/' + request.snippet.id">{{ request.snippet.name }}</a> snippet in a new code.</span>
+                        <span class="ml-1">
+                            <a [routerLink]="'/snippets/requests/' + request.id" class="ml-1">See request</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="i < requests.length - 1" class="row">
+                <div class="col">
+                    <hr>
                 </div>
             </div>
         </div>
-        <div *ngIf="i < requests.length - 1" class="row">
-            <div class="col">
-                <hr>
-            </div>
-        </div>
     </div>
+    <ng-template #noRequests>
+        <div class="container my-5 meta">
+            <h1 class="display-3 text-center"><i class="fa fa-code" aria-hidden="true"></i></h1>
+            <div class="text-center">You don't have pending code requests for the moment</div>
+        </div>
+    </ng-template>
 </div>

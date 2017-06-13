@@ -3,7 +3,7 @@ import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'
 import { CommentService } from 'app/services/comment/comment.service'
 import { Snippet } from '../interfaces/snippet/index'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { AuthenticationService } from '../services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
 import { RequestService } from '../services/request/index'
@@ -29,7 +29,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private commentService: CommentService,
         private route: ActivatedRoute,
         private authentication: AuthenticationService,
-        private request: RequestService) { }
+        private request: RequestService,
+        private router: Router) { }
 
     async ngOnInit() {
         this.likes = 158
@@ -85,5 +86,9 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     unlike() {
         this.likes--
         this.liked = false
+    }
+
+    goToRequests() {
+        this.router.navigate(['/snippets/requests'])
     }
 }
