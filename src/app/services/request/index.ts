@@ -42,6 +42,19 @@ export class RequestService {
         return Promise.resolve(find(requests, props ))
     }
 
+    async forSnippet(snippet: Snippet): Promise<Request[]> {
+        const requests = [{
+            id: 1,
+            user: await this.user.find({ id: 1 }),
+            date: new Date(),
+            language: await this.language.find({ text: 'JavaScript' }),
+            code: 'Test',
+            snippet: await this.snippet.find({ id: 1 })
+        }]
+
+        return Promise.resolve(requests.filter(request => request.snippet.id === snippet.id))
+    }
+
     async accept(request: Request): Promise<boolean> {
         return Promise.resolve(true)
     }

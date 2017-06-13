@@ -6,6 +6,7 @@ import { Snippet } from '../interfaces/snippet/index'
 import { ActivatedRoute } from '@angular/router'
 import { AuthenticationService } from '../services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
+import { RequestService } from '../services/request/index'
 
 @Component({
   selector: 'app-snippet-details',
@@ -13,6 +14,7 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./snippet-details.component.scss']
 })
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
+    notification: any
     private snippet: Snippet
     private likes: number
     private liked: boolean
@@ -20,28 +22,30 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('comment')
     private comment: ElementRef
     private routeDataObserver: Subscription
-    private ownSnippet: boolean
+    private ownSnippet = false
+    private hasPendingRequests = false
 
     constructor(
         private commentService: CommentService,
         private route: ActivatedRoute,
-        private authentication: AuthenticationService) { }
+        private authentication: AuthenticationService,
+        private request: RequestService) { }
 
     async ngOnInit() {
         this.likes = 158
         this.liked = false
         this.comments = await this.commentService.all()
-        this.ownSnippet = false
         this.routeDataObserver = this
             .route
             .data
-            .subscribe((data: { snippet: Snippet }) => {
+            .subscribe(async(data: { snippet: Snippet }) => {
                 const user = this.authentication.currentUser()
 
                 this.snippet = data[0]
 
                 if (user) {
                     this.ownSnippet = user.id === this.snippet.author.id
+                    this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                 }
             })
     }

@@ -19,10 +19,16 @@
                         </li>
                     </ul>
                 </div>
-                <!--<a *ngIf="ownSnippet" routerLink="/snippet/edit/1" class="btn outlined mr-3">Edit</a>
-                <button *ngIf="ownSnippet" class="btn danger outlined btn-danger mr-3">Delete</button>-->
                 <img [src]="snippet.author.avatar" alt="" class="image avatar">
                 <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="ownSnippet && hasPendingRequests" class="row clickable" (click)="goToRequests()">
+        <div class="col-md-8 col-12 mt-4">
+            <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
+                <span><i class="fa fa-bell-o"></i> You have awaiting code requests for this snippet.</span>
+                <a routerLink="/snippets/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
     </div>
