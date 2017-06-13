@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core'
 import { CodemirrorComponent } from 'ng2-codemirror'
 import { LanguageService } from 'app/services/language/language.service'
+import { Code } from '../interfaces/snippet/code'
+import { CodeService } from '../services/code/code.service'
+import { Language } from '../interfaces/language/index'
 
 @Component({
   selector: 'app-code-block',
@@ -19,23 +22,26 @@ export class CodeBlockComponent implements OnInit {
     @Input()
     private readonly: boolean
     @Input()
-    private id: any
-    @Input()
     public languages: any[]
-    private language: any
     @Input()
-    private code: string
+    private code: Code
 
-    constructor(private languageService: LanguageService) {
+    constructor(
+        private codeService: CodeService,
+        private languageService: LanguageService) {
         this.onChangeCodeBlock = new EventEmitter()
     }
 
     async ngOnInit() {
+        if (!this.code) {
+            this.code = this.codeService.mockOne()
+        }
+
         if (!this.config) {
             this.config = {
                 lineNumbers: true,
                 smartIndent: true,
-                mode: null,
+                mode: this.code.language.value,
                 theme: 'dracula',
                 change: this.changeCode,
                 readOnly: this.readonly ? 'nocursor' : false
@@ -48,7 +54,7 @@ export class CodeBlockComponent implements OnInit {
     }
 
     changeCode = (code: string) => {
-        this.code = code
+        this.code.code = code
         this.notifiyCodeBlockChange()
     }
 
@@ -56,11 +62,15 @@ export class CodeBlockComponent implements OnInit {
         const foundLanguage = this.findLanguage(language)
 
         if (foundLanguage) {
-            this.language = language
-            this.codemirror.instance.setOption('mode', foundLanguage.value)
+            this.code.language = foundLanguage
+            this.changeMode(foundLanguage)
 
             this.notifiyCodeBlockChange()
         }
+    }
+
+    private changeMode(language: Language) {
+        this.codemirror.instance.setOption('mode', language.value)
     }
 
     private findLanguage(language: any) {
@@ -74,11 +84,6 @@ export class CodeBlockComponent implements OnInit {
     }
 
     private notifiyCodeBlockChange() {
-        this.onChangeCodeBlock.emit({
-            id: this.id,
-            code: this.code,
-            language: this.language
-        })
+        this.onChangeCodeBlock.emit(this.code)
     }
-
 }

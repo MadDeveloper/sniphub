@@ -13,10 +13,7 @@ export class CodeEditorService {
             lineNumbers: true,
             smartIndent: true
         }
-        this.mode = {
-            name: 'javascript',
-            typescript: true
-        }
+        this.mode = null
         this.theme = 'dracula'
     }
 

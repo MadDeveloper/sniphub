@@ -10,6 +10,8 @@ import { RequestService } from '../services/request/index'
 import { LikeService } from '../services/like/like.service'
 import { CodeService } from '../services/code/code.service'
 import { Code } from '../interfaces/snippet/code'
+import { languages } from '../services/language/languages'
+import { Language } from '../interfaces/language/index'
 
 @Component({
   selector: 'app-snippet-details',
@@ -22,13 +24,15 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private likes = 0
     private liked = false
     private codes: Code[] = []
-    private code = ''
+    private code: Code
+    private languages: Language[]
     private comments: Comment[] = []
     @ViewChild('comment')
     private comment: ElementRef
     private routeDataObserver: Subscription
     private ownSnippet = false
     private hasPendingRequests = false
+    private loaded = false
 
     constructor(
         private commentService: CommentService,
@@ -51,19 +55,22 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.likes = await this.likeService.all(this.snippet)
                 this.codes = await this.codeService.all(this.snippet)
 
+                if (this.codes.length > 0) {
+                    this.code = this.codes[0]
+                    this.languages = this.extractLanguages()
+                }
+
                 if (user) {
                     this.ownSnippet = user.id === this.snippet.author.id
                     this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                 }
+
+                this.loaded = true
             })
     }
 
     ngOnDestroy() {
         this.routeDataObserver.unsubscribe()
-    }
-
-    codeBlockChange(event: any) {
-
     }
 
     focusComment() {
@@ -97,5 +104,13 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     goToRequests() {
         this.router.navigate(['/snippets/requests'])
+    }
+
+    extractLanguages(): Language[] {
+        return this.codes.map(code => code.language)
+    }
+
+    codeBlockChange(code: Code) {
+        this.code = code
     }
 }

@@ -1,11 +1,11 @@
 <div>
-    <div *ngFor='let config of configs;let in = index' [ngClass]="asRequest ? '' : 'mb-2'">
-        <app-code-block [config]="config"></app-code-block>
+    <div *ngFor='let config of configs;let i = index' [ngClass]="asRequest ? '' : 'mb-2'">
+        <app-code-block></app-code-block>
         <div class="d-flex align-items-center mt-3 mb-2">
-            <button *ngIf="asRequest" class="btn outlined primary mr-3">Request</button>
+            <button *ngIf="asRequest" class="btn outlined primary mr-3" (click)="request(config)">Request</button>
             <button class="btn outlined danger" (click)="remove(config)">Remove</button>
         </div>
-        <div *ngIf="(configs.length > 1 && in+1 < configs.length) || asRequest" class="row">
+        <div *ngIf="(configs.length > 1 && i+1 < configs.length) || asRequest" class="row">
             <div class="col">
                 <hr>
             </div>

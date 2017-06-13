@@ -22,14 +22,14 @@ export class AddCodeComponent implements OnInit {
 
     async ngOnInit() {
         if (!this.configs) {
+            this.configs = []
             this.add()
         }
     }
 
     add() {
         this.configs.push({
-            id: this.guid.newGuid(),
-            ...this.codeEditor.config
+            id: this.guid.newGuid()
         })
     }
 

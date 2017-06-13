@@ -19,4 +19,12 @@ export class LanguageService {
     async find( props: any ): Promise<Language> {
         return Promise.resolve(find(this.languages, props ))
     }
+
+    mockOne(): Language {
+        return {
+            id: null,
+            text: null,
+            value: null
+        }
+    }
 }

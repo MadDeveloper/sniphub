@@ -35,6 +35,10 @@ input {
             }
         }
     }
+
+    &.form-control.ui-select-search {
+        font-family: inherit !important;
+    }
 }
 
 textarea {

@@ -4,6 +4,9 @@ import { ActivatedRoute, RouterStateSnapshot } from '@angular/router'
 import { SnippetService } from '../services/snippet/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
 import { CodeEditorService } from '../services/code-editor/index'
+import { Code } from '../interfaces/snippet/code'
+import { Language } from '../interfaces/language/index'
+import { CodeService } from '../services/code/code.service'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -16,28 +19,37 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private snapshot: Snippet
     private codeBlocks: any[]
     private editing: boolean
-    private codeEditorConfig: any
+    private codes: Code[] = []
+    private code: Code
+    private languages: Language[]
+    private loaded = false
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
-        private codeEditor: CodeEditorService) { }
+        private codeService: CodeService) { }
 
     ngOnInit() {
-        this.codeEditorConfig = this.codeEditor.config
-
         if (this.route.snapshot.params['id']) {
             this.editing = true
             this.routeDataObserver = this
                 .route
                 .data
-                .subscribe((data: { snippet: Snippet }) => {
+                .subscribe(async(data: { snippet: Snippet }) => {
                     this.snippet = data[0]
                     this.snapshot = Object.assign({}, this.snippet)
+                    this.codes = await this.codeService.all(this.snippet)
+
+                    if (this.codes.length > 0) {
+                        this.languages = this.extractLanguages()
+                    }
+
+                    this.loaded = true
                 })
         } else {
             this.editing = false
             this.snippet = this.snippetService.mockOne()
+            this.loaded = true
         }
     }
 
@@ -47,5 +59,11 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeCodeBlockEditing(event: any) { }
+    extractLanguages(): Language[] {
+        return this.codes.map(code => code.language)
+    }
+
+    codeBlockChange(event: any) {
+
+    }
 }

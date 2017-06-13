@@ -1,4 +1,4 @@
-<div *ngIf="snippet" class="container segment mt-4">
+<div *ngIf="loaded && snippet" class="container segment mt-4">
     <div class="row mt-4 mb-2">
         <div class="col">
             <h1 *ngIf="!editing;else headerEdit" class="h2">Create a new snippet</h1>
@@ -18,8 +18,8 @@
                 <input type="text" [(ngModel)]="snippet.description" placeholder="Description (optional)">
             </div>
             <div class="mt-4">
-                <app-add-code *ngIf="!editing" [configs]="[codeEditorConfig]"></app-add-code>
-                <app-code-block *ngIf="editing" (onChangeCodeBlock)="changeCodeBlockEditing($event)" [config]="codeEditorConfig"></app-code-block>
+                <app-add-code *ngIf="!editing"></app-add-code>
+                <app-code-block *ngIf="editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
             </div>
             <hr class="my-4">
             <div class="mb-3">
