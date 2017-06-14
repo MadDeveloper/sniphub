@@ -4,6 +4,7 @@ import { LanguageService } from 'app/services/language/language.service'
 import { Code } from '../interfaces/snippet/code'
 import { CodeService } from '../services/code/code.service'
 import { Language } from '../interfaces/language/index'
+import { CodeEditorService } from '../services/code-editor/index'
 
 @Component({
   selector: 'app-code-block',
@@ -28,7 +29,8 @@ export class CodeBlockComponent implements OnInit {
 
     constructor(
         private codeService: CodeService,
-        private languageService: LanguageService) {
+        private languageService: LanguageService,
+        private codeEditor: CodeEditorService) {
         this.onChangeCodeBlock = new EventEmitter()
     }
 
@@ -38,14 +40,11 @@ export class CodeBlockComponent implements OnInit {
         }
 
         if (!this.config) {
-            this.config = {
-                lineNumbers: true,
-                smartIndent: true,
+            this.config = Object.assign({}, this.codeEditor.config, {
                 mode: this.code.language.value,
-                theme: 'dracula',
                 change: this.changeCode,
                 readOnly: this.readonly ? 'nocursor' : false
-            }
+            })
         }
 
         if (!Array.isArray(this.languages)) {

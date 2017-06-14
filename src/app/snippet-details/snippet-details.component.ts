@@ -33,6 +33,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private ownSnippet = false
     private hasPendingRequests = false
     private loaded = false
+    private requestCodes: Code[] = []
 
     constructor(
         private commentService: CommentService,

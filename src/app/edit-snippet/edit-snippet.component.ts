@@ -19,7 +19,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private snapshot: Snippet
     private codeBlocks: any[]
     private editing: boolean
-    private codes: Code[] = []
+    private codes: Code[]
     private code: Code
     private languages: Language[]
     private loaded = false

@@ -18,7 +18,7 @@
                 <input type="text" [(ngModel)]="snippet.description" placeholder="Description (optional)">
             </div>
             <div class="mt-4">
-                <app-add-code *ngIf="!editing"></app-add-code>
+                <app-add-code *ngIf="!editing" [(codes)]="codes"></app-add-code>
                 <app-code-block *ngIf="editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
             </div>
             <hr class="my-4">
