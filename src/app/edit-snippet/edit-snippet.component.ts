@@ -66,4 +66,8 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     codeBlockChange(event: any) {
 
     }
+
+    save() {
+        this.snippetService.save(this.snippet)
+    }
 }

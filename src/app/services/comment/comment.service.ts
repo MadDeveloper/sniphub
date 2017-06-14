@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import { Comment } from '../../interfaces/comment'
 import { Snippet } from 'app/interfaces/snippet'
 import { User } from 'app/interfaces/user'
+import { Comment } from '../../interfaces/comment/index'
 
 @Injectable()
 export class CommentService {
@@ -46,7 +46,16 @@ export class CommentService {
         ]
     }
 
-    async add(snippet: Snippet, comment: string, user: User): Promise<boolean> {
+    forge(comment: string, author: User): Comment {
+        return {
+            id: null,
+            author,
+            date: new Date(),
+            content: comment
+        }
+    }
+
+    async add(comment: Comment, snippet: Snippet): Promise<boolean> {
         return Promise.resolve(true)
     }
 }

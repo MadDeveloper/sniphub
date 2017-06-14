@@ -1,7 +1,7 @@
 import { Language } from '../language'
 
 export interface Code {
-    id: number
+    id: any
     language: Language
     code: string
 }

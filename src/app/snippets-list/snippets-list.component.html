@@ -1,7 +1,7 @@
 <div class="row">
     <div *ngFor="let snippet of snippets" class="col-12 col-md-4 col-sm-6 mb-3 d-flex align-items-stretch">
         <div class="card w-100 clickable" (click)="snippetDetails(snippet)">
-            <div class="content">
+            <div class="content content-main">
                 <div class="float-right">
                     <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
                     <span class="ml-1">{{ snippet.author.username }}</span>

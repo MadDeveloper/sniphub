@@ -80,13 +80,17 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     addComment(event: Event) {
         event.preventDefault()
-        this.comments.unshift({
-            id: 1,
-            author: this.authentication.currentUser(),
-            date: new Date(),
-            content: this.comment.nativeElement.value
-        })
-        this.comment.nativeElement.value = ''
+
+        const commentContent = this.comment.nativeElement.value.trim()
+
+        if (commentContent.length > 0) {
+            const author = this.authentication.currentUser()
+            const comment = this.commentService.forge(commentContent, author)
+
+            this.comments.unshift(comment)
+            this.commentService.add(comment, this.snippet)
+            this.comment.nativeElement.value = ''
+        }
     }
 
     like() {

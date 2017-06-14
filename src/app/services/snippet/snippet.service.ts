@@ -82,11 +82,7 @@ export class SnippetService {
         return Promise.resolve(find(this.snippets, props))
     }
 
-    async add(snippet: Snippet): Promise<boolean> {
-        return Promise.resolve(true)
-    }
-
-    async edit(snippet: Snippet): Promise<boolean> {
+    async save(snippet: Snippet): Promise<boolean> {
         return Promise.resolve(true)
     }
 

@@ -1,12 +1,11 @@
 import { User } from '../../interfaces/user/index'
-import { Language } from '../../interfaces/language/index'
 import { Snippet } from '../snippet/index'
+import { Code } from '../snippet/code'
 
 export interface Request {
     id: number
     user: User
     date: Date
-    language: Language
-    code: string
+    code: Code
     snippet: Snippet
 }

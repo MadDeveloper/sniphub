@@ -32,4 +32,20 @@ export class UserService {
     async find( props: any ): Promise<User> {
         return Promise.resolve(find(this.users, props ))
     }
+
+    async edit(user: User): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    async changePassword(current: string, newPassword: string, confirm: string): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    async checkPassword(password: string): Promise<boolean> {
+        return Promise.resolve(true)
+    }
+
+    checkPasswordStrength(password: string) {
+        return true
+    }
 }
