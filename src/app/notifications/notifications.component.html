@@ -9,13 +9,13 @@
                             <span>{{ notification.user.username }}</span>
                         </a>
                         <div *ngIf="isCommentNotification(notification)">
-                             has commented your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
+                             has commented your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
                         </div>
                         <div *ngIf="isLikeNotification(notification)">
-                             has liked your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
+                             has liked your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
                         </div>
                         <div *ngIf="isRequestNotification(notification)">
-                            <span>has developed your <a [routerLink]="'/snippet/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet in a new code.</span>
+                            <span>has developed your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet in a new code.</span>
                             <a  [routerLink]="'/snippets/requests/' + notification.request.id" class="ml-1">See request</a>
                         </div>
                     </div>

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
-import $ from 'jquery'
 
 @Component({
   selector: 'app-root',

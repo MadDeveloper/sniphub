@@ -7,7 +7,7 @@ import { Snippet } from 'app/interfaces/snippet'
   templateUrl: './snippets-list.component.html',
   styleUrls: ['./snippets-list.component.scss']
 })
-export class SnippetsListComponent implements OnInit {
+export class SnippetsListComponent {
     static nameMaxLength = 65
 
     @Input()
@@ -15,10 +15,8 @@ export class SnippetsListComponent implements OnInit {
 
     constructor(private router: Router) { }
 
-    ngOnInit() { }
-
     snippetDetails(snippet: Snippet) {
-        this.router.navigate([`snippet/${snippet.id}`])
+        this.router.navigate([`snippets/${snippet.id}`])
     }
 
     truncateName(name: string) {

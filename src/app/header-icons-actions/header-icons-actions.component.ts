@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
 import { NotificationService } from '../services/notification'
+import { Notification } from '../interfaces/notification/index'
 
 @Component({
   selector: 'app-header-icons-actions',
@@ -13,28 +14,34 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     private isAuthenticated: boolean
     private routerEvent: Subscription
     private hasNotifications = false
+    private notificationObserver: Subscription
 
     constructor(
         private router: Router,
         private authentication: AuthenticationService,
-        private notifications: NotificationService) { }
+        private notification: NotificationService) { }
 
     ngOnInit() {
-        this.checkNotifications()
-        this.isAuthenticated = this.authentication.isAuthenticated()
         this.routerEvent = this.router
             .events
             .filter(event => event instanceof NavigationEnd)
-            .subscribe( (event: NavigationEnd) => this.isAuthenticated = this.authentication.isAuthenticated())
+            .subscribe( (event: NavigationEnd) => this.checkAuthentication())
+
+        this.notificationObserver = this.notification
+            .notifications
+            .subscribe((notifications: Notification[]) => this.checkNotifications(notifications))
     }
 
     ngOnDestroy() {
         this.routerEvent.unsubscribe()
+        this.notificationObserver.unsubscribe()
     }
 
-    async checkNotifications() {
-        const notifications = await this.notifications.all()
-
+    checkNotifications(notifications: Notification[]) {
         this.hasNotifications = notifications.length > 0
+    }
+
+    checkAuthentication() {
+        this.isAuthenticated = this.authentication.isAuthenticated()
     }
 }

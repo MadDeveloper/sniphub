@@ -3,10 +3,25 @@ import { Notification } from '../../interfaces/notification/index'
 import { NotificationType } from '../../interfaces/notification/notification-type.enum'
 import { RequestService } from '../request'
 import { find } from 'lodash'
+import { Observable } from 'rxjs/Observable'
+import { Subscriber } from 'rxjs/Subscriber'
+import { Subscription } from 'rxjs/Subscription'
 
 @Injectable()
 export class NotificationService {
-    constructor(private request: RequestService) { }
+    private observer: Subscriber<{}>
+    notifications: Observable<Notification[]>
+
+    constructor(private request: RequestService) {
+        this.notifications = new Observable(observer => {
+            this.observer = observer
+            this.watch()
+        })
+    }
+
+    private async watch() {
+        this.notify(await this.all())
+    }
 
     async all(): Promise<Notification[]> {
         return Promise.resolve([
@@ -76,7 +91,13 @@ export class NotificationService {
         ])
     }
 
+    private notify(value) {
+        this.observer.next(value)
+    }
+
     async markAllAsRead(notifications: Notification[]): Promise<boolean> {
+        this.notify([])
+
         return Promise.resolve(true)
     }
 

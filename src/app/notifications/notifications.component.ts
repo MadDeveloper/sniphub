@@ -14,7 +14,8 @@ export class NotificationsComponent implements OnInit {
     constructor(private notificationService: NotificationService) { }
 
     async ngOnInit() {
-        // this.notifications = await this.notificationService.all()
+        this.notifications = await this.notificationService.all()
+        this.notificationService.markAllAsRead([])
         this.loaded = true
     }
 

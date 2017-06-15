@@ -22,9 +22,9 @@ import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-re
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'search', component: SearchComponent },
-    { path: 'snippet/new', component: EditSnippetComponent, canActivate: [AuthenticationGuard] },
+    { path: 'snippets/new', component: EditSnippetComponent, canActivate: [AuthenticationGuard] },
     {
-        path: 'snippet/edit/:id',
+        path: 'snippets/edit/:id',
         component: EditSnippetComponent,
         canActivate: [AuthenticationGuard],
         resolve: [SnippetResolverGuard]
@@ -41,7 +41,7 @@ export const routes: Routes = [
         canActivate: [AuthenticationGuard],
         resolve: [SnippetRequestResolverGuard]
     },
-    { path: 'snippet/:id', component: SnippetDetailsComponent, resolve: [SnippetResolverGuard] },
+    { path: 'snippets/:id', component: SnippetDetailsComponent, resolve: [SnippetResolverGuard] },
     { path: 'signin', component: ConnectComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [AuthenticationGuard] },
