@@ -91,13 +91,14 @@ export class SnippetService {
     }
 
     mockOne(): Snippet {
-        return {
-            id: null,
-            name: null,
-            description: null,
-            date: null,
-            author: null,
-            codes: null
-        }
+        // return {
+        //     id: null,
+        //     name: 'null',
+        //     description: null,
+        //     date: null,
+        //     author: null,
+        //     codes: null
+        // }
+        return this.snippets[0]
     }
 }

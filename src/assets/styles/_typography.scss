@@ -13,11 +13,11 @@
 }
 
 .author {
-    font-weight: bold;
-    color: $default-color;
+    font-weight: bold !important;
+    color: $default-color !important;
 
     &:hover {
-        color: $default-color;
+        color: $default-color !important;
     }
 }
 

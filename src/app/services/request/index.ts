@@ -39,7 +39,7 @@ export class RequestService {
             snippet: this.snippet.mockOne()
         }]
 
-        return Promise.resolve(find(requests, props ))
+        return Promise.resolve(find(requests, props))
     }
 
     async forSnippet(snippet: Snippet): Promise<Request[]> {

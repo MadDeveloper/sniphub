@@ -8,6 +8,8 @@ import { Snippet } from 'app/interfaces/snippet'
   styleUrls: ['./snippets-list.component.scss']
 })
 export class SnippetsListComponent implements OnInit {
+    static nameMaxLength = 65
+
     @Input()
     private snippets: Snippet[]
 
@@ -19,4 +21,11 @@ export class SnippetsListComponent implements OnInit {
         this.router.navigate([`snippet/${snippet.id}`])
     }
 
+    truncateName(name: string) {
+        if (name.length > SnippetsListComponent.nameMaxLength) {
+            return `${name.substring(0, SnippetsListComponent.nameMaxLength - 3)}...`
+        }
+
+        return name
+    }
 }
