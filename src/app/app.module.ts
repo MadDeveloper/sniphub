@@ -53,7 +53,8 @@ import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
 import { NotificationsComponent } from './notifications/notifications.component'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
-import { NotFoundComponent } from './not-found/not-found.component'
+import { NotFoundComponent } from './not-found/not-found.component';
+import { BackLinkComponent } from './back-link/back-link.component'
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { NotFoundComponent } from './not-found/not-found.component'
     ContactComponent,
     NotificationsComponent,
     SnippetsRequestsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    BackLinkComponent
   ],
   imports: [
     BrowserModule,

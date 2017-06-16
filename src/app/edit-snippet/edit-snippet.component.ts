@@ -23,6 +23,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private code: Code
     private languages: Language[]
     private loaded = false
+    private nameMaxLength = 70
 
     constructor(
         private route: ActivatedRoute,

@@ -12,10 +12,10 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <input type="text" [(ngModel)]="snippet.name" placeholder="Name">
+                <input type="text" [(ngModel)]="snippet.name" placeholder="Name" [maxlength]="nameMaxLength">
             </div>
             <div class="form-group">
-                <input type="text" [(ngModel)]="snippet.description" placeholder="Description (optional)">
+                <textarea rows="4" [(ngModel)]="snippet.description" placeholder="Description (optional)" class="not-resizable"></textarea>
             </div>
             <div class="mt-4">
                 <app-add-code *ngIf="!editing" [(codes)]="codes"></app-add-code>
