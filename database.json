@@ -1,0 +1,60 @@
+{
+    "snippets": {
+        "<name>": {
+            "description": "<string>",
+            "user": "<username>",
+            "date": "<date>"
+        }
+    },
+    "contributions": {
+        "<id>": {
+            "user": "<username>",
+            "snippet": "<snippet>",
+            "code": "<code>"
+        }
+    },
+    "codes": {
+        "<id>": {
+            "user": "<username>",
+            "snippet": "<snippet>",
+            "code": "<string>",
+            "language": "<string>"
+        }
+    },
+    "likes": {
+        "<id>": {
+            "user": "<username>",
+            "snippet": "<snippet>"
+        }
+    },
+    "comments": {
+        "<id>": {
+            "user": "<username>",
+            "snippet": "<snippet>",
+            "date": "<date>",
+            "content": "<string>"
+        }
+    },
+    "users": {
+        "<username>": {
+            "email": "<string>",
+            "avatar": "<string>"
+        }
+    },
+    "notifications": {
+        "<id>": {
+            "type": "<string>",
+            "user": "<username>",
+            "snippet": "<snippet>",
+            "request?": "<request>"
+        }
+    },
+    "requests": {
+        "<id>": {
+            "user": "<username>",
+            "date": "<date>",
+            "code": "<code>",
+            "snippet": "<snippet>"
+        }
+    }
+}

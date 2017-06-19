@@ -9,6 +9,8 @@ import { CodemirrorModule } from 'ng2-codemirror'
 import { TooltipModule } from 'ngx-bootstrap'
 import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
+import { InputCounterModule } from 'ng4-input-counter'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { routes } from './app-routing.module'
 
 // === Guards
@@ -53,7 +55,7 @@ import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
 import { NotificationsComponent } from './notifications/notifications.component'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
-import { NotFoundComponent } from './not-found/not-found.component';
+import { NotFoundComponent } from './not-found/not-found.component'
 import { BackLinkComponent } from './back-link/back-link.component'
 
 @NgModule({
@@ -90,7 +92,9 @@ import { BackLinkComponent } from './back-link/back-link.component'
     CodemirrorModule,
     SelectModule,
     MomentModule,
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    InputCounterModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
       SnippetService,

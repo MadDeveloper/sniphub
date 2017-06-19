@@ -7,11 +7,13 @@ import { CodeEditorService } from '../services/code-editor/index'
 import { Code } from '../interfaces/snippet/code'
 import { Language } from '../interfaces/language/index'
 import { CodeService } from '../services/code/code.service'
+import { trigger,state,style,transition,animate,keyframes } from '@angular/animations'
 
 @Component({
     selector: 'app-edit-snippet',
     templateUrl: './edit-snippet.component.html',
-    styleUrls: ['./edit-snippet.component.scss']
+    styleUrls: ['./edit-snippet.component.scss'],
+
 })
 export class EditSnippetComponent implements OnInit, OnDestroy {
     private routeDataObserver: Subscription

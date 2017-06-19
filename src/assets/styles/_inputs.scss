@@ -9,16 +9,22 @@ input {
         padding: 0.5rem 1rem;
         outline: none;
         width: 100%;
-        transition-property: all;
-        transition-duration: 300ms;
+        // transition-property: all;
+        // transition-duration: 300ms;
         font-size: inherit;
 
-        &:focus:not(.unbordered) {
+        &:focus,
+        &:hover {
             border: 1px solid $primary-color;
         }
 
         &.unbordered {
             border: none;
+
+            &:hover,
+            &:focus {
+                border: none !important;
+            }
         }
 
         &.huge {
@@ -47,15 +53,21 @@ textarea {
     padding: 0.5rem 1rem;
     outline: none;
     width: 100%;
-    transition-property: all;
-    transition-duration: 300ms;
+    // transition-property: all;
+    // transition-duration: 300ms;
 
-    &:focus:not(.unbordered):not(.flat) {
+    &:focus,
+    &:hover {
         border: 1px solid $primary-color;
     }
 
     &.unbordered {
         border: none;
+
+        &:hover,
+        &:focus {
+            border: none !important;
+        }
     }
 
     &.huge {
@@ -71,6 +83,11 @@ textarea {
         padding-left: 0;
         padding-right: 0;
         border: none;
+
+        &:hover,
+        &:focus {
+            border: none !important;
+        }
     }
 }
 
