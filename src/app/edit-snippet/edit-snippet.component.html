@@ -18,8 +18,8 @@
                 <textarea rows="4" [(ngModel)]="snippet.description" placeholder="Description (optional)" class="not-resizable"></textarea>
             </div>
             <div class="mt-4">
-                <app-add-code *ngIf="!editing" [(codes)]="codes"></app-add-code>
-                <app-code-block *ngIf="editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
+                <app-add-code [hidden]="!editing" [(codes)]="codes"></app-add-code>
+                <app-code-block [hidden]="editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
             </div>
             <hr class="my-4">
             <div class="mb-3">
