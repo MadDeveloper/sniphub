@@ -12,6 +12,7 @@ import { CodeService } from '../services/code/code.service'
 import { Code } from '../interfaces/snippet/code'
 import { languages } from '../services/language/languages'
 import { Language } from '../interfaces/language/index'
+import { SweetAlertService } from 'ng2-sweetalert2'
 
 @Component({
   selector: 'app-snippet-details',
@@ -42,7 +43,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private request: RequestService,
         private router: Router,
         private likeService: LikeService,
-        private codeService: CodeService) { }
+        private codeService: CodeService,
+        private swal: SweetAlertService) { }
 
     async ngOnInit() {
         this.routeDataObserver = this
@@ -117,5 +119,28 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     codeBlockChange(code: Code) {
         this.code = code
+    }
+
+    async confirmDelete() {
+        try {
+            const rejected = await this.swal.swal({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to get back your snippet.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            })
+
+            if (rejected) {
+                this.delete()
+            }
+        } catch (reason) {
+            // we do nothing
+        }
+    }
+
+    delete() {
+
     }
 }

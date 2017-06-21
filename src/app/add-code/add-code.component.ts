@@ -7,6 +7,7 @@ import { CodeService } from '../services/code/code.service'
 import { Snippet } from 'app/interfaces/snippet'
 import { RequestService } from '../services/request/index'
 import { AuthenticationService } from '../services/authentication/authentication.service'
+import { SweetAlertService } from 'ng2-sweetalert2'
 
 @Component({
     selector: 'app-add-code',
@@ -28,7 +29,8 @@ export class AddCodeComponent implements OnInit {
         private guid: GuidService,
         private codeService: CodeService,
         private requestService: RequestService,
-        private authentication: AuthenticationService) { }
+        private authentication: AuthenticationService,
+        private swal: SweetAlertService) { }
 
     ngOnInit() {
         if (!this.codes) {
@@ -43,6 +45,25 @@ export class AddCodeComponent implements OnInit {
 
     add() {
         this.codes.push(this.codeService.mockOne())
+    }
+
+    async confirmRemove(code: Code) {
+        try {
+            const rejected = await this.swal.swal({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to get back your code.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Remove',
+                cancelButtonText: 'Cancel'
+            })
+
+            if (rejected) {
+                this.remove(code)
+            }
+        } catch (reason) {
+            // we do nothing
+        }
     }
 
     remove(code: Code) {

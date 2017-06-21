@@ -10,7 +10,6 @@ import { TooltipModule } from 'ngx-bootstrap'
 import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
 import { InputCounterModule } from 'ng4-input-counter'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { routes } from './app-routing.module'
 
 // === Guards
@@ -33,6 +32,7 @@ import { GuidService } from './services/guid/guid.service'
 import { SearchService } from './services/search/search.service'
 import { LikeService } from './services/like/like.service'
 import { CodeService } from './services/code/code.service'
+import { SweetAlertService } from 'ng2-sweetalert2'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -93,8 +93,7 @@ import { BackLinkComponent } from './back-link/back-link.component'
     SelectModule,
     MomentModule,
     TooltipModule.forRoot(),
-    InputCounterModule.forRoot(),
-    BrowserAnimationsModule
+    InputCounterModule.forRoot()
   ],
   providers: [
       SnippetService,
@@ -113,7 +112,8 @@ import { BackLinkComponent } from './back-link/back-link.component'
       GuidService,
       SearchService,
       LikeService,
-      CodeService
+      CodeService,
+      SweetAlertService
   ],
   bootstrap: [AppComponent]
 })

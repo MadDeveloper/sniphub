@@ -31,7 +31,7 @@
     <div class="row">
         <div *ngIf="!accepted && !rejected" class="col">
             <button class="btn outlined success mr-3" (click)="accept()">Accept</button>
-            <button class="btn outlined danger" (click)="reject()">Reject</button>
+            <button class="btn outlined danger" (click)="confirmReject()">Reject</button>
         </div>
         <div class="col">
             <div *ngIf="accepted" class="alert alert-success mb-0" role="alert">
