@@ -5,8 +5,8 @@ import { User } from '../interfaces/user'
 import { ActivatedRoute, Router } from '@angular/router'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
-import { NotificationService } from '../services/notification'
-import { Notification } from '../interfaces/notification'
+import { Notification } from '../notification/interfaces/notification/index'
+import { NotificationService } from '../core/services/notification/notification.service'
 
 @Component({
   selector: 'app-profile',

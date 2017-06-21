@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { AuthenticationService } from 'app/services/authentication/authentication.service'
 import { Subscription } from 'rxjs/Subscription'
-import { NotificationService } from '../services/notification'
-import { Notification } from '../interfaces/notification/index'
+import { Notification } from '../notification/interfaces/notification/index'
+import { NotificationService } from '../core/services/notification/notification.service'
 
 @Component({
   selector: 'app-header-icons-actions',

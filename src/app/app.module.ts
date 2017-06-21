@@ -4,12 +4,14 @@ import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
+import { CoreModule } from './core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
 import { TooltipModule } from 'ngx-bootstrap'
 import { SelectModule } from 'ng2-select'
 import { MomentModule } from 'angular2-moment'
 import { InputCounterModule } from 'ng4-input-counter'
+import { NotificationModule } from './notification/notification.module'
 import { routes } from './app-routing.module'
 
 // === Guards
@@ -25,7 +27,6 @@ import { CommentService } from './services/comment/comment.service'
 import { LanguageService } from './services/language/language.service'
 import { UserService } from './services/user/user.service'
 import { AuthenticationService } from './services/authentication/authentication.service'
-import { NotificationService } from './services/notification'
 import { CodeEditorService } from './services/code-editor'
 import { RequestService } from './services/request'
 import { GuidService } from './services/guid/guid.service'
@@ -53,7 +54,6 @@ import { SnippetRequestComponent } from './snippet-request/snippet-request.compo
 import { AppFooterComponent } from './app-footer/app-footer.component'
 import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
-import { NotificationsComponent } from './notifications/notifications.component'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 import { BackLinkComponent } from './back-link/back-link.component'
@@ -78,7 +78,6 @@ import { BackLinkComponent } from './back-link/back-link.component'
     AppFooterComponent,
     SearchComponent,
     ContactComponent,
-    NotificationsComponent,
     SnippetsRequestsComponent,
     NotFoundComponent,
     BackLinkComponent
@@ -88,12 +87,14 @@ import { BackLinkComponent } from './back-link/back-link.component'
     FormsModule,
     HttpModule,
     RouterModule.forRoot( routes ),
+    CoreModule,
     BsDropdownModule.forRoot(),
     CodemirrorModule,
     SelectModule,
     MomentModule,
     TooltipModule.forRoot(),
-    InputCounterModule.forRoot()
+    InputCounterModule.forRoot(),
+    NotificationModule
   ],
   providers: [
       SnippetService,
@@ -106,7 +107,6 @@ import { BackLinkComponent } from './back-link/back-link.component'
       SnippetsRequestsResolverGuard,
       SnippetRequestResolverGuard,
       UserResolverGuard,
-      NotificationService,
       CodeEditorService,
       RequestService,
       GuidService,

@@ -9,7 +9,6 @@ import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests
 import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
-import { NotificationsComponent } from './notifications/notifications.component'
 import { ContactComponent } from './contact/contact.component'
 import { SearchComponent } from './search/search.component'
 import { NotFoundComponent } from './not-found/not-found.component'
@@ -48,7 +47,6 @@ export const routes: Routes = [
     { path: 'profile/edit', component: EditProfileComponent, canActivate: [AuthenticationGuard] },
     { path: 'profile/:id', component: ProfileComponent, resolve: [UserResolverGuard] },
     { path: 'contact', component: ContactComponent },
-    { path: 'notifications', component: NotificationsComponent, canActivate: [AuthenticationGuard] },
     { path: '404', component: NotFoundComponent },
     { path: '**', redirectTo: '/404' }
 ]

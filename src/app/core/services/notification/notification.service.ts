@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
-import { Notification } from '../../interfaces/notification/index'
-import { NotificationType } from '../../interfaces/notification/notification-type.enum'
-import { RequestService } from '../request'
 import { find } from 'lodash'
 import { Observable } from 'rxjs/Observable'
 import { Subscriber } from 'rxjs/Subscriber'
 import { Subscription } from 'rxjs/Subscription'
+import { RequestService } from '../../../services/request/index'
+import { Notification } from '../../../notification/interfaces/notification/index'
+import { NotificationType } from '../../../notification/interfaces/notification/notification-type.enum'
 
 @Injectable()
 export class NotificationService {
