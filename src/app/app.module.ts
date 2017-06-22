@@ -2,113 +2,55 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
+import { HttpModule } from '@angular/http'
+import { FormsModule } from '@angular/forms'
 import { CoreModule } from './core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
-import { CodemirrorModule } from 'ng2-codemirror'
 import { TooltipModule } from 'ngx-bootstrap'
-import { SelectModule } from 'ng2-select'
 import { InputCounterModule } from 'ng4-input-counter'
 import { NotificationModule } from './notification/notification.module'
 import { SearchModule } from './search/search.module'
+import { SnippetModule } from './snippet/snippet.module'
+import { RequestModule } from './request/request.module'
+import { ProfileModule } from './profile/profile.module'
+
+// === routes
 import { routes } from './app-routing.module'
 
-// === Guards
-import { AuthenticationGuard } from './guards/authentication'
-import { SnippetResolverGuard } from './guards/snippet'
-import { SnippetsRequestsResolverGuard } from './guards/snippet/snippets-requests-resolver.guard'
-import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-resolver.guard'
-import { UserResolverGuard } from './guards/user'
-
 // === Services
-import { SnippetService } from './services/snippet/snippet.service'
-import { CommentService } from './services/comment/comment.service'
-import { LanguageService } from './services/language/language.service'
-import { UserService } from './services/user/user.service'
-import { AuthenticationService } from './services/authentication/authentication.service'
-import { CodeEditorService } from './services/code-editor'
-import { RequestService } from './services/request'
-import { GuidService } from './services/guid/guid.service'
-import { LikeService } from './services/like/like.service'
-import { CodeService } from './services/code/code.service'
 import { SweetAlertService } from 'ng2-sweetalert2'
 
 // === Components
 import { AppComponent } from './app.component'
-import { AppHeaderComponent } from './app-header/app-header.component'
 import { HomeComponent } from './home/home.component'
-import { SnippetDetailsComponent } from './snippet-details/snippet-details.component'
-import { ConnectComponent } from './connect/connect.component'
-import { SignupComponent } from './signup/signup.component'
-import { ProfileComponent } from './profile/profile.component'
-import { EditProfileComponent } from './edit-profile/edit-profile.component'
-import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
-import { CommentsComponent } from './comments/comments.component'
-import { AddCodeComponent } from './add-code/add-code.component'
-import { CodeBlockComponent } from './code-block/code-block.component'
-import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
-import { SnippetRequestComponent } from './snippet-request/snippet-request.component'
-import { AppFooterComponent } from './app-footer/app-footer.component'
 import { ContactComponent } from './contact/contact.component'
-import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
-import { NotFoundComponent } from './not-found/not-found.component'
-import { BackLinkComponent } from './back-link/back-link.component'
-import { MomentModule } from 'angular2-moment'
-import { SharedModule } from './shared/shared.module'
+import { CodeModule } from './code/code.module'
+import { AuthenticationModule } from './authentication/authentication.module'
 
 @NgModule({
     declarations: [
         AppComponent,
-        AppHeaderComponent,
         HomeComponent,
-        SnippetDetailsComponent,
-        ConnectComponent,
-        SignupComponent,
-        ProfileComponent,
-        EditProfileComponent,
-        EditSnippetComponent,
-        CommentsComponent,
-        AddCodeComponent,
-        CodeBlockComponent,
-        HeaderIconsActionsComponent,
-        SnippetRequestComponent,
-        AppFooterComponent,
-        ContactComponent,
-        SnippetsRequestsComponent,
-        NotFoundComponent,
-        BackLinkComponent
+        ContactComponent
     ],
     imports: [
         BrowserModule,
-        SharedModule,
-        CoreModule,
-        MomentModule,
+        HttpModule,
+        FormsModule,
+        CoreModule.forRoot(),
         RouterModule.forRoot( routes ),
+        AuthenticationModule.forRoot(),
         BsDropdownModule.forRoot(),
-        CodemirrorModule,
-        SelectModule,
         TooltipModule.forRoot(),
         InputCounterModule.forRoot(),
         NotificationModule.forRoot(),
-        SearchModule.forRoot()
+        SearchModule.forRoot(),
+        RequestModule.forRoot(),
+        SnippetModule.forRoot(),
+        CodeModule.forRoot(),
+        ProfileModule
     ],
-    providers: [
-        SnippetService,
-        CommentService,
-        LanguageService,
-        UserService,
-        AuthenticationService,
-        AuthenticationGuard,
-        SnippetResolverGuard,
-        SnippetsRequestsResolverGuard,
-        SnippetRequestResolverGuard,
-        UserResolverGuard,
-        CodeEditorService,
-        RequestService,
-        GuidService,
-        LikeService,
-        CodeService,
-        SweetAlertService
-    ],
-    bootstrap: [AppComponent]
+    providers: [ SweetAlertService ],
+    bootstrap: [ AppComponent ]
 })
 export class AppModule { }

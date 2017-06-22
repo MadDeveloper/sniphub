@@ -3,10 +3,9 @@ import { SearchComponent } from './search.component'
 import { NgModule } from '@angular/core'
 
 @NgModule({
-    imports: [RouterModule.forChild([
+    imports: [ RouterModule.forChild([
         { path: 'search', component: SearchComponent }
     ])],
-    exports: [RouterModule],
-    providers: []
+    exports: [ RouterModule ]
 })
 export class SearchRoutingModule { }

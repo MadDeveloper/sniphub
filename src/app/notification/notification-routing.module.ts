@@ -1,12 +1,12 @@
 import { Routes, RouterModule } from '@angular/router'
 import { NotificationsComponent } from './notifications.component'
-import { AuthenticationGuard } from '../guards/authentication'
 import { NgModule } from '@angular/core'
+import { AuthenticationGuard } from '../authentication/guards/authentication.guard'
 
 @NgModule({
-    imports: [RouterModule.forChild([
-        { path: 'notifications', component: NotificationsComponent, canActivate: [AuthenticationGuard] }
+    imports: [ RouterModule.forChild([
+        { path: 'notifications', component: NotificationsComponent, canActivate: [ AuthenticationGuard ] }
     ])],
-    exports: [RouterModule]
+    exports: [ RouterModule ]
 })
 export class NotificationRoutingModule { }

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core'
-import { SnippetService } from '../services/snippet/snippet.service'
-import { Snippet } from '../interfaces/snippet/index'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { SearchService } from './services/search.service'
+import { Snippet } from '../snippet/interfaces/snippet'
+import { SnippetService } from '../snippet/services/snippet.service'
 
 @Component({
   selector: 'app-search',

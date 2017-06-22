@@ -3,9 +3,9 @@ import { find } from 'lodash'
 import { Observable } from 'rxjs/Observable'
 import { Subscriber } from 'rxjs/Subscriber'
 import { Subscription } from 'rxjs/Subscription'
-import { Notification } from '../interfaces/notification/index'
-import { RequestService } from '../../services/request/index'
-import { NotificationType } from '../interfaces/notification/notification-type.enum'
+import { Notification } from '../interfaces/notification'
+import { NotificationType } from '../interfaces/notification-type.enum'
+import { RequestService } from '../../request/services/request.service'
 
 @Injectable()
 export class NotificationService {

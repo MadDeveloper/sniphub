@@ -1,0 +1,31 @@
+@import '../../../assets/styles/variables';
+
+header {
+    // position: relative;
+
+    nav {
+        // width: 100%;
+        // position: fixed;
+        // z-index: 100;
+        background-color: $primary-color;
+        padding: 1rem;
+
+        a {
+            color: #fff;
+        }
+
+        .container {
+            @media screen and(max-width: $screen-sm) {
+                margin: 0 !important;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .search-col {
+                @media screen and(max-width: $screen-xs) {
+                    margin-top: 1rem;
+                }
+            }
+        }
+    }
+}

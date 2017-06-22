@@ -16,7 +16,7 @@
                         </div>
                         <div *ngIf="isRequestNotification(notification)">
                             <span>has developed your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet in a new code.</span>
-                            <a  [routerLink]="'/snippets/requests/' + notification.request.id" class="ml-1">See request</a>
+                            <a [routerLink]="'/requests/' + notification.request.id" class="ml-1">See request</a>
                         </div>
                     </div>
                 </div>

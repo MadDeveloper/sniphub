@@ -1,0 +1,71 @@
+<div *ngIf="loaded && snippet" class="container segment p-4 mt-4">
+    <div class="row">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <h1 class="h3">{{ snippet.name }}</h1>
+            </div>
+            <div class="text color meta mr-3">{{ snippet.date | amTimeAgo }}</div>
+        </div>
+        <div class="col">
+            <div class="float-right d-flex align-items-center">
+                <div *ngIf="ownSnippet" class="btn-group mr-3" dropdown>
+                    <i dropdownToggle class="fa fa-cog clickable font-icon huge" aria-hidden="true"></i>
+                    <ul *dropdownMenu class="dropdown-menu" role="menu">
+                        <li class="clickable" role="menuitem">
+                            <a class="dropdown-item" [routerLink]="'/snippets/edit/' + snippet.id ">Edit the snippet</a>
+                        </li>
+                        <li class="clickable" role="menuitem">
+                            <button class="dropdown-item" (click)="confirmDelete()">Delete the snippet</button>
+                        </li>
+                    </ul>
+                </div>
+                <img [src]="snippet.author.avatar" alt="" class="image avatar">
+                <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="ownSnippet && hasPendingRequests" class="row clickable" (click)="goToRequests()">
+        <div class="col-md-8 col-12 mt-4">
+            <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
+                <span><i class="fa fa-bell-o"></i> You have awaiting code requests for this snippet.</span>
+                <a routerLink="/requests" class="alert-link ml-1">See requests</a>
+            </div>
+        </div>
+    </div>
+    <div class="row py-4">
+        <div class="col">
+            {{ snippet.description }}
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col unselectable">
+            <span class="h4 clickable" (click)="like()">
+                <i class="fa" [ngClass]="liked ? 'fa-heart' : 'fa-heart-o'" aria-hidden="true"></i>
+                <span class="ml-1">{{ likes }}</span>
+            </span>
+            <span class="h4" tooltip="Languages availables for the snippet">
+                <i class="fa fa-code ml-2" aria-hidden="true"></i>
+                <span class="ml-1">{{ codes.length }}</span>
+            </span>
+            <span class="h4 clickable" (click)="focusComment()">
+                <i class="fa fa-comment-o ml-2" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+    <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code" readonly="true"></app-code-block>
+    <div *ngIf="!ownSnippet">
+        <hr class="my-3">
+        <h4>Propose the snippet in another language</h4>
+        <div class="text color meta mb-3">You can propose to the author your version of the snippet in the languages you want.</div>
+        <app-add-code [(codes)]="requestCodes" asRequest="true"></app-add-code>
+    </div>
+    <hr class="mt-3">
+    <div>
+        <textarea #comment
+            rows="2"
+            class="flat not-resizable background color none"
+            placeholder="Add a comment..."
+            (keyup.enter)="addComment($event)"></textarea>
+    </div>
+    <app-comments [comments]="comments"></app-comments>
+</div>

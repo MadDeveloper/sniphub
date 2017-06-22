@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import * as $ from 'jquery'
 import { Router } from '@angular/router'
-import { SnippetService } from 'app/services/snippet/snippet.service'
-import { Snippet } from 'app/interfaces/snippet'
-import { AuthenticationService } from 'app/services/authentication/authentication.service'
+import { Snippet } from '../snippet/interfaces/snippet'
+import { SnippetService } from '../snippet/services/snippet.service'
+import { AuthenticationService } from '../authentication/services/authentication.service'
 
 @Component({
   selector: 'app-home',

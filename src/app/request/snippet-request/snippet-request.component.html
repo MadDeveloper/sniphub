@@ -1,0 +1,45 @@
+<div class="container mt-4">
+    <app-back-link></app-back-link>
+</div>
+<div *ngIf="loaded" class="container segment p-4 mt-4">
+    <div class="row mb-3">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <h1 class="h3">{{ request.snippet.name }}</h1>
+            </div>
+            <div class="date mr-3">requested {{ request.snippet.date | amTimeAgo }}</div>
+        </div>
+        <div class="col">
+            <div class="float-right d-flex align-items-center">
+                <span class="meta mr-2">Requested by</span>
+                <img [src]="request.user.avatar" alt="" class="image avatar">
+                <a [routerLink]="'/profile/' + request.user.id" class="author ml-1">{{ request.user.username }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2 class="h5">{{ request.code.language.text }}</h2>
+        </div>
+    </div>
+    <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [(code)]="request.code" hideLanguage="true" readonly="nocursor"></app-code-block>
+    <div class="row">
+        <div class="col">
+            <hr class="my-4">
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="!accepted && !rejected" class="col">
+            <button class="btn outlined success mr-3" (click)="accept()">Accept</button>
+            <button class="btn outlined danger" (click)="confirmReject()">Reject</button>
+        </div>
+        <div class="col">
+            <div *ngIf="accepted" class="alert alert-success mb-0" role="alert">
+                <i class="fa fa-check" aria-hidden="true"></i> You have accepted this code request. <a routerLink="/requests" class="alert-link">See others requests</a>
+            </div>
+            <div *ngIf="rejected" class="alert alert-success mb-0" role="alert">
+                <i class="fa fa-times" aria-hidden="true"></i> You have rejected this code request. <a routerLink="/requests" class="alert-link">See others requests</a>
+            </div>
+        </div>
+    </div>
+</div>
