@@ -4,14 +4,14 @@ import { NgModule } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
-import { CoreModule } from './core/core.module'
+import { CoreModule } from './core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CodemirrorModule } from 'ng2-codemirror'
 import { TooltipModule } from 'ngx-bootstrap'
 import { SelectModule } from 'ng2-select'
-import { MomentModule } from 'angular2-moment'
 import { InputCounterModule } from 'ng4-input-counter'
 import { NotificationModule } from './notification/notification.module'
+import { SearchModule } from './search/search.module'
 import { routes } from './app-routing.module'
 
 // === Guards
@@ -30,7 +30,6 @@ import { AuthenticationService } from './services/authentication/authentication
 import { CodeEditorService } from './services/code-editor'
 import { RequestService } from './services/request'
 import { GuidService } from './services/guid/guid.service'
-import { SearchService } from './services/search/search.service'
 import { LikeService } from './services/like/like.service'
 import { CodeService } from './services/code/code.service'
 import { SweetAlertService } from 'ng2-sweetalert2'
@@ -44,7 +43,6 @@ import { ConnectComponent } from './connect/connect.component'
 import { SignupComponent } from './signup/signup.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
-import { SnippetsListComponent } from './snippets-list/snippets-list.component'
 import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { CommentsComponent } from './comments/comments.component'
 import { AddCodeComponent } from './add-code/add-code.component'
@@ -52,69 +50,67 @@ import { CodeBlockComponent } from './code-block/code-block.component'
 import { HeaderIconsActionsComponent } from './header-icons-actions/header-icons-actions.component'
 import { SnippetRequestComponent } from './snippet-request/snippet-request.component'
 import { AppFooterComponent } from './app-footer/app-footer.component'
-import { SearchComponent } from './search/search.component'
 import { ContactComponent } from './contact/contact.component'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 import { BackLinkComponent } from './back-link/back-link.component'
+import { MomentModule } from 'angular2-moment'
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AppHeaderComponent,
-    HomeComponent,
-    SnippetDetailsComponent,
-    ConnectComponent,
-    SignupComponent,
-    ProfileComponent,
-    EditProfileComponent,
-    SnippetsListComponent,
-    EditSnippetComponent,
-    CommentsComponent,
-    AddCodeComponent,
-    CodeBlockComponent,
-    HeaderIconsActionsComponent,
-    SnippetRequestComponent,
-    AppFooterComponent,
-    SearchComponent,
-    ContactComponent,
-    SnippetsRequestsComponent,
-    NotFoundComponent,
-    BackLinkComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    RouterModule.forRoot( routes ),
-    CoreModule,
-    BsDropdownModule.forRoot(),
-    CodemirrorModule,
-    SelectModule,
-    MomentModule,
-    TooltipModule.forRoot(),
-    InputCounterModule.forRoot(),
-    NotificationModule
-  ],
-  providers: [
-      SnippetService,
-      CommentService,
-      LanguageService,
-      UserService,
-      AuthenticationService,
-      AuthenticationGuard,
-      SnippetResolverGuard,
-      SnippetsRequestsResolverGuard,
-      SnippetRequestResolverGuard,
-      UserResolverGuard,
-      CodeEditorService,
-      RequestService,
-      GuidService,
-      SearchService,
-      LikeService,
-      CodeService,
-      SweetAlertService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        AppHeaderComponent,
+        HomeComponent,
+        SnippetDetailsComponent,
+        ConnectComponent,
+        SignupComponent,
+        ProfileComponent,
+        EditProfileComponent,
+        EditSnippetComponent,
+        CommentsComponent,
+        AddCodeComponent,
+        CodeBlockComponent,
+        HeaderIconsActionsComponent,
+        SnippetRequestComponent,
+        AppFooterComponent,
+        ContactComponent,
+        SnippetsRequestsComponent,
+        NotFoundComponent,
+        BackLinkComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        CoreModule,
+        MomentModule,
+        RouterModule.forRoot( routes ),
+        BsDropdownModule.forRoot(),
+        CodemirrorModule,
+        SelectModule,
+        TooltipModule.forRoot(),
+        InputCounterModule.forRoot(),
+        NotificationModule,
+        SearchModule
+    ],
+    providers: [
+        SnippetService,
+        CommentService,
+        LanguageService,
+        UserService,
+        AuthenticationService,
+        AuthenticationGuard,
+        SnippetResolverGuard,
+        SnippetsRequestsResolverGuard,
+        SnippetRequestResolverGuard,
+        UserResolverGuard,
+        CodeEditorService,
+        RequestService,
+        GuidService,
+        LikeService,
+        CodeService,
+        SweetAlertService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

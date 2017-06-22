@@ -20,7 +20,6 @@ import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-re
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'search', component: SearchComponent },
     { path: 'snippets/new', component: EditSnippetComponent, canActivate: [AuthenticationGuard] },
     {
         path: 'snippets/edit/:id',

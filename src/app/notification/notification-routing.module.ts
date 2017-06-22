@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router'
-import { NotificationsComponent } from './notifications/notifications.component'
+import { NotificationsComponent } from './notifications.component'
 import { AuthenticationGuard } from '../guards/authentication'
 import { NgModule } from '@angular/core'
 
