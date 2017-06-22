@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { MomentModule } from 'angular2-moment'
 import { NotificationService } from './services/notification/notification.service'
 import { SearchService } from './services/search/search.service'
-import { SnippetsListComponent } from './components/snippets-list/snippets-list.component'
+import { SnippetsListComponent } from './components/snippets-list/snippets-list.component';
 import { RouterModule } from '@angular/router'
 import { CommonModule } from '@angular/common'
 
@@ -16,9 +16,8 @@ import { CommonModule } from '@angular/common'
         RouterModule,
         MomentModule
     ],
-    declarations: [
-        SnippetsListComponent
-    ],
+    declarations: [ SnippetsListComponent ],
+    exports: [ SnippetsListComponent ],
     providers: [
         NotificationService,
         SearchService
