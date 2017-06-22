@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core'
+import { NgModule, ModuleWithProviders } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import NotificationRoutingModule from './notification-routing.module'
+import { NotificationRoutingModule } from './notification-routing.module'
 import { NotificationsComponent } from './notifications.component'
+import { NotificationService } from './services/notification.service'
 
 @NgModule({
     imports: [
@@ -11,6 +12,13 @@ import { NotificationsComponent } from './notifications.component'
     declarations: [
         NotificationsComponent
     ],
-    providers: []
+    exports: [ NotificationsComponent ]
 })
-export class NotificationModule { }
+export class NotificationModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: NotificationModule,
+            providers: [ NotificationService ]
+        }
+    }
+}

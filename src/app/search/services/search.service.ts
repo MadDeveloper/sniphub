@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { Snippet } from 'app/interfaces/snippet'
-import { SnippetService } from '../../../services/snippet/snippet.service'
+import { SnippetService } from '../../services/snippet/snippet.service'
 
 @Injectable()
 export class SearchService {

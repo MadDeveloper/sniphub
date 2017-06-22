@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router'
+import { RouterModule } from '@angular/router'
 import { SearchComponent } from './search.component'
 import { NgModule } from '@angular/core'
 
@@ -9,4 +9,4 @@ import { NgModule } from '@angular/core'
     exports: [RouterModule],
     providers: []
 })
-export default class SearchRoutingModule { }
+export class SearchRoutingModule { }

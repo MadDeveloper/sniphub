@@ -1,8 +1,6 @@
 // === Modules
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
-import { FormsModule } from '@angular/forms'
-import { HttpModule } from '@angular/http'
 import { RouterModule } from '@angular/router'
 import { CoreModule } from './core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
@@ -55,6 +53,7 @@ import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests
 import { NotFoundComponent } from './not-found/not-found.component'
 import { BackLinkComponent } from './back-link/back-link.component'
 import { MomentModule } from 'angular2-moment'
+import { SharedModule } from './shared/shared.module'
 
 @NgModule({
     declarations: [
@@ -80,8 +79,7 @@ import { MomentModule } from 'angular2-moment'
     ],
     imports: [
         BrowserModule,
-        FormsModule,
-        HttpModule,
+        SharedModule,
         CoreModule,
         MomentModule,
         RouterModule.forRoot( routes ),
@@ -90,8 +88,8 @@ import { MomentModule } from 'angular2-moment'
         SelectModule,
         TooltipModule.forRoot(),
         InputCounterModule.forRoot(),
-        NotificationModule,
-        SearchModule
+        NotificationModule.forRoot(),
+        SearchModule.forRoot()
     ],
     providers: [
         SnippetService,

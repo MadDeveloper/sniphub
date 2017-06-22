@@ -10,7 +10,6 @@ import { EditSnippetComponent } from './edit-snippet/edit-snippet.component'
 import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { ContactComponent } from './contact/contact.component'
-import { SearchComponent } from './search/search.component'
 import { NotFoundComponent } from './not-found/not-found.component'
 import { AuthenticationGuard } from 'app/guards/authentication'
 import { SnippetResolverGuard } from './guards/snippet/index'
@@ -20,6 +19,8 @@ import { SnippetRequestResolverGuard } from './guards/snippet/snippet-request-re
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
+    // { path: 'notifications', loadChildren: 'app/notification/notification.module#NotificationModule' },
+    // { path: 'search', loadChildren: 'app/search/search.module#SearchModule' },
     { path: 'snippets/new', component: EditSnippetComponent, canActivate: [AuthenticationGuard] },
     {
         path: 'snippets/edit/:id',

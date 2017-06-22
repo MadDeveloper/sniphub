@@ -3,7 +3,7 @@ import { SnippetService } from '../services/snippet/snippet.service'
 import { Snippet } from '../interfaces/snippet/index'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
-import { SearchService } from '../core/services/search/search.service'
+import { SearchService } from './services/search.service'
 
 @Component({
   selector: 'app-search',

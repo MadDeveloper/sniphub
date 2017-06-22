@@ -9,4 +9,4 @@ import { NgModule } from '@angular/core'
     ])],
     exports: [RouterModule]
 })
-export default class NotificationRoutingModule { }
+export class NotificationRoutingModule { }
