@@ -34,6 +34,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private hasPendingRequests = false
     private loaded = false
     private requestCodes: Code[] = []
+    private isAuthenticated: boolean
 
     constructor(
         private commentService: CommentService,
@@ -55,6 +56,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.snippet = data[0]
 
                 if (this.snippet) {
+                    this.isAuthenticated = this.authentication.isAuthenticated()
                     this.comments = await this.commentService.all(this.snippet)
                     this.likes = await this.likeService.all(this.snippet)
                     this.codes = await this.codeService.all(this.snippet)

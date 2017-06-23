@@ -14,10 +14,12 @@ import { RouterModule } from '@angular/router'
 import { MomentModule } from 'angular2-moment'
 import { InputCounterModule } from 'ng4-input-counter'
 import { BsDropdownModule } from 'ngx-bootstrap'
+import { CoreModule } from '../core/core.module'
 
 @NgModule({
     imports: [
         SharedModule,
+        CoreModule,
         SnippetRoutingModule,
         CodeModule,
         RouterModule,

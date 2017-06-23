@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss']
 })
-export class AppHeaderComponent implements OnInit {
+export class AppHeaderComponent implements OnInit, OnDestroy {
+    private routerObserver: Subscription
     private isAuthenticated: boolean
     private name: string
     private homePage = false
@@ -19,10 +21,14 @@ export class AppHeaderComponent implements OnInit {
 
     ngOnInit() {
         this.searchEnabled = this.searchTerms.length > 0
-        this.router
+        this.routerObserver = this.router
             .events
             .filter(event => event instanceof NavigationEnd)
             .subscribe( (event: NavigationEnd) => this.homePage = '/' === event.url )
+    }
+
+    ngOnDestroy() {
+        this.routerObserver.unsubscribe()
     }
 
     toggleSearch() {

@@ -1,3 +1,6 @@
+<div class="container mt-4">
+    <app-back-link></app-back-link>
+</div>
 <div *ngIf="loaded && snippet" class="container segment p-4 mt-4">
     <div class="row">
         <div class="col">
@@ -53,14 +56,14 @@
         </div>
     </div>
     <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code" readonly="true"></app-code-block>
-    <div *ngIf="!ownSnippet">
+    <div *ngIf="!ownSnippet && isAuthenticated">
         <hr class="my-3">
         <h4>Propose the snippet in another language</h4>
         <div class="text color meta mb-3">You can propose to the author your version of the snippet in the languages you want.</div>
         <app-add-code [(codes)]="requestCodes" asRequest="true"></app-add-code>
     </div>
     <hr class="mt-3">
-    <div>
+    <div *ngIf="isAuthenticated">
         <textarea #comment
             rows="2"
             class="flat not-resizable background color none"
