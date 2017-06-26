@@ -12,14 +12,19 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <input-counter [(ngModel)]="snippet.name" placeholder="Name" [maxlength]="nameMaxLength" className="input"></input-counter>
+                <input-counter [(ngModel)]="snippet.name" placeholder="Name" [minlength]="3" [maxlength]="nameMaxLength" className="input"></input-counter>
             </div>
             <div class="form-group">
                 <textarea rows="4" [(ngModel)]="snippet.description" placeholder="Description (optional)" class="not-resizable"></textarea>
             </div>
             <div class="mt-4">
-                <app-add-code [hidden]="!editing" [(codes)]="codes"></app-add-code>
-                <app-code-block [hidden]="editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
+                <app-code-block [hidden]="!editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
+                <div [hidden]="!loaded">
+                    <hr>
+                    <h2 class="h3">Add new languages codes to your snippet</h2>
+                    <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
+                    <app-add-code [(codes)]="codes" infiniteCode="true"></app-add-code>
+                </div>
             </div>
             <hr class="my-4">
             <div class="mb-3">

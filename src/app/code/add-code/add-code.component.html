@@ -1,6 +1,6 @@
 <div>
     <div *ngFor="let code of codes;let i = index" [ngClass]="asRequest ? '' : 'mb-2'">
-        <app-code-block *ngIf="!asRequest || (asRequest && !requested)" (onChangeCodeBlock)="codeBlockChange($event)" [code]="code"></app-code-block>
+        <app-code-block *ngIf="!asRequest || infiniteCode || (asRequest && !requested)" (onChangeCodeBlock)="codeBlockChange($event)" [code]="code"></app-code-block>
         <div class="d-flex align-items-center mt-3 mb-2">
             <button *ngIf="asRequest && !requested" class="btn outlined primary mr-3" (click)="request(code)">Request</button>
             <button *ngIf="!requested" class="btn outlined danger" (click)="confirmRemove(code)">Remove</button>
@@ -11,11 +11,12 @@
                 <i class="fa fa-times" aria-hidden="true"></i> An error occurred during your request, please try again. <a href class="alert-link" (click)="newRequest($event)">Retry</a>
             </div>
         </div>
-        <div *ngIf="(codes.length > 1 && i+1 < codes.length) || (asRequest && codes.length < 1)" class="row">
+        <div *ngIf="(codes.length > 1 && i+1 < codes.length) || ((asRequest || infiniteCode) && codes.length < 1)" class="row">
             <div class="col">
                 <hr>
             </div>
         </div>
     </div>
-    <button *ngIf="!asRequest || (asRequest && codes.length < 1)" (click)="add()" class="btn outlined" [ngClass]="asRequest ? '' : 'mt-2'" aria-hidden="true">Add new code</button>
+    <div [ngClass]="{ 'mb-3': codes.length > 0 && !asRequest }"></div>
+    <button *ngIf="!asRequest || infiniteCode || (asRequest && codes.length < 1)" (click)="add()" class="btn outlined" [ngClass]="asRequest ? '' : 'mt-2'" aria-hidden="true">Add new code</button>
 </div>

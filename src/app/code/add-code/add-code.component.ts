@@ -15,6 +15,8 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 })
 export class AddCodeComponent implements OnInit {
     @Input()
+    private infiniteCode = false
+    @Input()
     private asRequest = false
     @Input()
     private codes: Code[]
