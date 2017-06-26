@@ -20,37 +20,41 @@ export class RequestService {
         private code: CodeService) { }
 
     async all(): Promise<Request[]> {
-        return Promise.resolve([{
-            id: 1,
-            user: await this.user.find({ id: 1 }),
-            date: new Date(),
-            code: this.code.mockOne(),
-            snippet: await this.snippet.find({ id: 1 })
-        }])
+        return Promise.resolve([
+            // {
+            //     id: 1,
+            //     user: await this.user.find({ id: 1 }),
+            //     date: new Date(),
+            //     code: this.code.mockOne(),
+            //     snippet: this.snippet.find('email regex')
+            // }
+        ])
     }
 
     async find( props: any ): Promise<Request> {
         const requests = [{
             id: 1,
-            user: await this.user.find({ id: 1 }),
+            user: this.user.find('maddeveloper'),
             date: new Date(),
             code: this.code.mockOne(),
             snippet: this.snippet.mockOne()
         }]
 
-        return Promise.resolve(find(requests, props))
+        return Promise.resolve(requests[0])
     }
 
     async forSnippet(snippet: Snippet): Promise<Request[]> {
         const requests = [{
             id: 1,
-            user: await this.user.find({ id: 1 }),
+            user: this.user.find('maddeveloper'),
             date: new Date(),
             code: this.code.mockOne(),
-            snippet: await this.snippet.find({ id: 1 })
+            snippet: this.snippet.find('email regex')
         }]
 
-        return Promise.resolve(requests.filter(request => request.snippet.id === snippet.id))
+        return Promise.resolve([
+            // requests.filter(request => request.snippet.id === snippet.id)
+        ])
     }
 
     forge(user: User, code: Code, snippet: Snippet): Request {

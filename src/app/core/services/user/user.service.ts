@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core'
 import { find } from 'lodash'
 import { User } from '../../interfaces/user/user'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class UserService {
     private users: User[]
 
-    constructor() {
+    constructor(private database: AngularFireDatabase) {
         this.users = [
             {
                 id: 1,
@@ -29,8 +31,26 @@ export class UserService {
         ]
     }
 
-    async find( props: any ): Promise<User> {
-        return Promise.resolve(find(this.users, props ))
+    find(username: string, options = {}): Observable<User> {
+        return this.database.list(this.usersPath(), {
+            query: {
+                orderByChild: 'username',
+                equalTo: username,
+                limitToFirst: 1,
+                ...options
+            }
+        }).map((users: any[]) => {
+            if (users) {
+                const user = users[0]
+
+                return {
+                    id: user.$key,
+                    ...user
+                }
+            }
+
+            return null
+        })
     }
 
     async edit(user: User): Promise<boolean> {
@@ -47,5 +67,13 @@ export class UserService {
 
     checkPasswordStrength(password: string) {
         return true
+    }
+
+    private usersPath() {
+        return `/users`
+    }
+
+    private userPath(id: string) {
+        return `${this.usersPath()}/${id}`
     }
 }

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription'
 import { SearchService } from './services/search.service'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-search',
@@ -11,7 +12,7 @@ import { SnippetService } from '../snippet/services/snippet.service'
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy, OnChanges {
-    private snippets: Snippet[]
+    private snippets: Observable<Snippet[]>
     private routeParamsObserver: Subscription
     @Input()
     private terms: string
@@ -34,8 +35,7 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 }
             })
-        this.snippets = []
-        this.snippets = await this.snippetService.all()
+        this.snippets = this.snippetService.all()
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -51,6 +51,6 @@ export class SearchComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     async search() {
-        this.snippets = await this.searchService.searchByAll(this.terms)
+        this.snippets = this.searchService.searchByAll(this.terms)
     }
 }

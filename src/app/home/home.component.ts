@@ -4,6 +4,7 @@ import { Router } from '@angular/router'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
 import { AuthenticationService } from '../authentication/services/authentication.service'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { AuthenticationService } from '../authentication/services/authentication
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-    private snippets: Snippet[]
+    private snippets: Observable<Snippet[]>
     private searching: boolean
     @ViewChild('searchInput')
     private searchInput: ElementRef
@@ -23,11 +24,10 @@ export class HomeComponent implements OnInit {
         private snippetService: SnippetService,
         private authentication: AuthenticationService) { }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.searchEnabled = false
         this.searchTerms = ''
-        this.snippets = []
-        this.snippets = await this.snippetService.all()
+        this.snippets = this.snippetService.all()
         this.searching = false
     }
 

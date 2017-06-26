@@ -11,14 +11,14 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
         private snippet: SnippetService,
         private router: Router) { }
 
-    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Snippet> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Snippet> {
         const id = parseInt(route.params['id'], 10)
 
         try {
-            const snippet = await this.snippet.find({ id })
+            const snippet = this.snippet.find( 'email regex' )
 
             if (snippet) {
-                return Promise.resolve(snippet)
+                return Promise.resolve(null)
             }
 
             this.router.navigate(['/404'])

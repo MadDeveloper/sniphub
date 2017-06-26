@@ -11,23 +11,23 @@ export class UserResolverGuard implements Resolve<User> {
         private user: UserService,
         private router: Router) { }
 
-    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<User> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
         const id = parseInt(route.params['id'], 10)
 
         try {
-            const user = this.user.find({ id })
+            const user = this.user.find('maddeveloper')
 
             if (user) {
-                return Promise.resolve(user)
+                return user
             } else {
                 this.router.navigate(['/404'])
 
-                return Promise.resolve(null)
+                return null
             }
         } catch (error) {
             this.router.navigate(['/404'])
 
-            return Promise.resolve(null)
+            return null
         }
     }
 }

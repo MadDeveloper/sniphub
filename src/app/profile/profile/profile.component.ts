@@ -7,6 +7,7 @@ import { SnippetService } from '../../snippet/services/snippet.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { NotificationService } from '../../notification/services/notification.service'
 import { Notification } from '../../notification/interfaces/notification'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-profile',
@@ -15,7 +16,7 @@ import { Notification } from '../../notification/interfaces/notification'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     private routeDataObserver: Subscription
-    private snippets: Snippet[]
+    private snippets: Observable<Snippet[]>
     private user: User
     private loggedUser: User
     private pendingNotifications: boolean
@@ -30,9 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.notifications = await this.notification.all()
-
-        this.snippets = []
-        this.snippets = await this.snippetService.all()
+        this.snippets = this.snippetService.all()
         this.pendingNotifications = this.notifications.length > 0
 
         if (this.authentication.isAuthenticated()) {

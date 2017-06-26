@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { Snippet } from '../interfaces/snippet'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-snippets-list',
@@ -11,7 +12,7 @@ export class SnippetsListComponent {
     static nameMaxLength = 65
 
     @Input()
-    private snippets: Snippet[]
+    private snippets: Observable<Snippet[]>
 
     constructor(private router: Router) { }
 
