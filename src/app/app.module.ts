@@ -13,9 +13,13 @@ import { SearchModule } from './search/search.module'
 import { SnippetModule } from './snippet/snippet.module'
 import { RequestModule } from './request/request.module'
 import { ProfileModule } from './profile/profile.module'
+import { AngularFireModule } from 'angularfire2'
+import { AngularFireDatabaseModule } from 'angularfire2/database'
+import { AngularFireAuthModule } from 'angularfire2/auth'
 
-// === routes
+// === configurations
 import { routes } from './app-routing.module'
+import { environment } from '../environments/environment'
 
 // === Services
 import { SweetAlertService } from 'ng2-sweetalert2'
@@ -39,6 +43,9 @@ import { AuthenticationModule } from './authentication/authentication.module'
         FormsModule,
         CoreModule.forRoot(),
         RouterModule.forRoot( routes ),
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        AngularFireAuthModule,
         AuthenticationModule.forRoot(),
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
