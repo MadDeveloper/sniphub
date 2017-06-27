@@ -26,7 +26,7 @@ export class SnippetService {
             .map(snippetFetched => {
                 let snippet: Snippet = null
 
-                if (snippetFetched.$value) {
+                if (snippetFetched.$exists()) {
                     snippet = this.buildOne(snippetFetched)
                 }
 

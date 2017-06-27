@@ -12,30 +12,36 @@ export class AuthenticationService {
     redirectUrl: string
     userFirebase: Observable<firebase.User>
     user: User
+    logged: boolean
 
     constructor(
         private router: Router,
         private afAuth: AngularFireAuth,
         private userService: UserService) {
+        this.logged = false
         this.userFirebase = afAuth.authState
+        this.observeAuth()
+    }
 
-        this.userFirebase.subscribe(userFirebase => {
-            console.log('je passe', userFirebase)
-            if (userFirebase) {
-                // this.userService
-                //     .find(userFirebase.uid)
-                //     .map(user => {
-                //         this.user = user
-                //         console.log(user.email)
-                //     })
+    observeAuth() {
+        this.userFirebase
+            .subscribe(userFirebase => {
+                if (userFirebase) {
+                    this.userService
+                        .find(userFirebase.uid)
+                        .subscribe((user: User) => {
+                            this.user = user
 
-
-            }
-        })
+                            if (user) {
+                                this.logged = true
+                            }
+                        })
+                }
+            })
     }
 
     isAuthenticated() {
-        return !!this.user
+        return this.logged
     }
 
     currentUser(): User {
@@ -49,16 +55,17 @@ export class AuthenticationService {
         // this.user = user
         // this.router.navigate([url])
     }
+
     loginGoogle() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        this.afAuth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
     }
 
     loginGitHub() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider())
+        this.afAuth.auth.signInWithRedirect(new firebase.auth.GithubAuthProvider())
     }
 
     loginFacebook() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        this.afAuth.auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider())
     }
 
     logout() {
@@ -66,17 +73,4 @@ export class AuthenticationService {
         this.afAuth.auth.signOut()
         this.router.navigate(['/'])
     }
-
-    // set user(user: User) {
-    //     localStorage.setItem('user', JSON.stringify(user))
-    // }
-
-    // get user(): User {
-    //     try {
-    //         return JSON.parse(localStorage.getItem('user'))
-    //     } catch (e) {
-    //         return null
-    //     }
-    // }
-
 }

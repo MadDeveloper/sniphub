@@ -32,12 +32,18 @@ export class UserService {
     }
 
     find(id: string): Observable<User> {
-        return this.database.object(this.userPath(id)).map((userFetched: any): User => ({
-            id: userFetched.$key,
-            username: userFetched.username,
-            email: userFetched.email,
-            avatar: userFetched.avatar
-        }))
+        return this
+            .database
+            .object(this.userPath(id))
+            .map((userFetched: any): User => {
+                let user: User = null
+
+                if (userFetched.$exists()) {
+                    user = this.buildOne(userFetched)
+                }
+
+                return user
+            })
     }
 
     findByUsername(username: string, options = {}): Observable<User> {
@@ -76,6 +82,15 @@ export class UserService {
 
     checkPasswordStrength(password: string) {
         return true
+    }
+
+    private buildOne(userFetched): User {
+        return {
+            id: userFetched.$key,
+            username: userFetched.username,
+            email: userFetched.email,
+            avatar: userFetched.avatar
+        }
     }
 
     private usersPath() {

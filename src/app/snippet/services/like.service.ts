@@ -16,8 +16,10 @@ export class LikeService {
         return this.database.list(this.likesSnippetPath(snippet))
     }
 
-    like(snippet: Snippet): Promise<boolean> {
-        return Promise.resolve(true)
+    like(snippet: Snippet) {
+        this.database
+            .object(this.likesSnippetPath(snippet))
+            .update({ [this.authentication.user.id]: true })
     }
 
     unlike(snippet: Snippet): Promise<boolean> {

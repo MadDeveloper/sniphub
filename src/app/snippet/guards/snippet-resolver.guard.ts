@@ -3,9 +3,7 @@ import { Location } from '@angular/common'
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router'
 import { Snippet } from '../interfaces/snippet'
 import { SnippetService } from '../services/snippet.service'
-import { Observable, Subscriber } from 'rxjs'
-import 'rxjs/add/operator/take'
-import 'rxjs/add/operator/first'
+import { Observable } from 'rxjs'
 
 @Injectable()
 export class SnippetResolverGuard implements Resolve<Snippet>  {
@@ -14,6 +12,19 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
         private router: Router) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Snippet> {
+        // try {
+        //     const id = route.params['id']
+        //     const snippet = await this.snippet.find(id).take(1).toPromise()
+
+        //     if (snippet) {
+        //         return Promise.resolve(snippet)
+        //     }
+
+        //     return this.resolveFails()
+        // } catch (error) {
+        //     console.log(error)
+        //     return this.resolveFails()
+        // }
         const id = route.params['id']
 
         return this
@@ -28,6 +39,12 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
 
                 return null
             })
-            .first()
+            .take(1)
+    }
+
+    resolveFails(): Promise<any> {
+        this.router.navigate(['/404'])
+
+        return Promise.resolve(null)
     }
 }
