@@ -20,15 +20,14 @@ export class AuthenticationService {
         this.userFirebase = afAuth.authState
 
         this.userFirebase.subscribe(userFirebase => {
-            console.log(userFirebase)
+            console.log('je passe', userFirebase)
             if (userFirebase) {
-
-                this.userService
-                    .find(userFirebase.uid)
-                    .map(user => {
-                        this.user = user
-                        console.log(user.email)
-                    })
+                // this.userService
+                //     .find(userFirebase.uid)
+                //     .map(user => {
+                //         this.user = user
+                //         console.log(user.email)
+                //     })
 
 
             }
@@ -64,6 +63,7 @@ export class AuthenticationService {
 
     logout() {
         this.user = null
+        this.afAuth.auth.signOut()
         this.router.navigate(['/'])
     }
 
