@@ -19,21 +19,22 @@ export class ConnectComponent implements OnInit {
         private router: Router,
         private afAuth: AngularFireAuth) {
 
-         }
+    }
 
 
     // let provider = new firebase.auth.GoogleAuthProvider()
     ngOnInit() { }
 
     login() {
-        const user: User = {
-            id: 1,
-            avatar: '/assets/images/unknown-2.jpg',
-            username: 'Madeveloper',
-            email: 'sergent.julien@icloud.com'
-        }
+        // const user: User = {
+        //     id: 1,
+        //     avatar: '/assets/images/unknown-2.jpg',
+        //     username: 'Madeveloper',
+        //     email: 'sergent.julien@icloud.com'
+        // }
 
-        this.authentication.login(user)
+        // this.authentication.login('test@es.fr', '236')
+
     }
 
     googleLogin() {

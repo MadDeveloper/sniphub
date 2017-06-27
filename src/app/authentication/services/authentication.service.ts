@@ -42,13 +42,13 @@ export class AuthenticationService {
         return this.user
     }
 
-    login(user: User) {
-        const url = this.redirectUrl || '/'
-
+    login(email, password) {
+        // const url = this.redirectUrl || '/'
+        // this.afAuth.auth.createUserWithEmailAndPassword('test@est.fr', '123regeg')
+        // this.afAuth.auth.signInWithEmailAndPassword('test@est.fr', '123regeg')
         // this.user = user
-        this.router.navigate([url])
+        // this.router.navigate([url])
     }
-
     loginGoogle() {
         this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
     }
