@@ -34,7 +34,7 @@ export class RequestService {
     async find( props: any ): Promise<Request> {
         const requests = [{
             id: 1,
-            user: this.user.find('maddeveloper'),
+            user: this.user.find('ddDADa13ff42'),
             date: new Date(),
             code: this.code.mockOne(),
             snippet: this.snippet.mockOne()
@@ -46,7 +46,7 @@ export class RequestService {
     async forSnippet(snippet: Snippet): Promise<Request[]> {
         const requests = [{
             id: 1,
-            user: this.user.find('maddeveloper'),
+            user: this.user.find('ddDADa13ff42'),
             date: new Date(),
             code: this.code.mockOne(),
             snippet: this.snippet.find('email regex')

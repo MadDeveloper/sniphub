@@ -24,71 +24,7 @@ export class NotificationService {
     }
 
     async all(): Promise<Notification[]> {
-        return Promise.resolve([
-            {
-                id: 1,
-                type: NotificationType.REQUEST,
-                user: {
-                    id: 1,
-                    username: 'Matt',
-                    avatar: '/assets/images/unknown.jpg',
-                    email: 'sergent.julien@icloud.com'
-                },
-                snippet: {
-                    id: 1,
-                    name: 'Trim',
-                    description: '',
-                    author: {
-                        id: 1,
-                        username: 'Matt',
-                        avatar: '/assets/images/unknown.jpg',
-                        email: 'sergent.julien@icloud.com'
-                    },
-                    codes: [{
-                        id: 1,
-                        language: {
-                            id: 1,
-                            text: 'JavaScript',
-                            value: 'javascript'
-                        },
-                        code: 'const snipz = "building..."'
-                    }],
-                    date: new Date()
-                },
-                request: await this.request.find({ id: 1 })
-            },
-            {
-                id: 1,
-                type: NotificationType.LIKE,
-                user: {
-                    id: 1,
-                    username: 'John Doe',
-                    avatar: '/assets/images/unknown-2.jpg',
-                    email: 'sergent.julien@icloud.com'
-                },
-                snippet: {
-                    id: 1,
-                    name: 'Trim',
-                    description: '',
-                    author: {
-                        id: 1,
-                        username: 'Matt',
-                        avatar: '/assets/images/unknown.jpg',
-                        email: 'sergent.julien@icloud.com'
-                    },
-                    codes: [{
-                        id: 1,
-                        language: {
-                            id: 1,
-                            text: 'JavaScript',
-                            value: 'javascript'
-                        },
-                        code: 'const snipz = "building..."'
-                    }],
-                    date: new Date()
-                }
-            }
-        ])
+        return Promise.resolve([])
     }
 
     private notify(value) {

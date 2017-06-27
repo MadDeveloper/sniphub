@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core'
 import { Router } from '@angular/router'
 import { Snippet } from '../interfaces/snippet'
 import { Observable } from 'rxjs/Observable'
+import { LikeService } from '../services/like.service'
+import { Like } from '../interfaces/like'
 
 @Component({
   selector: 'app-snippets-list',
@@ -14,7 +16,9 @@ export class SnippetsListComponent {
     @Input()
     private snippets: Observable<Snippet[]>
 
-    constructor(private router: Router) { }
+    constructor(
+        private router: Router,
+        private like: LikeService) { }
 
     snippetDetails(snippet: Snippet) {
         this.router.navigate([`snippets/${snippet.id}`])

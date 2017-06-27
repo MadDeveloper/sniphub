@@ -31,7 +31,16 @@ export class UserService {
         ]
     }
 
-    find(username: string, options = {}): Observable<User> {
+    find(id: string): Observable<User> {
+        return this.database.object(this.userPath(id)).map((userFetched: any): User => ({
+            id: userFetched.$key,
+            username: userFetched.username,
+            email: userFetched.email,
+            avatar: userFetched.avatar
+        }))
+    }
+
+    findByUsername(username: string, options = {}): Observable<User> {
         return this.database.list(this.usersPath(), {
             query: {
                 orderByChild: 'username',

@@ -1,11 +1,14 @@
 import { User } from '../../core/interfaces/user/user'
 import { Code } from '../../code/interfaces/code'
+import { Like } from './like'
+import { Observable } from 'rxjs/Observable'
 
 export interface Snippet {
     id: number
     name: string
     description: string
     date: Date
-    author: User
-    codes: Code[]
+    author: Observable<User>
+    codes: Code[] | Observable<Code[]>
+    likes?: Like[] | Observable<Like[]>
 }

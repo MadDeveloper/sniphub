@@ -12,6 +12,8 @@ import { LikeService } from '../services/like.service'
 import { CodeService } from '../../code/services/code.service'
 import { SweetAlertService } from 'ng2-sweetalert2'
 import { CommentService } from '../services/comment.service'
+import { Observable } from 'rxjs/Observable'
+import { Like } from '../interfaces/like'
 
 @Component({
   selector: 'app-snippet-details',
@@ -21,7 +23,7 @@ import { CommentService } from '../services/comment.service'
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private notification: any
     private snippet: Snippet
-    private likes = 0
+    private likes: Observable<Like[]>
     private liked = false
     private codes: Code[] = []
     private code: Code
@@ -31,6 +33,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private comment: ElementRef
     private routeDataObserver: Subscription
     private ownSnippet = false
+    private authorObserver: Subscription
     private hasPendingRequests = false
     private loaded = false
     private requestCodes: Code[] = []
@@ -58,7 +61,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 if (this.snippet) {
                     this.isAuthenticated = this.authentication.isAuthenticated()
                     this.comments = await this.commentService.all(this.snippet)
-                    this.likes = await this.likeService.all(this.snippet)
+                    this.likes = this.likeService.all(this.snippet)
                     this.codes = await this.codeService.all(this.snippet)
 
                     if (this.codes.length > 0) {
@@ -67,7 +70,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     }
 
                     if (user) {
-                        this.ownSnippet = user.id === this.snippet.author.id
+                        this.authorObserver = this.snippet.author.subscribe(author => this.ownSnippet = user.id === author.id)
                         this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                     }
 
@@ -78,6 +81,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.routeDataObserver.unsubscribe()
+
+        if (this.authorObserver) {
+            this.authorObserver.unsubscribe()
+        }
     }
 
     focusComment() {
@@ -101,7 +108,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     like() {
         if (!this.liked) {
-            this.likes++
+            this.likeService.like(this.snippet)
             this.liked = true
         } else {
             this.unlike()
@@ -109,7 +116,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     unlike() {
-        this.likes--
+        this.likeService.unlike(this.snippet)
         this.liked = false
     }
 

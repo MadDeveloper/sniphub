@@ -23,9 +23,8 @@
         }
     },
     "likes": {
-        "<id>": {
-            "user": "<user>",
-            "snippet": "<snippet>"
+        "<snippet>": {
+            "<user>": true
         }
     },
     "comments": {

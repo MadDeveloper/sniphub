@@ -15,7 +15,7 @@ export class UserResolverGuard implements Resolve<User> {
         const id = parseInt(route.params['id'], 10)
 
         try {
-            const user = this.user.find('maddeveloper')
+            const user = this.user.find('ddDADa13ff42')
 
             if (user) {
                 return user

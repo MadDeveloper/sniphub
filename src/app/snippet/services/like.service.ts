@@ -1,20 +1,34 @@
 import { Injectable } from '@angular/core'
 import { Snippet } from '../interfaces/snippet'
 import { User } from '../../core/interfaces/user/user'
+import { Observable } from 'rxjs/Observable'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { Like } from '../interfaces/like'
+import { AuthenticationService } from '../../authentication/services/authentication.service'
 
 @Injectable()
 export class LikeService {
-    constructor() { }
+    constructor(
+        private database: AngularFireDatabase,
+        private authentication: AuthenticationService) { }
 
-    async all(snippet: Snippet): Promise<number> {
-        return Promise.resolve(158)
+    all(snippet: Snippet): Observable<Like[]> {
+        return this.database.list(this.likesSnippetPath(snippet))
     }
 
-    async like(snippet: Snippet, user: User): Promise<boolean> {
+    like(snippet: Snippet): Promise<boolean> {
         return Promise.resolve(true)
     }
 
-    async unloke(snippet: Snippet): Promise<boolean> {
+    unlike(snippet: Snippet): Promise<boolean> {
         return Promise.resolve(true)
+    }
+
+    private likesPath() {
+        return '/likes'
+    }
+
+    private likesSnippetPath(snippet: Snippet) {
+        return `${this.likesPath()}/${snippet.id}`
     }
 }
