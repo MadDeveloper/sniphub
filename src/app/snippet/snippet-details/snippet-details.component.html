@@ -22,8 +22,8 @@
                         </li>
                     </ul>
                 </div>
-                <img [src]="snippet.author.avatar" alt="" class="image avatar">
-                <a [routerLink]="'/profile/'+snippet.author.id" class="author ml-1">{{ snippet.author.username }}</a>
+                <img src="{{ (snippet.author | async)?.avatar }}" alt="" class="image avatar">
+                <a [routerLink]="'/profile/' + (snippet.author | async)?.id" class="author ml-1">{{ (snippet.author | async)?.username }}</a>
             </div>
         </div>
     </div>

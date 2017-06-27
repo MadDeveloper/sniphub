@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { find } from 'lodash'
 import { Snippet } from '../interfaces/snippet'
 import { AngularFireDatabase } from 'angularfire2/database'
-import { Observable } from 'rxjs/Observable'
+import { Observable, Subscriber } from 'rxjs'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
 
@@ -16,33 +16,45 @@ export class SnippetService {
     all(options?: any): Observable<Snippet[]> {
         return this.database
             .list(this.snippetsPath(), options)
-            .map((snippets: any[]) => snippets.map((snippetFetched: any): Snippet => {
-                const snippet: Snippet = {
-                    id: snippetFetched.$key,
-                    name: snippetFetched.name,
-                    author: this.user.find(snippetFetched.author),
-                    description: snippetFetched.description,
-                    date: new Date(snippetFetched.date),
-                    codes: null,
-                    likes: null
-                }
-
-                snippet.likes = this.like.all(snippet)
-
-                return snippet
-            }))
+            .map((snippets: any[]) => snippets.map((snippetFetched: any): Snippet => this.buildOne(snippetFetched)))
     }
 
-    find(name: string, options?: any): Observable<Snippet> {
-        return this.database.object(`/${name}`, options)
+    find(id: string): Observable<Snippet> {
+        return this
+            .database
+            .object(this.snippetPath(id))
+            .map(snippetFetched => {
+                let snippet: Snippet = null
+
+                if (snippetFetched.$value) {
+                    snippet = this.buildOne(snippetFetched)
+                }
+
+                return snippet
+            })
+    }
+
+    findAsSnapshot(id: string): Observable<Snippet> {
+        return this
+            .database
+            .object(this.snippetPath(id), { preserveSnapshot: true })
+            .map(snapshot => {
+                let snippet: Snippet = null
+
+                if (snapshot.exists()) {
+                    snippet = this.buildOneFromSnapshot(snapshot)
+                }
+
+                return snippet
+            })
     }
 
     save(snippet: Snippet) {
-        return this.database.object(this.snippetPath(snippet))
+        return this.database.object(this.snippetPath(snippet.id))
     }
 
     delete(snippet: Snippet) {
-        return this.database.object(this.snippetPath(snippet)).remove()
+        return this.database.object(this.snippetPath(snippet.id)).remove()
     }
 
     mockOne(): Snippet {
@@ -52,15 +64,41 @@ export class SnippetService {
             description: null,
             date: null,
             author: null,
-            codes: null
+            codes: null,
+            likes: null
         }
+    }
+
+    private buildOne(snippetFetched): Snippet {
+        const snippet: Snippet = {
+            id: snippetFetched.$key,
+            name: snippetFetched.name,
+            author: this.user.find(snippetFetched.author),
+            description: snippetFetched.description,
+            date: snippetFetched.date,
+            codes: null,
+            likes: null
+        }
+
+        snippet.likes = this.like.all(snippet)
+
+        return snippet
+    }
+
+    private buildOneFromSnapshot(snapshot): Snippet {
+        const id = snapshot.key
+        const snippetFetched = snapshot.val()
+
+        snippetFetched.$key = id
+
+        return this.buildOne(snippetFetched)
     }
 
     private snippetsPath() {
         return '/snippets'
     }
 
-    private snippetPath(snippet: Snippet) {
-        return `${this.snippetsPath()}/${snippet.name}`
+    private snippetPath(id: string) {
+        return `${this.snippetsPath()}/${id}`
     }
 }

@@ -4,7 +4,7 @@ import { Like } from './like'
 import { Observable } from 'rxjs/Observable'
 
 export interface Snippet {
-    id: number
+    id: string
     name: string
     description: string
     date: Date

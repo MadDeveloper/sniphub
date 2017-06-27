@@ -31,7 +31,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private comments: Comment[] = []
     @ViewChild('comment')
     private comment: ElementRef
-    private routeDataObserver: Subscription
     private ownSnippet = false
     private authorObserver: Subscription
     private hasPendingRequests = false
@@ -50,8 +49,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private swal: SweetAlertService) { }
 
     async ngOnInit() {
-        this.routeDataObserver = this
-            .route
+        this.route
             .data
             .subscribe(async(data: { snippet: Snippet }) => {
                 const user = this.authentication.currentUser()
@@ -80,8 +78,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.routeDataObserver.unsubscribe()
-
         if (this.authorObserver) {
             this.authorObserver.unsubscribe()
         }
