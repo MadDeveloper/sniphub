@@ -27,16 +27,33 @@ export class AuthenticationService {
         this.afAuth
             .authState
             .subscribe(userFirebase => {
-                if (userFirebase) {
-                    // this.userService
-                    //     .find(userFirebase.uid)
-                    //     .subscribe((user: User) => {
-                    //         this.user = user
+                if (userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
+                    const providerData = userFirebase.providerData[0]
 
-                    //         if (user) {
-                    //             this.logged = true
-                    //         }
-                    //     })
+                    if (!providerData.email) {
+                        // todo: explain why
+                        return
+                    }
+
+                    this.userService
+                        .createIfNotExists({
+                            id: userFirebase.uid,
+                            email: providerData.email,
+                            username: providerData.displayName,
+                            avatar: providerData.photoURL
+                        })
+                        .subscribe(async (userPromise: Promise<User>) => {
+                            try {
+                                this.user = await userPromise
+
+                                if (this.user) {
+                                    this.logged = true
+                                }
+                            } catch (error) {
+                                // todo: display the error
+                                console.error(error)
+                            }
+                        })
                 }
             })
     }
@@ -55,19 +72,22 @@ export class AuthenticationService {
 
     loginGoogle() {
         this.afAuth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+        this.logout()
     }
 
     loginGitHub() {
         this.afAuth.auth.signInWithRedirect(new firebase.auth.GithubAuthProvider())
+        this.logout()
     }
 
     loginFacebook() {
         this.afAuth.auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider())
+        this.logout()
     }
 
     logout() {
         this.user = null
         this.afAuth.auth.signOut()
-        this.router.navigate(['/'])
+        // this.router.navigate(['/'])
     }
 }

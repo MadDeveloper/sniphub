@@ -68,7 +68,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     }
 
                     if (user) {
-                        this.authorObserver = this.snippet.author.subscribe(author => this.ownSnippet = user.id === author.id)
+                        this.authorObserver = this.snippet.author.subscribe(author => this.ownSnippet = user.email === author.email)
                         this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                     }
 

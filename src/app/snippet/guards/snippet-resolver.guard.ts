@@ -16,7 +16,7 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
 
         return this
             .snippet
-            .findAsSnapshot(id)
+            .find(id)
             .map((snippet: Snippet): Snippet => {
                 if (snippet) {
                     return snippet

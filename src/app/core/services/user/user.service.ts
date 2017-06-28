@@ -24,35 +24,36 @@ export class UserService {
             })
     }
 
-    findByUsername(username: string, options = {}): Observable<User> {
-        return this.database.list(this.usersPath(), {
-            query: {
-                orderByChild: 'username',
-                equalTo: username,
-                limitToFirst: 1,
-                ...options
-            }
-        }).map((users: any[]) => {
-            if (users) {
-                const user = users[0]
-
-                return {
-                    id: user.$key,
-                    ...user
+    findByEmail(email: string): Observable<User> {
+        return this
+            .database
+            .list(this.usersPath(), {
+                query: {
+                    orderByChild: 'email',
+                    equalTo: email
                 }
-            }
+            })
+            .map((usersFetched: any[]): User => {
+                let user = null
 
-            return null
-        })
+                if (usersFetched.length > 0) {
+                    const userFetched = usersFetched[0]
+
+                    if (userFetched.$exists()) {
+                        user = this.buildOne(userFetched)
+                    }
+                }
+
+                return user
+            })
     }
 
     createIfNotExists(user: User): Observable<Promise<User>> {
         return this
-            .database
-            .object(this.userPath(user.id))
-            .map(async (userFetched: any): Promise<User> => {
-                if (userFetched.$exists()) {
-                    return Promise.resolve(this.buildOne(userFetched))
+            .findByEmail(user.email)
+            .map(async (userBuilt: User): Promise<User> => {
+                if (userBuilt) {
+                    return Promise.resolve(userBuilt)
                 }
 
                 try {
@@ -67,7 +68,11 @@ export class UserService {
         return this
             .database
             .object(this.userPath(user.id))
-            .set(user)
+            .set({
+                email: user.email,
+                username: user.username,
+                avatar: user.avatar
+            })
     }
 
     async edit(user: User): Promise<boolean> {
@@ -88,7 +93,7 @@ export class UserService {
 
     private buildOne(userFetched): User {
         return {
-            id: userFetched.$key,
+            id: userFetched.id,
             username: userFetched.username,
             email: userFetched.email,
             avatar: userFetched.avatar
