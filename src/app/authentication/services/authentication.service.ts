@@ -6,6 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth'
 import * as firebase from 'firebase/app'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
+import { Subscriber } from 'rxjs/Subscriber'
 
 @Injectable()
 export class AuthenticationService {
@@ -13,6 +14,8 @@ export class AuthenticationService {
     userFirebase: Observable<firebase.User>
     user: User
     logged: boolean
+    fails$: Observable<any>
+    private failsObserver: Subscriber<any>
 
     constructor(
         private router: Router,
@@ -21,73 +24,89 @@ export class AuthenticationService {
         this.logged = false
         this.userFirebase = afAuth.authState
         this.observeAuth()
+        this.fails$ = Observable.create((observer: Subscriber<any>) => this.failsObserver = observer)
     }
 
     observeAuth() {
         this.afAuth
             .authState
-            .subscribe(userFirebase => {
-                if (userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
-                    const providerData = userFirebase.providerData[0]
+            .subscribe(this.authEventReceived)
+    }
 
-                    if (!providerData.email) {
-                        // todo: explain why
-                        return
+    private authEventReceived = userFirebase => {
+        if (userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
+            const providerData = userFirebase.providerData[0]
+
+            if (!providerData.email) {
+                // todo: explain why
+                this.failsSignIn(
+                    `User email was not provided by the provider.
+                    Please check if you have authorized the application to access your informations`)
+            }
+
+            this.userService
+                .createIfNotExists({
+                    id: userFirebase.uid,
+                    email: providerData.email,
+                    username: providerData.displayName,
+                    avatar: providerData.photoURL
+                })
+                .subscribe(async (userPromise: Promise<User>) => {
+                    try {
+                        this.user = await userPromise
+
+                        if (this.user) {
+                            this.successSignIn()
+                        } else {
+                            this.failsSignIn('User was not found')
+                        }
+                    } catch (error) {
+                        this.failsSignIn(error)
                     }
+                })
+        }
+    }
 
-                    this.userService
-                        .createIfNotExists({
-                            id: userFirebase.uid,
-                            email: providerData.email,
-                            username: providerData.displayName,
-                            avatar: providerData.photoURL
-                        })
-                        .subscribe(async (userPromise: Promise<User>) => {
-                            try {
-                                this.user = await userPromise
+    successSignIn() {
+        const url = this.redirectUrl || '/'
 
-                                if (this.user) {
-                                    this.logged = true
-                                }
-                            } catch (error) {
-                                // todo: display the error
-                                console.error(error)
-                            }
-                        })
-                }
-            })
+        this.logged = true
+        this.router.navigate([url])
+        this.redirectUrl = null
+    }
+
+    failsSignIn(error) {
+        this.failsObserver.next(error)
     }
 
     currentUser(): User {
         return this.user
     }
 
-    login(email, password) {
+    // login(email, password) {
         // const url = this.redirectUrl || '/'
         // this.afAuth.auth.createUserWithEmailAndPassword('test@est.fr', '123regeg')
         // this.afAuth.auth.signInWithEmailAndPassword('test@est.fr', '123regeg')
         // this.user = user
         // this.router.navigate([url])
-    }
+    // }
 
     loginGoogle() {
-        this.afAuth.auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())
-        this.logout()
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
     }
 
     loginGitHub() {
-        this.afAuth.auth.signInWithRedirect(new firebase.auth.GithubAuthProvider())
-        this.logout()
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider())
     }
 
     loginFacebook() {
-        this.afAuth.auth.signInWithRedirect(new firebase.auth.FacebookAuthProvider())
-        this.logout()
+        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
     }
 
     logout() {
         this.user = null
+        this.logged = false
         this.afAuth.auth.signOut()
-        // this.router.navigate(['/'])
+        this.router.navigate(['/'])
     }
 }

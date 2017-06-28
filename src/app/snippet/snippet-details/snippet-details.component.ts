@@ -33,6 +33,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private comment: ElementRef
     private ownSnippet = false
     private authorObserver: Subscription
+    private likedObserver: Subscription
     private hasPendingRequests = false
     private loaded = false
     private requestCodes: Code[] = []
@@ -68,7 +69,14 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     }
 
                     if (user) {
-                        this.authorObserver = this.snippet.author.subscribe(author => this.ownSnippet = user.email === author.email)
+                        this.authorObserver = this.snippet.author.subscribe(author => {
+                            if (author && author.email) {
+                                this.ownSnippet = user.email === author.email
+                            } else {
+                                this.ownSnippet = false
+                            }
+                        })
+                        this.likedObserver = this.likeService.liked(this.snippet).subscribe(liked => this.liked = liked)
                         this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                     }
 
@@ -78,8 +86,16 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    private closeSubscriptions() {
         if (this.authorObserver) {
             this.authorObserver.unsubscribe()
+        }
+
+        if (this.likedObserver) {
+            this.likedObserver.unsubscribe()
         }
     }
 

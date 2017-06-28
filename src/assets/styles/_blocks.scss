@@ -34,6 +34,10 @@
         border-right: none;
     }
 
+    &.padded {
+        padding: 2rem;
+    }
+
     &::after {
         display: block;
         content: ' ';

@@ -17,13 +17,28 @@ export class LikeService {
     }
 
     like(snippet: Snippet) {
+        const user = this.authentication.currentUser()
+
         this.database
             .object(this.likesSnippetPath(snippet))
-            .update({ [this.authentication.user.email]: true })
+            .update({ [user.id]: true })
     }
 
-    unlike(snippet: Snippet): Promise<boolean> {
-        return Promise.resolve(true)
+    liked(snippet: Snippet): Observable<boolean> {
+        const user = this.authentication.currentUser()
+
+        return this
+            .database
+            .object(this.likePath(user, snippet))
+            .map(like => like.$exists())
+    }
+
+    unlike(snippet: Snippet) {
+        const user = this.authentication.currentUser()
+
+        this.database
+            .object(this.likePath(user, snippet))
+            .remove()
     }
 
     private likesPath() {
@@ -32,5 +47,9 @@ export class LikeService {
 
     private likesSnippetPath(snippet: Snippet) {
         return `${this.likesPath()}/${snippet.id}`
+    }
+
+    private likePath(user: User, snippet: Snippet) {
+        return `${this.likesSnippetPath(snippet)}/${user.id}`
     }
 }

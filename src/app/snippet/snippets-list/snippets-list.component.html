@@ -7,7 +7,7 @@
             </div>
             <div class="content extra unselectable d-flex align-items-center justify-content-between">
                 <a class="d-block author">
-                    <img src="/assets/images/unknown.jpg" alt="" class="image avatar">
+                    <img src="{{ (snippet.author | async)?.avatar }}" alt="" class="image avatar">
                     <a [routerLink]="'/profile/' + (snippet.author | async)?.id" class="author ml-1">{{ (snippet.author | async)?.username }}</a>
                 </a>
                 <div>

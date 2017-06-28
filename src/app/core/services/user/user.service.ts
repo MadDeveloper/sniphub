@@ -57,7 +57,7 @@ export class UserService {
                 }
 
                 try {
-                    return await this.create(user)
+                    return Promise.resolve(this.buildOne(await this.create(user)))
                 } catch (error) {
                     return Promise.reject(error)
                 }
@@ -93,7 +93,7 @@ export class UserService {
 
     private buildOne(userFetched): User {
         return {
-            id: userFetched.id,
+            id: userFetched.$key,
             username: userFetched.username,
             email: userFetched.email,
             avatar: userFetched.avatar
