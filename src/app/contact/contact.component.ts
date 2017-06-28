@@ -14,7 +14,7 @@ export class ContactComponent implements OnInit {
     constructor(private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        if (this.authentication.isAuthenticated()) {
+        if (this.authentication.logged) {
             const user = this.authentication.currentUser()
 
             this.name = user.username

@@ -10,7 +10,7 @@ export class CommentService {
             {
                 id: 1,
                 author: {
-                    id: 1,
+                    id: '1',
                     avatar: '/assets/images/unknown-2.jpg',
                     username: 'John Doe',
                     email: 'sergent.julien@icloud.com'
@@ -22,7 +22,7 @@ export class CommentService {
             {
                 id: 2,
                 author: {
-                    id: 2,
+                    id: '2',
                     avatar: '/assets/images/unknown.jpg',
                     username: 'Matt',
                     email: 'matt@vdb.com'
@@ -34,7 +34,7 @@ export class CommentService {
             {
                 id: 3,
                 author: {
-                    id: 3,
+                    id: '3',
                     avatar: '/assets/images/unknown-2.jpg',
                     username: 'Zully',
                     email: 'chez@pompo.te'

@@ -89,10 +89,11 @@
       true,
       "never"
     ],
-    "space-before-function-paren": [
-      true,
-      "never"
-    ],
+    "space-before-function-paren": ["error", {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+    }],
     "triple-equals": [
       true,
       "allow-null-check"

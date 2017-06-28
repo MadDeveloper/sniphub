@@ -3,33 +3,11 @@ import { find } from 'lodash'
 import { User } from '../../interfaces/user/user'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'
+import * as firebase from 'firebase/app'
 
 @Injectable()
 export class UserService {
-    private users: User[]
-
-    constructor(private database: AngularFireDatabase) {
-        this.users = [
-            {
-                id: 1,
-                username: 'Madeveloper',
-                email: 'sergent.julien@icloud.com',
-                avatar: '/assets/images/unknown-2.jpg'
-            },
-            {
-                id: 2,
-                username: 'Matt',
-                email: 'matt@vdb.com',
-                avatar: '/assets/images/unknown.jpg'
-            },
-            {
-                id: 3,
-                username: 'Sully',
-                email: 'lapomme@pompote.io',
-                avatar: '/assets/images/unknown.jpg'
-            }
-        ]
-    }
+    constructor(private database: AngularFireDatabase) { }
 
     find(id: string): Observable<User> {
         return this
@@ -66,6 +44,30 @@ export class UserService {
 
             return null
         })
+    }
+
+    createIfNotExists(user: User): Observable<Promise<User>> {
+        return this
+            .database
+            .object(this.userPath(user.id))
+            .map(async (userFetched: any): Promise<User> => {
+                if (userFetched.$exists()) {
+                    return Promise.resolve(this.buildOne(userFetched))
+                }
+
+                try {
+                    return await this.create(user)
+                } catch (error) {
+                    return Promise.reject(error)
+                }
+            })
+    }
+
+    create(user: User): firebase.Promise<any> {
+        return this
+            .database
+            .object(this.userPath(user.id))
+            .set(user)
     }
 
     async edit(user: User): Promise<boolean> {

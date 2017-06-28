@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core'
 import { find } from 'lodash'
 import { Snippet } from '../interfaces/snippet'
 import { AngularFireDatabase } from 'angularfire2/database'
-import { Observable, Subscriber } from 'rxjs'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
+import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class SnippetService {

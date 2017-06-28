@@ -42,6 +42,6 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     }
 
     checkAuthentication() {
-        this.isAuthenticated = this.authentication.isAuthenticated()
+        this.isAuthenticated = this.authentication.logged
     }
 }

@@ -24,24 +24,21 @@ export class AuthenticationService {
     }
 
     observeAuth() {
-        this.userFirebase
+        this.afAuth
+            .authState
             .subscribe(userFirebase => {
                 if (userFirebase) {
-                    this.userService
-                        .find(userFirebase.uid)
-                        .subscribe((user: User) => {
-                            this.user = user
+                    // this.userService
+                    //     .find(userFirebase.uid)
+                    //     .subscribe((user: User) => {
+                    //         this.user = user
 
-                            if (user) {
-                                this.logged = true
-                            }
-                        })
+                    //         if (user) {
+                    //             this.logged = true
+                    //         }
+                    //     })
                 }
             })
-    }
-
-    isAuthenticated() {
-        return this.logged
     }
 
     currentUser(): User {

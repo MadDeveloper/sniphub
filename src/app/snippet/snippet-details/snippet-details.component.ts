@@ -51,13 +51,13 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     async ngOnInit() {
         this.route
             .data
-            .subscribe(async(data: { snippet: Snippet }) => {
+            .subscribe(async (data: { snippet: Snippet }) => {
                 const user = this.authentication.currentUser()
 
                 this.snippet = data[0]
 
                 if (this.snippet) {
-                    this.isAuthenticated = this.authentication.isAuthenticated()
+                    this.isAuthenticated = this.authentication.logged
                     this.comments = await this.commentService.all(this.snippet)
                     this.likes = this.likeService.all(this.snippet)
                     this.codes = await this.codeService.all(this.snippet)

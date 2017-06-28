@@ -36,7 +36,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             this.routeDataObserver = this
                 .route
                 .data
-                .subscribe(async(data: { snippet: Snippet }) => {
+                .subscribe(async (data: { snippet: Snippet }) => {
                     this.snippet = data[0]
                     this.snapshot = Object.assign({}, this.snippet)
                     this.codes = await this.codeService.all(this.snippet)

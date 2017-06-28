@@ -10,7 +10,7 @@ export class AuthenticationGuard implements CanActivate {
         private router: Router) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this.authentication.isAuthenticated()) {
+        if (this.authentication.logged) {
             return true
         }
 

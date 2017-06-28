@@ -34,12 +34,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.snippets = this.snippetService.all()
         this.pendingNotifications = this.notifications.length > 0
 
-        if (this.authentication.isAuthenticated()) {
+        if (this.authentication.logged) {
             this.loggedUser = this.user = this.authentication.currentUser()
         }
 
         if (this.route.snapshot.params['id']) {
-            const userId = parseInt(this.route.snapshot.params['id'], 10)
+            const userId = this.route.snapshot.params['id']
 
             if (this.loggedUser && userId === this.loggedUser.id) {
                 this.user = this.loggedUser
