@@ -11,10 +11,11 @@ import { Notification } from '../../notification/interfaces/notification'
   styleUrls: ['./header-icons-actions.component.scss']
 })
 export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
-    private isAuthenticated: boolean
+    private logged: boolean
     private routerEvent: Subscription
     private hasNotifications = false
     private notificationObserver: Subscription
+    private loggedObserver: Subscription
 
     constructor(
         private router: Router,
@@ -33,8 +34,13 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    private closeSubscriptions() {
         this.routerEvent.unsubscribe()
         this.notificationObserver.unsubscribe()
+        this.loggedObserver.unsubscribe()
     }
 
     checkNotifications(notifications: Notification[]) {
@@ -42,6 +48,10 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     }
 
     checkAuthentication() {
-        this.isAuthenticated = this.authentication.logged
+        this.loggedObserver = this.authentication
+            .logged$
+            .subscribe(logged => {
+                this.logged = logged
+            })
     }
 }

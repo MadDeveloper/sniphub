@@ -1,15 +1,15 @@
 <div class="d-flex-align-items-center">
-    <a *ngIf="!isAuthenticated" routerLink="/signin">
+    <a *ngIf="!logged" routerLink="/signin">
         <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>
     </a>
-    <a *ngIf="isAuthenticated" class="clickable" routerLink="/snippets/new">
+    <a *ngIf="logged" class="clickable" routerLink="/snippets/new">
         <i class="fa fa-plus-square-o icon-menu ml-0" aria-hidden="true"></i>
     </a>
-    <a *ngIf="isAuthenticated" class="clickable notification-group" routerLink="/notifications">
+    <a *ngIf="logged" class="clickable notification-group" routerLink="/notifications">
         <i class="fa fa-bell-o icon-menu" aria-hidden="true"></i>
         <span *ngIf="hasNotifications" class="notification-alert"></span>
     </a>
-    <a *ngIf="isAuthenticated" class="clickable" routerLink="/profile">
+    <a *ngIf="logged" class="clickable" routerLink="/profile">
         <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>
     </a>
 </div>

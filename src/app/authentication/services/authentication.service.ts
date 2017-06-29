@@ -7,31 +7,31 @@ import * as firebase from 'firebase/app'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { Subscriber } from 'rxjs/Subscriber'
+import { ReplaySubject } from 'rxjs/ReplaySubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 @Injectable()
 export class AuthenticationService {
     redirectUrl: string
-    userFirebase: Observable<firebase.User>
     user: User
+    user$: BehaviorSubject<User>
     logged: boolean
-    fails$: Observable<any>
-    private failsObserver: Subscriber<any>
+    logged$: BehaviorSubject<boolean>
+    fails$: ReplaySubject<any>
 
     constructor(
         private router: Router,
         private afAuth: AngularFireAuth,
         private userService: UserService) {
+
         this.logged = false
-        this.userFirebase = afAuth.authState
-        this.observeAuth()
-        this.fails$ = Observable.create((observer: Subscriber<any>) => this.failsObserver = observer)
+        this.fails$ = new ReplaySubject()
+        this.logged$ = new BehaviorSubject<boolean>(this.logged)
+        this.user$ = new BehaviorSubject<User>(this.user)
+        this.observeAfAuth()
     }
 
-    observeAuth() {
-        this.afAuth
-            .authState
-            .subscribe(this.authEventReceived)
-    }
+    private observeAfAuth = () => this.afAuth.authState.subscribe(this.authEventReceived)
 
     private authEventReceived = userFirebase => {
         if (userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
@@ -61,22 +61,33 @@ export class AuthenticationService {
                             this.failsSignIn('User was not found')
                         }
                     } catch (error) {
+                        console.log(error)
                         this.failsSignIn(error)
                     }
                 })
         }
     }
 
-    successSignIn() {
+    private successSignIn() {
         const url = this.redirectUrl || '/'
 
         this.logged = true
+        this.userChanged()
+        this.loggedChanged()
         this.router.navigate([url])
         this.redirectUrl = null
     }
 
-    failsSignIn(error) {
-        this.failsObserver.next(error)
+    private userChanged() {
+        this.user$.next(this.user)
+    }
+
+    private loggedChanged() {
+        this.logged$.next(this.logged)
+    }
+
+    private failsSignIn(error) {
+        this.fails$.next(error)
     }
 
     currentUser(): User {
@@ -107,6 +118,8 @@ export class AuthenticationService {
         this.user = null
         this.logged = false
         this.afAuth.auth.signOut()
+        this.userChanged()
+        this.loggedChanged()
         this.router.navigate(['/'])
     }
 }
