@@ -1,0 +1,12 @@
+@import 'variables';
+
+.editable {
+    padding: 5px 0;
+    transition-property: all;
+    transition-duration: 300ms;
+
+    &:hover {
+        border-radius: 3px;
+        background-color: $light-grey-color;
+    }
+}

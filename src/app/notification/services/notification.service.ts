@@ -1,37 +1,32 @@
 import { Injectable } from '@angular/core'
 import { find } from 'lodash'
-import { Observable } from 'rxjs/Observable'
-import { Subscriber } from 'rxjs/Subscriber'
-import { Subscription } from 'rxjs/Subscription'
+import { Subject } from 'rxjs/Subject'
 import { Notification } from '../interfaces/notification'
 import { NotificationType } from '../interfaces/notification-type.enum'
 import { RequestService } from '../../request/services/request.service'
 
 @Injectable()
 export class NotificationService {
-    private observer: Subscriber<{}>
-    notifications: Observable<Notification[]>
+    notifications$: Subject<Notification[]>
 
     constructor(private request: RequestService) {
-        this.notifications = new Observable(observer => {
-            this.observer = observer
-            this.watch()
-        })
+        this.notifications$ = new Subject()
+        this.watch()
     }
 
     private async watch() {
         this.notify(await this.all())
     }
 
-    async all(): Promise<Notification[]> {
+    private notify(notifications) {
+        this.notifications$.next(notifications)
+    }
+
+    all(): Promise<Notification[]> {
         return Promise.resolve([])
     }
 
-    private notify(value) {
-        this.observer.next(value)
-    }
-
-    async markAllAsRead(notifications: Notification[]): Promise<boolean> {
+    markAllAsRead(notifications: Notification[]): Promise<boolean> {
         this.notify([])
 
         return Promise.resolve(true)

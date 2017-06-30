@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { Subscriber } from 'rxjs/Subscriber'
-import { ReplaySubject } from 'rxjs/ReplaySubject'
+import { Subject } from 'rxjs/Subject'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 @Injectable()
@@ -17,7 +17,7 @@ export class AuthenticationService {
     user$: BehaviorSubject<User>
     logged: boolean
     logged$: BehaviorSubject<boolean>
-    fails$: ReplaySubject<any>
+    fails$: Subject<any>
 
     constructor(
         private router: Router,
@@ -25,7 +25,7 @@ export class AuthenticationService {
         private userService: UserService) {
 
         this.logged = false
-        this.fails$ = new ReplaySubject()
+        this.fails$ = new Subject()
         this.logged$ = new BehaviorSubject<boolean>(this.logged)
         this.user$ = new BehaviorSubject<User>(this.user)
         this.observeAfAuth()
@@ -55,16 +55,19 @@ export class AuthenticationService {
                     try {
                         this.user = await userPromise
 
+                        // The following condition permits to avoid redirection to the home if the user change it's username or photo
                         if (this.user) {
-                            this.successSignIn()
+                            if (!this.logged) {
+                                this.successSignIn()
+                            }
                         } else {
                             this.failsSignIn('User was not found')
                         }
                     } catch (error) {
-                        console.log(error)
                         this.failsSignIn(error)
                     }
                 })
+
         }
     }
 

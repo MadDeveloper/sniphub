@@ -87,6 +87,12 @@ export class UserService {
         return Promise.resolve(true)
     }
 
+    changeUsername(user: User) {
+        this.database
+            .object(this.userPath(user.id))
+            .update({ username: user.username })
+    }
+
     checkPasswordStrength(password: string) {
         return true
     }

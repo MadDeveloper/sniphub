@@ -29,7 +29,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             .subscribe( (event: NavigationEnd) => this.checkAuthentication())
 
         this.notificationObserver = this.notification
-            .notifications
+            .notifications$
             .subscribe((notifications: Notification[]) => this.checkNotifications(notifications))
     }
 

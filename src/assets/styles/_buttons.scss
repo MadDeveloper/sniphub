@@ -7,6 +7,8 @@ button {
 .btn {
     font-family: inherit;
     min-width: 90px;
+    padding: 0.5rem 1rem;
+    line-height: inherit;
 
     &:hover {
         cursor: pointer;
