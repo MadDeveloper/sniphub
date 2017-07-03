@@ -94,19 +94,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     setUsernameEditable() {
-        this.editing = true
-        // if we remove timeout, focus() won't work because the input won't be displayed yet
-        setTimeout(() => this.username.nativeElement.focus(), 0)
+        if (this.ownProfile()) {
+            this.editing = true
+            // if we remove timeout, focus() won't work because the input won't be displayed yet
+            setTimeout(() => this.username.nativeElement.focus(), 0)
+        }
     }
 
     editUsername() {
-        this.editing = false
+        if (this.ownProfile()) {
+            this.editing = false
 
-        if (this.userSnapshot.username !== this.user.username) {
-            this.userService.changeUsername(this.user)
-            this.newUserSnapshot()
+            if (this.userSnapshot.username !== this.user.username) {
+                this.userService.changeUsername(this.user)
+                this.newUserSnapshot()
+            }
+
+            this.cdr.detectChanges()
         }
-
-        this.cdr.detectChanges()
     }
 }

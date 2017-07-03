@@ -12,22 +12,20 @@ export class UserResolverGuard implements Resolve<User> {
         private router: Router) { }
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
-        const id = parseInt(route.params['id'], 10)
+        const id = route.params['id']
 
-        try {
-            const user = this.user.find('ddDADa13ff42')
+        return this
+            .user
+            .find(id)
+            .map((user: User): User => {
+                if (user) {
+                    return user
+                }
 
-            if (user) {
-                return user
-            } else {
                 this.router.navigate(['/404'])
 
                 return null
-            }
-        } catch (error) {
-            this.router.navigate(['/404'])
-
-            return null
-        }
+            })
+            .take(1)
     }
 }

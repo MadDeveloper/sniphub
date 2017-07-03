@@ -28,11 +28,12 @@
         }
     },
     "comments": {
-        "<id>": {
-            "user": "<user>",
-            "snippet": "<snippet>",
-            "date": "<date>",
-            "content": "<string>"
+        "<snippet>": {
+            "<id>": {
+                "user": "<user>",
+                "date": "<date>",
+                "content": "<string>"
+            }
         }
     },
     "users": {

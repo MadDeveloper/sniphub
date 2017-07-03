@@ -9,6 +9,7 @@ import { UserService } from '../../core/services/user/user.service'
 import { Subscriber } from 'rxjs/Subscriber'
 import { Subject } from 'rxjs/Subject'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { StorageService } from '../../core/services/storage/storage.service'
 
 @Injectable()
 export class AuthenticationService {
@@ -18,13 +19,16 @@ export class AuthenticationService {
     logged: boolean
     logged$: BehaviorSubject<boolean>
     fails$: Subject<any>
+    private storageNamespace = 'authentication'
 
     constructor(
         private router: Router,
         private afAuth: AngularFireAuth,
-        private userService: UserService) {
+        private userService: UserService,
+        private storage: StorageService) {
 
-        this.logged = false
+        this.logged = storage.find(this.storageNamespace, 'logged') || false
+        this.user = storage.find(this.storageNamespace, 'user') || null
         this.fails$ = new Subject()
         this.logged$ = new BehaviorSubject<boolean>(this.logged)
         this.user$ = new BehaviorSubject<User>(this.user)
@@ -34,11 +38,10 @@ export class AuthenticationService {
     private observeAfAuth = () => this.afAuth.authState.subscribe(this.authEventReceived)
 
     private authEventReceived = userFirebase => {
-        if (userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
+        if (!this.logged && userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
             const providerData = userFirebase.providerData[0]
 
             if (!providerData.email) {
-                // todo: explain why
                 this.failsSignIn(
                     `User email was not provided by the provider.
                     Please check if you have authorized the application to access your informations`)
@@ -55,11 +58,8 @@ export class AuthenticationService {
                     try {
                         this.user = await userPromise
 
-                        // The following condition permits to avoid redirection to the home if the user change it's username or photo
                         if (this.user) {
-                            if (!this.logged) {
-                                this.successSignIn()
-                            }
+                            this.successSignIn()
                         } else {
                             this.failsSignIn('User was not found')
                         }
@@ -82,10 +82,16 @@ export class AuthenticationService {
     }
 
     private userChanged() {
+        this.storage.update(this.storageNamespace, {
+            user: this.user
+        })
         this.user$.next(this.user)
     }
 
     private loggedChanged() {
+        this.storage.update(this.storageNamespace, {
+            logged: this.logged
+        })
         this.logged$.next(this.logged)
     }
 

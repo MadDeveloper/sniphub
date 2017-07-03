@@ -1,11 +1,11 @@
 <div class="comments">
-    <div *ngFor="let comment of comments" class="comment">
+    <div *ngFor="let comment of comments | async" class="comment">
         <div class="profile">
-            <img [src]="comment.author.avatar" alt="avatar" class="image avatar">
+            <img src="{{ (comment.author | async)?.avatar }}" alt="avatar" class="image avatar">
         </div>
         <div class="content">
             <div class="header">
-                <a [routerLink]="'/profile/'+comment.author.id" class="author">{{ comment.author.username }}</a>
+                <a [routerLink]="'/profile/' + (comment.author | async)?.id" class="author">{{ (comment.author | async)?.username }}</a>
                 <span class="date ml-2">{{ comment.date | amTimeAgo }}</span>
             </div>
             <div class="comment-content">

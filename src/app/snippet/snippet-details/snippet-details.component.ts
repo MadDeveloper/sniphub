@@ -28,7 +28,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private codes: Code[] = []
     private code: Code
     private languages: Language[]
-    private comments: Comment[] = []
+    private comments: Observable<Comment[]>
     @ViewChild('comment')
     private comment: ElementRef
     private ownSnippet = false
@@ -49,7 +49,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private codeService: CodeService,
         private swal: SweetAlertService) { }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.route
             .data
             .subscribe(async (data: { snippet: Snippet }) => {
@@ -59,7 +59,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
                 if (this.snippet) {
                     this.isAuthenticated = this.authentication.logged
-                    this.comments = await this.commentService.all(this.snippet)
+                    this.comments = this.commentService.all(this.snippet)
                     this.likes = this.likeService.all(this.snippet)
                     this.codes = await this.codeService.all(this.snippet)
 
@@ -110,10 +110,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
         if (commentContent.length > 0) {
             const author = this.authentication.currentUser()
-            const comment = this.commentService.forge(commentContent, author)
 
-            this.comments.unshift(comment)
-            this.commentService.add(comment, this.snippet)
+            this.commentService.add(commentContent, author, this.snippet)
             this.comment.nativeElement.value = ''
         }
     }

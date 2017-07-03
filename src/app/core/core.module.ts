@@ -10,6 +10,8 @@ import { GuidService } from './services/guid/guid.service'
 import { UserService } from './services/user/user.service'
 import { UserResolverGuard } from './guards/user/user-resolver.guard'
 import { CoreRoutingModule } from './core-routing.module'
+import { StorageService } from './services/storage/storage.service'
+import { DatabaseHelperService } from './services/database-helper/database-helper.service'
 
 @NgModule({
     imports: [
@@ -39,7 +41,9 @@ export class CoreModule {
             providers: [
                 GuidService,
                 UserService,
-                UserResolverGuard
+                UserResolverGuard,
+                StorageService,
+                DatabaseHelperService
             ]
         }
     }

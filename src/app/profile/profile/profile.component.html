@@ -17,7 +17,7 @@
                     <div class="col-md-7 col-8 user-info d-flex align-items-center">
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-between">
-                                <h3 *ngIf="!ownProfile() || (ownProfile() && !editing)" (click)="setUsernameEditable()" class="clickable mr-4" [ngClass]="{ editable: ownProfile() }">{{ user.username }}</h3>
+                                <h3 *ngIf="!ownProfile() || (ownProfile() && !editing)" (click)="setUsernameEditable()" class="mr-4" [ngClass]="{ editable: ownProfile(), clickable: ownProfile() }">{{ user.username }}</h3>
                                 <input #username [hidden]="!editing" type="text" class="username-input h3 mb-3" (blur)="editUsername()" (keyup.enter)="editUsername()" [(ngModel)]="user.username" autofocus>
                                 <div *ngIf="ownProfile()" class="align-self-start hidden-sm-down">
                                     <!--<div class="btn-group" dropdown>
@@ -76,10 +76,15 @@
         <ng-template #noSnippets>
             <div class="col-12 my-5 meta">
                 <h1 class="display-4 text-center"><i class="fa fa-code" aria-hidden="true"></i></h1>
-                <div class="text-center">You don't have created or contributed to snippets for the moment</div>
-                <div class="text-center mt-3">
-                    <a class="btn outlined" routerLink="/snippets/new">Create your first snippet</a>
+                <div *ngIf="ownProfile();else noSnippetsExternalProfile">
+                    <div class="text-center">You don't have created or contributed to snippets for the moment</div>
+                    <div class="text-center mt-3">
+                        <a class="btn outlined" routerLink="/snippets/new">Create your first snippet</a>
+                    </div>
                 </div>
+                <ng-template #noSnippetsExternalProfile>
+                    <div class="text-center">{{ user.username }} doesn't have created or contributed to snippets for the moment</div>
+                </ng-template>
             </div>
         </ng-template>
 	</div>

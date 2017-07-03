@@ -5,18 +5,23 @@ import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
 import { Observable } from 'rxjs/Observable'
+import { DatabaseHelperService } from '../../core/services/database-helper/database-helper.service'
 
 @Injectable()
 export class SnippetService {
     constructor(
         private database: AngularFireDatabase,
         private user: UserService,
-        private like: LikeService) { }
+        private like: LikeService,
+        private databaseHelper: DatabaseHelperService) { }
 
     all(options?: any): Observable<Snippet[]> {
-        return this.database
-            .list(this.snippetsPath(), options)
-            .map((snippets: any[]) => snippets.map((snippetFetched: any): Snippet => this.buildOne(snippetFetched)))
+        const snippetsList = this.database.list(this.snippetsPath(), options)
+
+        return this
+            .databaseHelper
+            .filterListOmittedKeys(snippetsList)
+            .map((snippets: any[]) => snippets.map((snippet: any): Snippet => this.forge(snippet)))
     }
 
     find(id: string): Observable<Snippet> {
@@ -27,7 +32,7 @@ export class SnippetService {
                 let snippet: Snippet = null
 
                 if (snippetFetched.$exists()) {
-                    snippet = this.buildOne(snippetFetched)
+                    snippet = this.forge(snippetFetched)
                 }
 
                 return snippet
@@ -42,7 +47,7 @@ export class SnippetService {
                 let snippet: Snippet = null
 
                 if (snapshot.exists()) {
-                    snippet = this.buildOneFromSnapshot(snapshot)
+                    snippet = this.forgeFromSnapshot(snapshot)
                 }
 
                 return snippet
@@ -69,7 +74,7 @@ export class SnippetService {
         }
     }
 
-    private buildOne(snippetFetched): Snippet {
+    private forge(snippetFetched): Snippet {
         const snippet: Snippet = {
             id: snippetFetched.$key,
             name: snippetFetched.name,
@@ -85,13 +90,13 @@ export class SnippetService {
         return snippet
     }
 
-    private buildOneFromSnapshot(snapshot): Snippet {
+    private forgeFromSnapshot(snapshot): Snippet {
         const id = snapshot.key
         const snippetFetched = snapshot.val()
 
         snippetFetched.$key = id
 
-        return this.buildOne(snippetFetched)
+        return this.forge(snippetFetched)
     }
 
     private snippetsPath() {
