@@ -20,6 +20,7 @@
       "prefix": "app",
       "styles": [
         "../node_modules/codemirror/lib/codemirror.css",
+        "../node_modules/codemirror/addon/hint/show-hint.css",
         "../node_modules/codemirror/theme/dracula.css",
         "../node_modules/sweetalert2/dist/sweetalert2.min.css",
         "styles.scss"
