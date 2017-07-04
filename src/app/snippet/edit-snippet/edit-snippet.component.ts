@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { ActivatedRoute, RouterStateSnapshot } from '@angular/router'
+import { ActivatedRoute, RouterStateSnapshot, Router } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { Snippet } from '../interfaces/snippet'
 import { Code } from '../../code/interfaces/code'
 import { Language } from '../../code/interfaces/language'
 import { SnippetService } from '../services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
+import { AuthenticationService } from '../../authentication/services/authentication.service'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -23,11 +24,15 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private languages: Language[]
     private loaded = false
     private nameMaxLength = 70
+    private saving = false
+    private error: any
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
-        private codeService: CodeService) { }
+        private codeService: CodeService,
+        private router: Router,
+        private authentication: AuthenticationService) { }
 
     ngOnInit() {
         if (this.route.snapshot.params['id']) {
@@ -63,11 +68,18 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         return this.codes.map(code => code.language)
     }
 
-    codeBlockChange(event: any) {
+    async save() {
+        try {
+            this.saving = true
 
-    }
-
-    save() {
-        this.snippetService.save(this.snippet)
+            if (this.editing) {
+                await this.snippetService.update(this.snippet)
+            } else {
+                this.snippet.id = this.snippetService.create(this.snippet, this.authentication.currentUser()).key
+            }
+                this.router.navigate([`/snippets/${this.snippet.id}`])
+        } catch (error) {
+            this.error = error
+        }
     }
 }

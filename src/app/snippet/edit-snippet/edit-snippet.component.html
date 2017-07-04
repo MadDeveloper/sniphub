@@ -6,29 +6,38 @@
                 <h1 class="h2">Editing the snippet <span class="text color primary">{{ snapshot.name }}</span></h1>
             </ng-template>
             <span class="text color meta">A snippet contains a small region of re-usable source code available in one or many languages.</span>
-            <hr>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <input-counter [(ngModel)]="snippet.name" placeholder="Name" [minlength]="3" [maxlength]="nameMaxLength" className="input"></input-counter>
+                <input-counter [(ngModel)]="snippet.name" [disabled]="saving" placeholder="Name" [minlength]="3" [maxlength]="nameMaxLength" className="input"></input-counter>
             </div>
             <div class="form-group">
-                <textarea rows="4" [(ngModel)]="snippet.description" placeholder="Description (optional)" class="not-resizable"></textarea>
+                <textarea rows="4" [(ngModel)]="snippet.description" [disabled]="saving" placeholder="Description (optional)" class="not-resizable"></textarea>
             </div>
             <div class="mt-4">
-                <app-code-block [hidden]="!editing" (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code"></app-code-block>
-                <div [hidden]="!loaded">
+                <div [hidden]="!editing">
+                    <h2 class="h3">Edit the languages codes to your snippet</h2>
+                    <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
                     <hr>
-                    <h2 class="h3">Add new languages codes to your snippet</h2>
+                    <app-code-block [hidden]="!editing" [(code)]="code"></app-code-block>
+                </div>
+                <div [hidden]="editing">
+                    <h2 class="h3">Add languages codes to your new snippet</h2>
                     <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
+                    <hr>
                     <app-add-code [(codes)]="codes" infiniteCode="true" min="1"></app-add-code>
                 </div>
             </div>
             <hr class="my-4">
             <div class="mb-3">
-                <button class="btn primary outlined" (click)="save()">Save</button>
+                <button class="btn primary outlined" (click)="save()" [disabled]="saving">Save</button>
+            </div>
+            <div *ngIf="error" class="mb-3">
+                <div class="alert alert-danger">
+                    <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ error }}.
+                </div>
             </div>
         </div>
     </div>

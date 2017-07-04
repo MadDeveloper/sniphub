@@ -3,11 +3,13 @@
         <ng-select [active]="code.language.value ? [code.language] : null"
             [items]="languages"
             (selected)="changeLanguage($event)"
-            placeholder="Search a language"></ng-select>
+            placeholder="Search a language">
+        </ng-select>
     </div>
 </div>
 <div>
     <codemirror #codemirror
         [(ngModel)]="code.code"
-        [config]="config"></codemirror>
+        [config]="config">
+    </codemirror>
 </div>

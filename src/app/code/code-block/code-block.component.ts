@@ -34,7 +34,7 @@ export class CodeBlockComponent implements OnInit {
         this.onChangeCodeBlock = new EventEmitter()
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         if (!this.code) {
             this.code = this.codeService.mockOne()
         }
@@ -42,14 +42,14 @@ export class CodeBlockComponent implements OnInit {
         if (!this.config) {
             this.config = Object.assign({}, this.codeEditor.config, {
                 mode: this.code.language.value,
-                change: this.changeCode,
                 extraKeys: { 'Ctrl-Space': 'autocomplete' },
-                readOnly: this.readonly ? 'nocursor' : false
+                readOnly: this.readonly ? 'nocursor' : false,
+                change: this.changeCode
             })
         }
 
         if (!Array.isArray(this.languages)) {
-            this.languages = await this.languageService.all()
+            this.languages = this.languageService.all()
         }
     }
 

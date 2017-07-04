@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core'
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
 import { SweetAlertService } from 'ng2-sweetalert2'
 import { Code } from '../interfaces/code'
 import { Snippet } from '../../snippet/interfaces/snippet'

@@ -11,8 +11,8 @@ export class LanguageService {
         this.languages = languages
     }
 
-    async all(): Promise<Language[]> {
-        return Promise.resolve(this.languages)
+    all() {
+        return this.languages
     }
 
     async find( props: any ): Promise<Language> {

@@ -6,6 +6,8 @@ import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
 import { Observable } from 'rxjs/Observable'
 import { DatabaseHelperService } from '../../core/services/database-helper/database-helper.service'
+import { User } from '../../core/interfaces/user/user'
+import * as firebase from 'firebase'
 
 @Injectable()
 export class SnippetService {
@@ -54,8 +56,26 @@ export class SnippetService {
             })
     }
 
-    save(snippet: Snippet) {
-        return this.database.object(this.snippetPath(snippet.id))
+    create(snippet: Snippet, author: User) {
+        return this
+            .database
+            .list(this.snippetsPath())
+            .push({
+                name: snippet.name,
+                author: author.id,
+                description: snippet.description,
+                date: firebase.database.ServerValue.TIMESTAMP
+            })
+    }
+
+    update(snippet: Snippet) {
+        return this
+            .database
+            .object(this.snippetPath(snippet.id))
+            .update({
+                description: snippet.description,
+                name: snippet.name
+            })
     }
 
     delete(snippet: Snippet) {
