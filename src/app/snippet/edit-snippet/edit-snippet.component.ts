@@ -30,7 +30,6 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         private codeService: CodeService) { }
 
     ngOnInit() {
-        this.editing = false
         if (this.route.snapshot.params['id']) {
             this.editing = true
             this.routeDataObserver = this
@@ -48,7 +47,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
                     this.loaded = true
                 })
         } else {
-            // this.editing = false
+            this.editing = false
             this.snippet = this.snippetService.mockOne()
             this.loaded = true
         }

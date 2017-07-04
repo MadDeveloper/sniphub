@@ -1,9 +1,9 @@
 <div>
-    <div *ngFor="let code of codes;let i = index" [ngClass]="asRequest ? '' : 'mb-2'">
+    <div *ngFor="let code of codes; let i = index" [ngClass]="asRequest ? '' : 'mb-2'">
         <app-code-block *ngIf="!asRequest || infiniteCode || (asRequest && !requested)" (onChangeCodeBlock)="codeBlockChange($event)" [code]="code"></app-code-block>
         <div class="d-flex align-items-center mt-3 mb-2">
             <button *ngIf="asRequest && !requested" class="btn outlined primary mr-3" (click)="request(code)">Request</button>
-            <button *ngIf="!requested" class="btn outlined danger" (click)="confirmRemove(code)">Remove</button>
+            <button *ngIf="!requested && i >= min" class="btn outlined danger" (click)="confirmRemove(code)">Remove</button>
             <div *ngIf="requested && requestedSuccessfully" class="alert alert-success w-100 mb-0" role="alert">
                 <i class="fa fa-check" aria-hidden="true"></i> Your code request has been sent successfully. <a href class="alert-link" (click)="newRequest($event)">Send another one</a>
             </div>

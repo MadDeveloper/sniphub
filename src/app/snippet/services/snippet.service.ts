@@ -65,7 +65,7 @@ export class SnippetService {
     mockOne(): Snippet {
         return {
             id: null,
-            name: 'null',
+            name: null,
             description: null,
             date: null,
             author: null,

@@ -22,6 +22,8 @@ export class AddCodeComponent implements OnInit {
     private codes: Code[]
     @Input()
     private snippet: Snippet
+    @Input()
+    private min = 0
     private requested = false
     private requestedSuccessfully = false
 
