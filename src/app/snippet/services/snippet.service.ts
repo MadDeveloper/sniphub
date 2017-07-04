@@ -23,7 +23,31 @@ export class SnippetService {
         return this
             .databaseHelper
             .filterListOmittedKeys(snippetsList)
-            .map((snippets: any[]) => snippets.map((snippet: any): Snippet => this.forge(snippet)))
+            .map((snippets: any[]) => this.forgeAll(snippets))
+    }
+
+    author(author: User): Observable<Snippet[]> {
+        return this
+            .database
+            .list(this.snippetsPath(), {
+                query: {
+                    orderByChild: 'author',
+                    equalTo: author.id
+                }
+            })
+            .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
+    }
+
+    contributor(author: User): Observable<Snippet[]> {
+        return this
+            .database
+            .list(this.snippetsPath(), {
+                query: {
+                    orderByChild: 'author',
+                    equalTo: author.id
+                }
+            })
+            .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
     find(id: string): Observable<Snippet> {
@@ -79,7 +103,10 @@ export class SnippetService {
     }
 
     delete(snippet: Snippet) {
-        return this.database.object(this.snippetPath(snippet.id)).remove()
+        return this
+            .database
+            .object(this.snippetPath(snippet.id))
+            .remove()
     }
 
     mockOne(): Snippet {
@@ -94,7 +121,11 @@ export class SnippetService {
         }
     }
 
-    private forge(snippetFetched): Snippet {
+    forgeAll(snippets: any[]) {
+        return snippets.map((snippet: any): Snippet => this.forge(snippet))
+    }
+
+    forge(snippetFetched): Snippet {
         const snippet: Snippet = {
             id: snippetFetched.$key,
             name: snippetFetched.name,

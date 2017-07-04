@@ -17,7 +17,10 @@ import { UserService } from '../../core/services/user/user.service'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     private routeDataObserver: Subscription
-    private snippets: Observable<Snippet[]>
+    private authorSnippets: Snippet[]
+    private contributorSnippets: Snippet[]
+    private snippetsLoaded = false
+    private snippetsObserver: Subscription
     private user: User
     private userSnapshot: User
     private loggedUser: User
@@ -40,7 +43,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     async ngOnInit() {
         this.notifications = await this.notification.all()
-        this.snippets = this.snippetService.all()
         this.pendingNotifications = this.notifications.length > 0
 
         if (this.authentication.logged) {
@@ -65,12 +67,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     })
             }
         }
+
+        this.loadSnippets()
+    }
+
+    loadSnippets() {
+        this.snippetsObserver = this.snippetService
+            .author(this.user)
+            .mergeMap(authorSnippets => {
+                this.authorSnippets = authorSnippets
+
+                return this.snippetService.contributor(this.user)
+            })
+            .subscribe(contributorSnippets => {
+                this.contributorSnippets = contributorSnippets
+                this.snippetsLoaded = true
+            })
     }
 
     ngOnDestroy() {
-        if (this.routeDataObserver) {
-            this.routeDataObserver.unsubscribe()
-        }
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        this.snippetsObserver.unsubscribe()
     }
 
     private newUserSnapshot() {

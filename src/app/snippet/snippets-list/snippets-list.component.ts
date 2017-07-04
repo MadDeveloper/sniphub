@@ -4,6 +4,7 @@ import { Snippet } from '../interfaces/snippet'
 import { Observable } from 'rxjs/Observable'
 import { LikeService } from '../services/like.service'
 import { Like } from '../interfaces/like'
+import { config } from '../../../config'
 
 @Component({
   selector: 'app-snippets-list',
@@ -11,10 +12,10 @@ import { Like } from '../interfaces/like'
   styleUrls: ['./snippets-list.component.scss']
 })
 export class SnippetsListComponent {
-    static nameMaxLength = 65
+    static nameMaxLength = config.snippet.maxLengthName
 
     @Input()
-    private snippets: Observable<Snippet[]>
+    private snippets: Snippet[]
 
     constructor(
         private router: Router,

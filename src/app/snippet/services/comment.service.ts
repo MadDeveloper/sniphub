@@ -6,7 +6,6 @@ import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'
 import { UserService } from '../../core/services/user/user.service'
 import { GuidService } from '../../core/services/guid/guid.service'
-import { database as databaseConfig } from '../../../config'
 import { DatabaseHelperService } from '../../core/services/database-helper/database-helper.service'
 import * as firebase from 'firebase'
 

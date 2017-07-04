@@ -1,5 +1,10 @@
-export const database = {
-    keys: {
-        omitted: [ '__keep' ]
+export const config = {
+    database: {
+        keys: {
+            omitted: [ '__keep' ]
+        }
+    },
+    snippet: {
+        maxLengthName: 70
     }
 }

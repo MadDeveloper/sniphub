@@ -14,6 +14,7 @@ import { SweetAlertService } from 'ng2-sweetalert2'
 import { CommentService } from '../services/comment.service'
 import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
+import { SnippetService } from '../services/snippet.service'
 
 @Component({
   selector: 'app-snippet-details',
@@ -47,7 +48,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
         private likeService: LikeService,
         private codeService: CodeService,
-        private swal: SweetAlertService) { }
+        private swal: SweetAlertService,
+        private snippetService: SnippetService) { }
 
     ngOnInit() {
         this.route
@@ -146,7 +148,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         try {
             const rejected = await this.swal.swal({
                 title: 'Are you sure?',
-                text: 'You won\'t be able to get back your snippet.',
+                text: `You won't be able to get back your snippet.`,
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Delete',
@@ -161,7 +163,16 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    delete() {
-
+    async delete() {
+        try {
+            await this.snippetService.delete(this.snippet)
+            this.router.navigate(['/profile'])
+        } catch (error) {
+            this.swal.swal({
+                title: 'Oops...',
+                text: 'Something went wrong! Please retry again or later.',
+                type: 'error'
+            })
+        }
     }
 }

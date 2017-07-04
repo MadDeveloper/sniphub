@@ -1,10 +1,12 @@
 @import 'variables';
 
-button {
-    font-family: inherit;
-}
-
 .btn {
+    border-radius: 3px;
+
+    &:disabled:hover {
+        cursor: not-allowed;
+    }
+
     font-family: inherit;
     min-width: 90px;
     padding: 0.5rem 1rem;

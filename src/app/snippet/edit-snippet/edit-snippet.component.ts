@@ -7,6 +7,7 @@ import { Language } from '../../code/interfaces/language'
 import { SnippetService } from '../services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
+import { config } from '../../../config'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -23,7 +24,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     private code: Code
     private languages: Language[]
     private loaded = false
-    private nameMaxLength = 70
+    private nameMaxLength = config.snippet.maxLengthName
     private saving = false
     private error: any
 
@@ -75,7 +76,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             if (this.editing) {
                 await this.snippetService.update(this.snippet)
             } else {
-                this.snippet.id = this.snippetService.create(this.snippet, this.authentication.currentUser()).key
+                this.snippet.id = (await this.snippetService.create(this.snippet, this.authentication.currentUser())).key
             }
                 this.router.navigate([`/snippets/${this.snippet.id}`])
         } catch (error) {

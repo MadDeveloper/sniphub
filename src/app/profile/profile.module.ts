@@ -5,11 +5,13 @@ import { ProfileComponent } from './profile/profile.component'
 import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetModule } from '../snippet/snippet.module'
 import { RouterModule } from '@angular/router'
+import { CoreModule } from '../core/core.module'
 
 @NgModule({
     imports: [
         SharedModule,
         RouterModule,
+        CoreModule,
         ProfileRoutingModule,
         SnippetModule
     ],

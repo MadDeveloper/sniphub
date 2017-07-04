@@ -12,6 +12,7 @@ import { UserResolverGuard } from './guards/user/user-resolver.guard'
 import { CoreRoutingModule } from './core-routing.module'
 import { StorageService } from './services/storage/storage.service'
 import { DatabaseHelperService } from './services/database-helper/database-helper.service'
+import { LoaderComponent } from './loader/loader.component'
 
 @NgModule({
     imports: [
@@ -24,14 +25,16 @@ import { DatabaseHelperService } from './services/database-helper/database-helpe
         AppHeaderComponent,
         BackLinkComponent,
         HeaderIconsActionsComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        LoaderComponent
     ],
     exports: [
         AppFooterComponent,
         AppHeaderComponent,
         BackLinkComponent,
         HeaderIconsActionsComponent,
-        NotFoundComponent
+        NotFoundComponent,
+        LoaderComponent
     ]
 })
 export class CoreModule {
