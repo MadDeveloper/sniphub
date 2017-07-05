@@ -19,22 +19,31 @@
         </div>
     </div>
 </section>
-<section *ngIf="!searching;else searchView" class="mt-4">
-    <div class="container">
-        <div class="row mt-4 mb-3">
-            <div class="col">
-                <h3>Derniers ajouts</h3>
+<section class="container mt-4">
+    <div *ngIf="!loading; else loadingSnippets">
+        <div *ngIf="!searching; else searchView">
+            <div class="row mt-4 mb-3">
+                <div class="col">
+                    <h3>Derniers ajouts</h3>
+                </div>
             </div>
-        </div>
-        <app-snippets-list [snippets]="snippets | async"></app-snippets-list>
-        <div class="row mt-5 mb-3">
-            <div class="col">
-                <h3>Populaires</h3>
+            <app-snippets-list [snippets]="snippets"></app-snippets-list>
+            <div class="row mt-5 mb-3">
+                <div class="col">
+                    <h3>Populaires</h3>
+                </div>
             </div>
+            <app-snippets-list [snippets]="snippets"></app-snippets-list>
         </div>
-        <app-snippets-list [snippets]="snippets | async"></app-snippets-list>
+        <ng-template #searchView>
+            <app-search [terms]="searchTerms"></app-search>
+        </ng-template>
     </div>
+    <ng-template #loadingSnippets>
+        <div class="row mt-5">
+            <div class="col d-flex justify-content-center mt-5">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </ng-template>
 </section>
-<ng-template #searchView>
-    <app-search [terms]="searchTerms"></app-search>
-</ng-template>

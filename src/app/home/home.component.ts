@@ -1,23 +1,26 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
 import * as $ from 'jquery'
 import { Router } from '@angular/router'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
 import { AuthenticationService } from '../authentication/services/authentication.service'
 import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-    private snippets: Observable<Snippet[]>
-    private searching: boolean
+export class HomeComponent implements OnInit, OnDestroy {
+    private snippets: Snippet[] = []
+    private searching = false
     @ViewChild('searchInput')
     private searchInput: ElementRef
-    private searchTerms: string
-    private searchEnabled: boolean
+    private searchTerms = ''
+    private searchEnabled = false
+    private loading = false
+    private snippetsObserver: Subscription
 
     constructor(
         private router: Router,
@@ -25,10 +28,26 @@ export class HomeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        this.searchEnabled = false
-        this.searchTerms = ''
-        this.snippets = this.snippetService.all()
-        this.searching = false
+        this.loadSnippets()
+    }
+
+    ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        this.snippetsObserver.unsubscribe()
+    }
+
+    loadSnippets() {
+        this.enableLoading()
+        this.snippetsObserver = this
+            .snippetService
+            .all()
+            .subscribe((snippets: Snippet[]) => {
+                this.snippets = snippets
+                this.disableLoading()
+            })
     }
 
     focusSearchInput(event: Event) {
@@ -44,5 +63,13 @@ export class HomeComponent implements OnInit {
         if (this.searchInput.nativeElement.value.length === 0) {
             this.searchEnabled = !this.searchEnabled
         }
+    }
+
+    enableLoading() {
+        this.loading = true
+    }
+
+    disableLoading() {
+        this.loading = false
     }
 }
