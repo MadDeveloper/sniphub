@@ -55,16 +55,18 @@ export class AuthenticationService {
                     avatar: providerData.photoURL
                 })
                 .subscribe(async (userPromise: Promise<User>) => {
-                    try {
-                        this.user = await userPromise
+                    if (!this.logged) {
+                        try {
+                            this.user = await userPromise
 
-                        if (this.user) {
-                            this.successSignIn()
-                        } else {
-                            this.failsSignIn('User was not found')
+                            if (this.user) {
+                                this.successSignIn()
+                            } else {
+                                this.failsSignIn('User was not found')
+                            }
+                        } catch (error) {
+                            this.failsSignIn(error)
                         }
-                    } catch (error) {
-                        this.failsSignIn(error)
                     }
                 })
 
