@@ -9,6 +9,7 @@ import { NotificationService } from '../../notification/services/notification.se
 import { Notification } from '../../notification/interfaces/notification'
 import { Observable } from 'rxjs/Observable'
 import { UserService } from '../../core/services/user/user.service'
+import { FirebaseService } from '../../core/services/firebase/firebase.service'
 
 @Component({
   selector: 'app-profile',
@@ -39,6 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private authentication: AuthenticationService,
         private notification: NotificationService,
         private userService: UserService,
+        private firebaseService: FirebaseService,
         private cdr: ChangeDetectorRef) { }
 
     async ngOnInit() {
@@ -93,7 +95,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.snippetsObserver.unsubscribe()
     }
 
-    private newUserSnapshot() {
+    newUserSnapshot() {
         this.userSnapshot = Object.assign({}, this.user)
     }
 
@@ -131,6 +133,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
 
             this.cdr.detectChanges()
+        }
+    }
+
+    syncAvatar() {
+        const firebaseUser = this.firebaseService.currentUser()
+
+        if (this.user.avatar !== firebaseUser.photoURL) {
+            this.user.avatar = firebaseUser.photoURL
+            this.userService.changeAvatar(this.user)
+            this.authentication.reloadUser(this.user)
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Comment } from '../interfaces/comment'
 import * as $ from 'jquery'

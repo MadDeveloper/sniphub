@@ -15,17 +15,19 @@ export class CodeBlockComponent implements OnInit {
     @ViewChild(CodemirrorComponent)
     private codemirror: CodemirrorComponent
     @Input()
-    private config: any
+    private config = null
     @Output()
-    private onChangeCodeBlock: EventEmitter<any>
+    private onChangeCodeBlock = new EventEmitter<any>()
     @Input()
-    private hideLanguage: boolean
+    private hideLanguage = false
     @Input()
-    private readonly: boolean
+    private readonly = false
     @Input()
-    public languages: any[]
+    public languages: any[] = []
     @Input()
-    private code: Code
+    private code = null
+    @Input()
+    private withAuthor = false
 
     constructor(
         private codeService: CodeService,

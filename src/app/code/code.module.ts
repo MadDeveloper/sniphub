@@ -7,10 +7,12 @@ import { CodeService } from './services/code.service'
 import { LanguageService } from './services/language.service'
 import { CodemirrorModule } from 'ng2-codemirror'
 import { SelectModule } from 'ng2-select'
+import { RouterModule } from '@angular/router'
 
 @NgModule({
     imports: [
         SharedModule,
+        RouterModule,
         CodemirrorModule,
         SelectModule
     ],

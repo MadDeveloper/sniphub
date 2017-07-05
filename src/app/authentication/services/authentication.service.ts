@@ -131,4 +131,9 @@ export class AuthenticationService {
         this.loggedChanged()
         this.router.navigate(['/'])
     }
+
+    reloadUser(user: User) {
+        this.user = user
+        this.userChanged()
+    }
 }

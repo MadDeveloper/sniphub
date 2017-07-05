@@ -13,6 +13,7 @@ import { CoreRoutingModule } from './core-routing.module'
 import { StorageService } from './services/storage/storage.service'
 import { DatabaseHelperService } from './services/database-helper/database-helper.service'
 import { LoaderComponent } from './loader/loader.component'
+import { FirebaseService } from './services/firebase/firebase.service'
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ export class CoreModule {
                 UserService,
                 UserResolverGuard,
                 StorageService,
-                DatabaseHelperService
+                DatabaseHelperService,
+                FirebaseService
             ]
         }
     }

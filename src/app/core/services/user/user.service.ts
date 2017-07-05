@@ -75,8 +75,15 @@ export class UserService {
             })
     }
 
-    async edit(user: User): Promise<boolean> {
-        return Promise.resolve(true)
+    edit(user: User) {
+        return this
+            .database
+            .object(this.userPath(user.id))
+            .update({
+                avatar: user.avatar,
+                username: user.username,
+                email: user.email
+            })
     }
 
     async changePassword(current: string, newPassword: string, confirm: string): Promise<boolean> {
@@ -87,8 +94,16 @@ export class UserService {
         return Promise.resolve(true)
     }
 
+    changeAvatar(user: User) {
+        return this
+            .database
+            .object(this.userPath(user.id))
+            .update({ avatar: user.avatar })
+    }
+
     changeUsername(user: User) {
-        this.database
+        return this
+            .database
             .object(this.userPath(user.id))
             .update({ username: user.username })
     }
