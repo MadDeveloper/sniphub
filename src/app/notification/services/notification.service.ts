@@ -104,7 +104,8 @@ export class NotificationService {
             snippetName: notification.snippetName,
             snippetId: notification.snippetId,
             request,
-            read: notification.read
+            read: notification.read,
+            date: new Date(notification.date)
         }
     }
 
