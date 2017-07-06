@@ -5,6 +5,7 @@ import { CodeService } from '../services/code.service'
 import { LanguageService } from '../services/language.service'
 import { CodeEditorService } from '../services/code-editor.service'
 import { Language } from '../interfaces/language'
+import { languages } from '../services/languages'
 
 @Component({
   selector: 'app-code-block',
@@ -17,65 +18,79 @@ export class CodeBlockComponent implements OnInit {
     @Input()
     private config = null
     @Output()
-    private onChangeCodeBlock = new EventEmitter<any>()
+    private onChangeLanguage = new EventEmitter<any>()
     @Input()
     private hideLanguage = false
     @Input()
+    private useAllLanguages = false
+    @Input()
     private readonly = false
     @Input()
-    public languages: any[] = []
+    private code: Code
     @Input()
-    private code = null
+    private codes: Code[]
     @Input()
     private withAuthor = false
+    private languages: Language[]
+    private usingMock = false
 
     constructor(
         private codeService: CodeService,
         private languageService: LanguageService,
-        private codeEditor: CodeEditorService) {
-        this.onChangeCodeBlock = new EventEmitter()
-    }
+        private codeEditor: CodeEditorService) { }
 
     ngOnInit() {
-        if (!this.code) {
-            this.code = this.codeService.mockOne()
+        if (!Array.isArray(this.codes) || this.codes.length === 0) {
+            this.codes = [this.codeService.mockOne()]
+            this.usingMock = true
         }
+
+        if (!this.code) {
+            this.code = this.codes[0]
+        }
+
+        this.languages = this.extractLanguages()
 
         if (!this.config) {
             this.config = Object.assign({}, this.codeEditor.config, {
-                mode: this.code.language.value,
+                mode: this.code.language.value || this.languageService.plainText().value,
                 extraKeys: { 'Ctrl-Space': 'autocomplete' },
                 readOnly: this.readonly ? 'nocursor' : false,
                 change: this.changeCode
             })
         }
-
-        if (!Array.isArray(this.languages)) {
-            this.languages = this.languageService.all()
-        }
     }
 
-    changeCode = (code: string) => {
-        this.code.code = code
-        this.notifiyCodeBlockChange()
-    }
+    changeCode = (code: string) => this.code.code = code
 
     changeLanguage(language: any) {
         const foundLanguage = this.findLanguage(language)
 
         if (foundLanguage) {
-            this.code.language = foundLanguage
             this.changeMode(foundLanguage)
+            const code = this.codeService.findCodeByLanguage(this.codes, foundLanguage)
 
-            this.notifiyCodeBlockChange()
+            if (this.usingMock) {
+                this.code.language = foundLanguage
+            } else {
+                this.code = code
+            }
         }
     }
 
-    private changeMode(language: Language) {
+    extractLanguages(): Language[] {
+        if (this.usingMock || this.useAllLanguages) {
+            return languages
+        } else {
+            return this.codes.map(code => code.language)
+        }
+    }
+
+    changeMode(language: Language) {
         this.codemirror.instance.setOption('mode', language.value)
     }
 
-    private findLanguage(language: any) {
+    findLanguage(language: any) {
         const extractedLanguage = this.languages.filter(current => current.id === language.id)
 
         if (extractedLanguage.length > 0) {
@@ -83,9 +98,5 @@ export class CodeBlockComponent implements OnInit {
         }
 
         return null
-    }
-
-    private notifiyCodeBlockChange() {
-        this.onChangeCodeBlock.emit(this.code)
     }
 }

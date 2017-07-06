@@ -5,18 +5,12 @@ import { Language } from '../interfaces/language'
 
 @Injectable()
 export class LanguageService {
-    private languages: Language[]
-
-    constructor() {
-        this.languages = languages
-    }
-
     all() {
-        return this.languages
+        return languages
     }
 
-    async find( props: any ): Promise<Language> {
-        return Promise.resolve(find(this.languages, props ))
+    find( props: any ): Language {
+        return find(languages, props)
     }
 
     mockOne(): Language {
@@ -25,5 +19,9 @@ export class LanguageService {
             text: null,
             value: null
         }
+    }
+
+    plainText(): Language {
+        return find(languages, { value: 'text/plain' })
     }
 }

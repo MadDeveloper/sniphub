@@ -55,12 +55,18 @@
             </span>
         </div>
     </div>
-    <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [languages]="languages" [(code)]="code" readonly="true"></app-code-block>
+    <app-code-block [codes]="codes" readonly="true"></app-code-block>
     <div *ngIf="!ownSnippet && isAuthenticated">
         <hr class="my-3">
         <h4>Propose the snippet in another language</h4>
         <div class="text color meta mb-3">You can propose to the author your version of the snippet in the languages you want.</div>
-        <app-add-code [(codes)]="requestCodes" asRequest="true"></app-add-code>
+        <app-add-code [snippet]="snippet" [(codes)]="requestCodes" asRequest="true"></app-add-code>
+    </div>
+    <div *ngIf="ownSnippet && isAuthenticated">
+        <hr class="my-3">
+        <h4>Add a new code language to your snippet</h4>
+        <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
+        <app-add-code [snippet]="snippet" [(codes)]="newCodes" asRequest="true" asAuthor="true"></app-add-code>
     </div>
     <hr class="mt-3">
     <div *ngIf="isAuthenticated">

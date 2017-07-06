@@ -27,8 +27,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private likes: Observable<Like[]>
     private liked = false
     private codes: Code[] = []
-    private code: Code
-    private languages: Language[]
+    private codesLoaded = false
+    private codesObserver: Subscription
     private comments: Observable<Comment[]>
     @ViewChild('comment')
     private comment: ElementRef
@@ -38,6 +38,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private hasPendingRequests = false
     private loaded = false
     private requestCodes: Code[] = []
+    private newCodes: Code[] = []
     private isAuthenticated: boolean
 
     constructor(
@@ -63,12 +64,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     this.isAuthenticated = this.authentication.logged
                     this.comments = this.commentService.all(this.snippet)
                     this.likes = this.likeService.all(this.snippet)
-                    this.codes = await this.codeService.all(this.snippet)
-
-                    if (this.codes.length > 0) {
-                        this.code = this.codes[0]
-                        this.languages = this.extractLanguages()
-                    }
+                    this.loadCodes()
 
                     if (user) {
                         this.authorObserver = this.snippet.author.subscribe(author => {
@@ -81,8 +77,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                         this.likedObserver = this.likeService.liked(this.snippet).subscribe(liked => this.liked = liked)
                         this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                     }
-
-                    this.loaded = true
                 }
             })
     }
@@ -91,7 +85,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.closeSubscriptions()
     }
 
-    private closeSubscriptions() {
+    closeSubscriptions() {
         if (this.authorObserver) {
             this.authorObserver.unsubscribe()
         }
@@ -99,6 +93,17 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (this.likedObserver) {
             this.likedObserver.unsubscribe()
         }
+    }
+
+    loadCodes() {
+        this.codesObserver = this
+            .codeService
+            .all(this.snippet)
+            .subscribe((codes: Code[]) => {
+                this.codes = codes
+                this.codesLoaded = true
+                this.loaded = true
+            })
     }
 
     focusComment() {
@@ -134,14 +139,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     goToRequests() {
         this.router.navigate(['/requests'])
-    }
-
-    extractLanguages(): Language[] {
-        return this.codes.map(code => code.language)
-    }
-
-    codeBlockChange(code: Code) {
-        this.code = code
     }
 
     async confirmDelete() {

@@ -15,11 +15,12 @@
         }
     },
     "codes": {
-        "<id>": {
-            "user": "<user>",
-            "snippet": "<snippet>",
-            "code": "<string>",
-            "language": "<string>"
+        "<snippet>": {
+            "<id>": {
+                "user": "<user>",
+                "code": "<string>",
+                "language": "<string>"
+            }
         }
     },
     "likes": {

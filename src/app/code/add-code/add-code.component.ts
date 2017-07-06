@@ -19,7 +19,9 @@ export class AddCodeComponent implements OnInit {
     @Input()
     private asRequest = false
     @Input()
-    private codes: Code[]
+    private asAuthor = false
+    @Input()
+    private codes: Code[] = []
     @Input()
     private snippet: Snippet
     @Input()
@@ -36,14 +38,9 @@ export class AddCodeComponent implements OnInit {
         private swal: SweetAlertService) { }
 
     ngOnInit() {
-        if (!this.codes) {
-            this.initCodes()
+        if (!Array.isArray(this.codes)) {
+            this.codes = []
         }
-    }
-
-    initCodes() {
-        this.codes = []
-        this.add()
     }
 
     add() {
@@ -74,20 +71,32 @@ export class AddCodeComponent implements OnInit {
     }
 
     async request(code: Code) {
-        const request = this.requestService.forge(this.authentication.currentUser(), code, this.snippet)
+        try {
+            if (this.asAuthor) {
+                await this.addCodeAsAuthor(code)
+            } else {
+                const request = this.requestService.forge(this.authentication.currentUser(), code, this.snippet)
 
-        this.requestedSuccessfully = await this.requestService.add(request)
-        this.requested = true
+                await this.requestService.add(request)
+            }
+
+            this.requestedSuccessfully = true
+            this.requested = true
+        } catch (error) {
+            // todo: error
+            console.error(error)
+        }
+    }
+
+    addCodeAsAuthor(code: Code) {
+        return this.codeService.create(code, this.snippet, this.authentication.currentUser())
     }
 
     newRequest(event: Event) {
         event.preventDefault()
         this.requested = false
         this.requestedSuccessfully = false
-        this.initCodes()
-    }
-
-    codeBlockChange(event: any) {
-
+        this.codes = []
+        this.add()
     }
 }

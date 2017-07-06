@@ -15,12 +15,13 @@ import { config } from '../../../config'
     styleUrls: ['./edit-snippet.component.scss']
 })
 export class EditSnippetComponent implements OnInit, OnDestroy {
-    private routeDataObserver: Subscription
     private snippet: Snippet
     private snapshot: Snippet
     private codeBlocks: any[]
     private editing: boolean
     private codes: Code[]
+    private codesObserver: Subscription
+    private codesLoaded = false
     private code: Code
     private languages: Language[]
     private loaded = false
@@ -38,30 +39,28 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     ngOnInit() {
         if (this.route.snapshot.params['id']) {
             this.editing = true
-            this.routeDataObserver = this
-                .route
+            this.route
                 .data
                 .subscribe(async (data: { snippet: Snippet }) => {
                     this.snippet = data[0]
                     this.snapshot = Object.assign({}, this.snippet)
-                    this.codes = await this.codeService.all(this.snippet)
-
-                    if (this.codes.length > 0) {
-                        this.languages = this.extractLanguages()
-                    }
-
-                    this.loaded = true
+                    this.loadCodes()
                 })
         } else {
             this.editing = false
             this.snippet = this.snippetService.mockOne()
+            this.codes = [this.codeService.mockOne()]
             this.loaded = true
         }
     }
 
     ngOnDestroy() {
-        if (this.routeDataObserver) {
-            this.routeDataObserver.unsubscribe()
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        if (this.codesObserver) {
+            this.codesObserver.unsubscribe()
         }
     }
 
@@ -69,16 +68,32 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         return this.codes.map(code => code.language)
     }
 
+    loadCodes() {
+        this.codesObserver = this
+            .codeService
+            .all(this.snippet)
+            .subscribe((codes: Code[]) => {
+                this.codes = codes
+                this.codesLoaded = true
+                this.loaded = true
+            })
+    }
+
     async save() {
         try {
+            const author = this.authentication.currentUser()
+
             this.saving = true
 
             if (this.editing) {
                 await this.snippetService.update(this.snippet)
+                await this.codeService.updateAll(this.codes, this.snippet, author)
             } else {
-                this.snippet.id = (await this.snippetService.create(this.snippet, this.authentication.currentUser())).key
+                this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
+                await this.codeService.createAll(this.codes, this.snippet, author)
             }
-                this.router.navigate([`/snippets/${this.snippet.id}`])
+
+            this.router.navigate([`/snippets/${this.snippet.id}`])
         } catch (error) {
             this.error = error
         }

@@ -24,7 +24,7 @@
                     <h2 class="h3">Edit the languages codes to your snippet</h2>
                     <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
                     <hr>
-                    <app-code-block [hidden]="!editing" [(code)]="code"></app-code-block>
+                    <app-code-block [(codes)]="codes"></app-code-block>
                 </div>
                 <div [hidden]="editing">
                     <h2 class="h3">Add languages codes to your new snippet</h2>
