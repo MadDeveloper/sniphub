@@ -9,7 +9,7 @@ import { NotificationService } from './services/notification.service'
 })
 export class NotificationsComponent implements OnInit {
     private notifications: Notification[] = []
-    private loaded = false
+    loaded = false
 
     constructor(private notificationService: NotificationService) { }
 

@@ -13,7 +13,7 @@ import { Request } from '../interfaces/request'
 export class SnippetRequestComponent implements OnInit, OnDestroy {
     private request: Request
     private routeDataObserver: Subscription
-    private loaded = false
+    loaded = false
     private accepted = false
     private rejected = false
 

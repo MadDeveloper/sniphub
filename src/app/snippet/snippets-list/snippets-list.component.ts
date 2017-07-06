@@ -15,7 +15,7 @@ export class SnippetsListComponent {
     static nameMaxLength = config.snippet.maxLengthName
 
     @Input()
-    private snippets: Snippet[]
+    snippets: Snippet[]
 
     constructor(
         private router: Router,

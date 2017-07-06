@@ -17,18 +17,18 @@ import { FirebaseService } from '../../core/services/firebase/firebase.service'
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-    private routeDataObserver: Subscription
-    private authorSnippets: Snippet[]
-    private contributorSnippets: Snippet[]
-    private snippetsLoaded = false
-    private snippetsObserver: Subscription
-    private user: User
-    private userSnapshot: User
-    private loggedUser: User
-    private pendingNotifications: boolean
-    private notifications: Notification[]
-    private editing = false
-    private username: ElementRef
+    routeDataObserver: Subscription
+    authorSnippets: Snippet[]
+    contributorSnippets: Snippet[]
+    snippetsLoaded = false
+    snippetsObserver: Subscription
+    user: User
+    userSnapshot: User
+    loggedUser: User
+    pendingNotifications: boolean
+    notifications: Notification[]
+    editing = false
+    username: ElementRef
     @ViewChild('username') set usernameRef(username: ElementRef) {
         this.username = username
     }

@@ -14,25 +14,25 @@ import { languages } from '../services/languages'
 })
 export class CodeBlockComponent implements OnInit {
     @ViewChild(CodemirrorComponent)
-    private codemirror: CodemirrorComponent
+    codemirror: CodemirrorComponent
     @Input()
-    private config = null
+    config = null
     @Output()
-    private onChangeLanguage = new EventEmitter<any>()
+    onChangeLanguage = new EventEmitter<any>()
     @Input()
-    private hideLanguage = false
+    hideLanguage = false
     @Input()
-    private useAllLanguages = false
+    useAllLanguages = false
     @Input()
-    private readonly = false
+    readonly = false
     @Input()
-    private code: Code
+    code: Code
     @Input()
-    private codes: Code[]
+    codes: Code[]
     @Input()
-    private withAuthor = false
-    private languages: Language[]
-    private usingMock = false
+    withAuthor = false
+    languages: Language[]
+    usingMock = false
 
     constructor(
         private codeService: CodeService,

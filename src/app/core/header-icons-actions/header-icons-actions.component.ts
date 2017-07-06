@@ -11,8 +11,7 @@ import { Notification } from '../../notification/interfaces/notification'
   styleUrls: ['./header-icons-actions.component.scss']
 })
 export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
-    private logged: boolean
-    private routerEvent: Subscription
+    logged: boolean
     private hasNotifications = false
     private notificationObserver: Subscription
     private loggedObserver: Subscription
@@ -23,7 +22,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         private notification: NotificationService) { }
 
     ngOnInit() {
-        this.routerEvent = this.router
+        this.router
             .events
             .filter(event => event instanceof NavigationEnd)
             .subscribe( (event: NavigationEnd) => this.checkAuthentication())
@@ -38,7 +37,6 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     }
 
     private closeSubscriptions() {
-        this.routerEvent.unsubscribe()
         this.notificationObserver.unsubscribe()
         this.loggedObserver.unsubscribe()
     }

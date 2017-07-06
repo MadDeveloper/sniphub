@@ -13,14 +13,14 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    private snippets: Snippet[] = []
-    private searching = false
+    snippets: Snippet[] = []
+    searching = false
     @ViewChild('searchInput')
-    private searchInput: ElementRef
-    private searchTerms = ''
-    private searchEnabled = false
-    private loading = false
-    private snippetsObserver: Subscription
+    searchInput: ElementRef
+    searchTerms = ''
+    searchEnabled = false
+    loading = false
+    snippetsObserver: Subscription
 
     constructor(
         private router: Router,
@@ -36,7 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
-        this.snippetsObserver.unsubscribe()
+        if (this.snippetsObserver) {
+            this.snippetsObserver.unsubscribe()
+        }
     }
 
     loadSnippets() {

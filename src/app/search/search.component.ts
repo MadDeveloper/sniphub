@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable'
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy, OnChanges {
-    private snippets: Observable<Snippet[]>
+    snippets: Observable<Snippet[]>
     private routeParamsObserver: Subscription
     @Input()
     private terms: string

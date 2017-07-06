@@ -15,19 +15,19 @@ import { config } from '../../../config'
     styleUrls: ['./edit-snippet.component.scss']
 })
 export class EditSnippetComponent implements OnInit, OnDestroy {
-    private snippet: Snippet
-    private snapshot: Snippet
-    private codeBlocks: any[]
-    private editing: boolean
-    private codes: Code[]
-    private codesObserver: Subscription
-    private codesLoaded = false
-    private code: Code
-    private languages: Language[]
-    private loaded = false
-    private nameMaxLength = config.snippet.maxLengthName
-    private saving = false
-    private error: any
+    snippet: Snippet
+    snapshot: Snippet
+    codeBlocks: any[]
+    editing: boolean
+    codes: Code[]
+    codesObserver: Subscription
+    codesLoaded = false
+    code: Code
+    languages: Language[]
+    loaded = false
+    nameMaxLength = config.snippet.maxLengthName
+    saving = false
+    error: any
 
     constructor(
         private route: ActivatedRoute,

@@ -9,11 +9,11 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
 export class AppHeaderComponent implements OnInit {
     private isAuthenticated: boolean
     private name: string
-    private homePage = false
-    private searchEnabled: boolean
-    private searchTerms = ''
+    homePage = false
+    searchEnabled: boolean
+    searchTerms = ''
     @ViewChild('searchInput')
-    private searchInput: ElementRef
+    searchInput: ElementRef
 
     constructor(private router: Router) { }
 

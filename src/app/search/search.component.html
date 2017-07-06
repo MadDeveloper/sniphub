@@ -1,8 +1,8 @@
 <section class="mt-4">
-    <div *ngIf="snippets.length > 0;else noResults" class="container">
+    <div *ngIf="(snippets | async)?.length > 0;else noResults" class="container">
         <div class="row mb-4">
             <div class="col">
-                <h3>Showing <span class="text color primary">{{ snippets.length }}</span> results availables</h3>
+                <h3>Showing <span class="text color primary">{{ (snippets | async).length }}</span> results availables</h3>
             </div>
         </div>
         <app-snippets-list [snippets]="snippets | async"></app-snippets-list>

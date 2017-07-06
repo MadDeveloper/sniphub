@@ -22,24 +22,24 @@ import { SnippetService } from '../services/snippet.service'
   styleUrls: ['./snippet-details.component.scss']
 })
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
-    private notification: any
-    private snippet: Snippet
-    private likes: Observable<Like[]>
-    private liked = false
-    private codes: Code[] = []
-    private codesLoaded = false
-    private codesObserver: Subscription
-    private comments: Observable<Comment[]>
+    notification: any
+    snippet: Snippet
+    likes: Observable<Like[]>
+    liked = false
+    codes: Code[] = []
+    codesLoaded = false
+    codesObserver: Subscription
+    comments: Observable<Comment[]>
     @ViewChild('comment')
-    private comment: ElementRef
-    private ownSnippet = false
-    private authorObserver: Subscription
-    private likedObserver: Subscription
-    private hasPendingRequests = false
-    private loaded = false
-    private requestCodes: Code[] = []
-    private newCodes: Code[] = []
-    private isAuthenticated: boolean
+    comment: ElementRef
+    ownSnippet = false
+    authorObserver: Subscription
+    likedObserver: Subscription
+    hasPendingRequests = false
+    loaded = false
+    requestCodes: Code[] = []
+    newCodes: Code[] = []
+    isAuthenticated: boolean
 
     constructor(
         private commentService: CommentService,

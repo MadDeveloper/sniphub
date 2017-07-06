@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router'
 export class SnippetsRequestsComponent implements OnInit, OnDestroy {
     private requests: Request[] = []
     private routeDataObserver: Subscription
-    private loaded = false
+    loaded = false
 
     constructor(
         private requestService: RequestService,

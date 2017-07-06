@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
 import { User } from '../../core/interfaces/user/user'
 import { AuthenticationService } from '../services/authentication.service'
 
 import { AngularFireAuth } from 'angularfire2/auth'
 import { Observable } from 'rxjs/Observable'
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription'
 
 @Component({
     selector: 'app-connect',
@@ -14,8 +14,8 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class ConnectComponent implements OnInit, OnDestroy {
     private authFailsObserver: Subscription
-    private error = ''
-    private inError = false
+    error = ''
+    inError = false
 
     constructor(
         private authentication: AuthenticationService,

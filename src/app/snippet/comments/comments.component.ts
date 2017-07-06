@@ -9,5 +9,5 @@ import { Observable } from 'rxjs/Observable'
 })
 export class CommentsComponent {
     @Input()
-    private comments: Observable<Comment[]>
+    comments: Observable<Comment[]>
 }

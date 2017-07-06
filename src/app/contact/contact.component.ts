@@ -7,9 +7,9 @@ import { AuthenticationService } from '../authentication/services/authentication
   styleUrls: ['./contact.component.scss']
 })
 export class ContactComponent implements OnInit {
-    private name: string
-    private email: string
-    private description: string
+    name: string
+    email: string
+    description: string
 
     constructor(private authentication: AuthenticationService) { }
 

@@ -15,19 +15,19 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 })
 export class AddCodeComponent implements OnInit {
     @Input()
-    private infiniteCode = false
+    infiniteCode = false
     @Input()
-    private asRequest = false
+    asRequest = false
     @Input()
-    private asAuthor = false
+    asAuthor = false
     @Input()
-    private codes: Code[] = []
+    codes: Code[] = []
     @Input()
-    private snippet: Snippet
+    snippet: Snippet
     @Input()
-    private min = 0
-    private requested = false
-    private requestedSuccessfully = false
+    min = 0
+    requested = false
+    requestedSuccessfully = false
 
     constructor(
         private languageService: LanguageService,

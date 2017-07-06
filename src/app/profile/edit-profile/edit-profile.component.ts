@@ -9,12 +9,12 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 })
 export class EditProfileComponent implements OnInit {
 
-    private activeTab = 'profile'
-    private user: User
-    private usernameSnapshot: string
-    private oldPassword: string
-    private password: string
-    private passwordConfirm: string
+    activeTab = 'profile'
+    user: User
+    usernameSnapshot: string
+    oldPassword: string
+    password: string
+    passwordConfirm: string
 
     constructor(private authentication: AuthenticationService) { }
 
