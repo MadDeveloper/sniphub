@@ -15,6 +15,7 @@ import { CommentService } from '../services/comment.service'
 import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
 import { SnippetService } from '../services/snippet.service'
+import { User } from '../../core/interfaces/user/user'
 
 @Component({
   selector: 'app-snippet-details',
@@ -40,6 +41,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     requestCodes: Code[] = []
     newCodes: Code[] = []
     isAuthenticated: boolean
+    private snippetAuthor: User
+    private user: User
 
     constructor(
         private commentService: CommentService,
@@ -56,7 +59,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.route
             .data
             .subscribe(async (data: { snippet: Snippet }) => {
-                const user = this.authentication.currentUser()
+                this.user = this.authentication.currentUser()
 
                 this.snippet = data[0]
 
@@ -66,14 +69,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     this.likes = this.likeService.all(this.snippet)
                     this.loadCodes()
 
-                    if (user) {
-                        this.authorObserver = this.snippet.author.subscribe(author => {
-                            if (author && author.email) {
-                                this.ownSnippet = user.email === author.email
-                            } else {
-                                this.ownSnippet = false
-                            }
-                        })
+                    if (this.user) {
+                        this.loadSnippetAuthor()
                         this.likedObserver = this.likeService.liked(this.snippet).subscribe(liked => this.liked = liked)
                         this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
                     }
@@ -93,6 +90,16 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (this.likedObserver) {
             this.likedObserver.unsubscribe()
         }
+    }
+
+    loadSnippetAuthor() {
+        this.authorObserver = this.snippet.author.subscribe(author => {
+            this.snippetAuthor = author
+
+            if (author && author.email) {
+                this.ownSnippet = this.user.email === author.email
+            }
+        })
     }
 
     loadCodes() {
@@ -118,14 +125,14 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (commentContent.length > 0) {
             const author = this.authentication.currentUser()
 
-            this.commentService.add(commentContent, author, this.snippet)
+            this.commentService.add(commentContent, author, this.snippet, this.snippetAuthor)
             this.comment.nativeElement.value = ''
         }
     }
 
     like() {
         if (!this.liked) {
-            this.likeService.like(this.snippet)
+            this.likeService.like(this.snippet, this.snippetAuthor)
             this.liked = true
         } else {
             this.unlike()

@@ -27,6 +27,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     loggedUser: User
     pendingNotifications: boolean
     notifications: Notification[]
+    notificationsObserver: Subscription
+    notificationsLoaded = false
     editing = false
     username: ElementRef
     @ViewChild('username') set usernameRef(username: ElementRef) {
@@ -43,14 +45,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private firebaseService: FirebaseService,
         private cdr: ChangeDetectorRef) { }
 
-    async ngOnInit() {
-        this.notifications = await this.notification.all()
-        this.pendingNotifications = this.notifications.length > 0
-
+    ngOnInit() {
         if (this.authentication.logged) {
             this.user = Object.assign({}, this.authentication.currentUser())
             this.loggedUser = Object.assign({}, this.user)
             this.newUserSnapshot()
+
+            if (this.ownProfile()) {
+                this.loadNotifications()
+            }
         }
 
         if (this.route.snapshot.params['id']) {
@@ -73,6 +76,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loadSnippets()
     }
 
+    loadNotifications() {
+        this.notificationsObserver = this
+            .notification
+            .all(this.user)
+            .subscribe(notifications => {
+                this.notifications = notifications
+                this.notificationsLoaded = true
+                this.pendingNotifications = this.notifications.length > 0
+            })
+    }
+
     loadSnippets() {
         this.snippetsObserver = this.snippetService
             .author(this.user)
@@ -93,6 +107,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     closeSubscriptions() {
         this.snippetsObserver.unsubscribe()
+        this.notificationsObserver.unsubscribe()
     }
 
     newUserSnapshot() {

@@ -5,7 +5,6 @@ import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
 import { Observable } from 'rxjs/Observable'
-import { DatabaseHelperService } from '../../core/services/database-helper/database-helper.service'
 import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
 
@@ -14,15 +13,12 @@ export class SnippetService {
     constructor(
         private database: AngularFireDatabase,
         private user: UserService,
-        private like: LikeService,
-        private databaseHelper: DatabaseHelperService) { }
+        private like: LikeService) { }
 
     all(options?: any): Observable<Snippet[]> {
-        const snippetsList = this.database.list(this.snippetsPath(), options)
-
         return this
-            .databaseHelper
-            .filterListOmittedKeys(snippetsList)
+            .database
+            .list(this.snippetsPath(), options)
             .map((snippets: any[]) => this.forgeAll(snippets))
     }
 

@@ -44,11 +44,14 @@
         }
     },
     "notifications": {
-        "<id>": {
-            "type": "<string>",
-            "user": "<user>",
-            "snippet": "<snippet>",
-            "request?": "<request>"
+        "<user>": {
+            "<id>": {
+                "type": "<string>",
+                "user": "<user>",
+                "snippetName": "<string>",
+                "snippetId": "<string>",
+                "request?": "<request>"
+            }
         }
     },
     "requests": {

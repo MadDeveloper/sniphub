@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { NotificationService } from '../../notification/services/notification.service'
 import { Notification } from '../../notification/interfaces/notification'
+import { User } from '../interfaces/user/user'
 
 @Component({
   selector: 'app-header-icons-actions',
@@ -12,9 +13,10 @@ import { Notification } from '../../notification/interfaces/notification'
 })
 export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     logged: boolean
-    private hasNotifications = false
-    private notificationObserver: Subscription
-    private loggedObserver: Subscription
+    hasNotifications = false
+    notificationObserver: Subscription
+    loggedObserver: Subscription
+    user: User
 
     constructor(
         private router: Router,
@@ -22,14 +24,16 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         private notification: NotificationService) { }
 
     ngOnInit() {
+        this.user = this.authentication.currentUser()
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
             .subscribe( (event: NavigationEnd) => this.checkAuthentication())
 
-        this.notificationObserver = this.notification
-            .notifications$
-            .subscribe((notifications: Notification[]) => this.checkNotifications(notifications))
+        this.notificationObserver = this
+            .notification
+            .unread(this.user)
+            .subscribe(this.checkUnreadNotifications)
     }
 
     ngOnDestroy() {
@@ -41,15 +45,14 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         this.loggedObserver.unsubscribe()
     }
 
-    checkNotifications(notifications: Notification[]) {
+    checkUnreadNotifications = (notifications: Notification[]) => {
         this.hasNotifications = notifications.length > 0
     }
 
     checkAuthentication() {
-        this.loggedObserver = this.authentication
+        this.loggedObserver = this
+            .authentication
             .logged$
-            .subscribe(logged => {
-                this.logged = logged
-            })
+            .subscribe(logged => this.logged = logged)
     }
 }

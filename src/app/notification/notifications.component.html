@@ -4,20 +4,21 @@
             <div class="row py-2">
                 <div class="col">
                     <div class="d-flex align-items-center">
-                        <a [routerLink]="'/profile/' + notification.user.id" class="author d-flex align-items-center mr-1">
-                            <img [src]="notification.user.avatar" alt="" class="image avatar mr-2">
-                            <span>{{ notification.user.username }}</span>
+                        <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author d-flex align-items-center mr-1">
+                            <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar mr-2">
+                            <span>{{ (notification.user | async)?.username }}</span>
                         </a>
-                        <div *ngIf="isCommentNotification(notification)">
-                             has commented your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
-                        </div>
-                        <div *ngIf="isLikeNotification(notification)">
-                             has liked your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet.
-                        </div>
-                        <div *ngIf="isRequestNotification(notification)">
-                            <span>has developed your <a [routerLink]="'/snippets/' + notification.snippet.id">{{ notification.snippet.name }}</a> snippet in a new code.</span>
+                        <span *ngIf="isCommentNotification(notification)">
+                             has commented your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                        </span>
+                        <span *ngIf="isLikeNotification(notification)">
+                             has liked your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                        </span>
+                        <span *ngIf="isRequestNotification(notification)">
+                            <span>has developed your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.</span>
                             <a [routerLink]="'/requests/' + notification.request.id" class="ml-1">See request</a>
-                        </div>
+                        </span>
+                        <span class="meta ml-2">{{ notification.date | amTimeAgo }}</span>
                     </div>
                 </div>
             </div>

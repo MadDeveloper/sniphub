@@ -12,12 +12,11 @@ export class SnippetRequestResolverGuard implements Resolve<Request> {
         private location: Location) { }
 
     async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Request> {
-        const id = parseInt(route.params['id'], 10)
-
-        const request = await this.request.find({ id })
+        const id = route.params['id']
+        const request = await this.request.find(id)
 
         if (request) {
-            return Promise.resolve(request)
+            return Promise.resolve(null)
         }
 
         this.location.back() // todo: redirect to specific 404 view

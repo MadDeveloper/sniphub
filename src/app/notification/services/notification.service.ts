@@ -4,32 +4,74 @@ import { Subject } from 'rxjs/Subject'
 import { Notification } from '../interfaces/notification'
 import { NotificationType } from '../interfaces/notification-type.enum'
 import { RequestService } from '../../request/services/request.service'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { User } from '../../core/interfaces/user/user'
+import { Observable } from 'rxjs/Observable'
+import { UserService } from '../../core/services/user/user.service'
+import { SnippetService } from '../../snippet/services/snippet.service'
+import { Like } from '../../snippet/interfaces/like'
+import { Comment } from '../../snippet/interfaces/comment'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import * as firebase from 'firebase'
 
 @Injectable()
 export class NotificationService {
-    notifications$: Subject<Notification[]>
+    constructor(
+        private request: RequestService,
+        private database: AngularFireDatabase,
+        private user: UserService) { }
 
-    constructor(private request: RequestService) {
-        this.notifications$ = new Subject()
-        this.watch()
+    all(user: User): Observable<Notification[]> {
+        return this
+            .database
+            .list(this.notificationsUserPath(user), {
+                query: {
+                    orderByChild: 'date'
+                }
+            })
+            .map((notifications: any[]) => this.forgeAll(notifications).reverse())
     }
 
-    private async watch() {
-        this.notify(await this.all())
+    unread(user: User): Observable<Notification[]> {
+        return this
+            .all(user)
+            .map((notifications: Notification[]): Notification[] => notifications.filter(notification => !notification.read))
     }
 
-    private notify(notifications) {
-        this.notifications$.next(notifications)
+    like(snippet: Snippet, author: User, toUser: User) {
+        return this
+            .database
+            .list(this.notificationsUserPath(toUser))
+            .push({
+                type: NotificationType.LIKE,
+                user: author.id,
+                snippetName: snippet.name,
+                snippetId: snippet.id,
+                read: false,
+                date: firebase.database.ServerValue.TIMESTAMP
+            })
     }
 
-    all(): Promise<Notification[]> {
-        return Promise.resolve([])
+    comment(author: User, snippet: Snippet, toUser: User) {
+        return this
+            .database
+            .list(this.notificationsUserPath(toUser))
+            .push({
+                type: NotificationType.COMMENT,
+                user: author.id,
+                snippetName: snippet.name,
+                snippetId: snippet.id,
+                read: false,
+                date: firebase.database.ServerValue.TIMESTAMP
+            })
     }
 
-    markAllAsRead(notifications: Notification[]): Promise<boolean> {
-        this.notify([])
-
-        return Promise.resolve(true)
+    markAllAsRead(notifications: Notification[], user: User) {
+        notifications.forEach(notification => {
+            this.database
+                .object(this.notificationPath(notification, user))
+                .update({ read: true })
+        })
     }
 
     isRequestNotification(notification: Notification) {
@@ -46,5 +88,35 @@ export class NotificationService {
 
     containsRequestsNotifications(notifications: Notification[]) {
         return !!find(notifications, { type: NotificationType.REQUEST })
+    }
+
+    forgeAll(notifications: any[]) {
+        return notifications.map((notification: any): Notification => this.forge(notification))
+    }
+
+    forge(notification): Notification {
+        const request = notification.request ? this.request.find(notification.request) : null
+
+        return {
+            id: notification.$key,
+            type: notification.type,
+            user: this.user.find(notification.user),
+            snippetName: notification.snippetName,
+            snippetId: notification.snippetId,
+            request,
+            read: notification.read
+        }
+    }
+
+    private notificationsPath() {
+        return '/notifications'
+    }
+
+    private notificationsUserPath(user: User) {
+        return `${this.notificationsPath()}/${user.id}`
+    }
+
+    private notificationPath(notification: Notification, user: User) {
+        return `${this.notificationsUserPath(user)}/${notification.id}`
     }
 }

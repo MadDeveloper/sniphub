@@ -9,6 +9,8 @@ import { Request } from '../interfaces/request'
 import { Snippet } from '../../snippet/interfaces/snippet'
 import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
+import { Observable } from 'rxjs/Observable'
+import { AngularFireDatabase } from 'angularfire2/database'
 
 @Injectable()
 export class RequestService {
@@ -16,8 +18,9 @@ export class RequestService {
         private codeEditor: CodeEditorService,
         private user: UserService,
         private language: LanguageService,
-        private snippet: SnippetService,
-        private code: CodeService) { }
+        // private snippet: SnippetService,
+        private code: CodeService,
+        private database: AngularFireDatabase) { }
 
     async all(): Promise<Request[]> {
         return Promise.resolve([
@@ -31,16 +34,16 @@ export class RequestService {
         ])
     }
 
-    async find( props: any ): Promise<Request> {
+    find(id: string): Observable<Request> {
         const requests = [{
             id: 1,
             user: this.user.find('ddDADa13ff42'),
             date: new Date(),
             code: this.code.mockOne(),
-            snippet: this.snippet.mockOne()
+            snippet: null // this.snippet.mockOne()
         }]
 
-        return Promise.resolve(requests[0])
+        return Observable.of(requests[0])
     }
 
     async forSnippet(snippet: Snippet): Promise<Request[]> {
@@ -49,7 +52,7 @@ export class RequestService {
             user: this.user.find('ddDADa13ff42'),
             date: new Date(),
             code: this.code.mockOne(),
-            snippet: this.snippet.find('email regex')
+            snippet: null // this.snippet.find('email regex')
         }]
 
         return Promise.resolve([
@@ -77,5 +80,13 @@ export class RequestService {
 
     async add(request: Request): Promise<boolean> {
         return Promise.resolve(true)
+    }
+
+    private requestsPath() {
+        return '/requests'
+    }
+
+    private requestPath(id: string) {
+        return `${this.requestsPath()}/${id}`
     }
 }

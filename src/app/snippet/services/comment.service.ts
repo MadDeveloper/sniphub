@@ -6,8 +6,8 @@ import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'
 import { UserService } from '../../core/services/user/user.service'
 import { GuidService } from '../../core/services/guid/guid.service'
-import { DatabaseHelperService } from '../../core/services/database-helper/database-helper.service'
 import * as firebase from 'firebase'
+import { NotificationService } from '../../notification/services/notification.service';
 
 @Injectable()
 export class CommentService {
@@ -15,18 +15,16 @@ export class CommentService {
         private database: AngularFireDatabase,
         private user: UserService,
         private guid: GuidService,
-        private databaseHelper: DatabaseHelperService) { }
+        private notification: NotificationService) { }
 
     all(snippet: Snippet): Observable<Comment[]> {
-        const commentsList = this.database.list(this.commentsPath(snippet), {
-            query: {
-                orderByChild: 'date'
-            }
-        })
-
         return this
-            .databaseHelper
-            .filterListOmittedKeys(commentsList)
+            .database
+            .list(this.commentsPath(snippet), {
+                query: {
+                    orderByChild: 'date'
+                }
+            })
             .map((comments: any[]): Comment[] => {
                 comments.reverse()
 
@@ -49,7 +47,7 @@ export class CommentService {
         }
     }
 
-    add(content, author: User, snippet: Snippet) {
+    add(content, author: User, snippet: Snippet, snippetAuthor: User) {
         this.database
             .list(this.commentsPath(snippet))
             .push({
@@ -57,6 +55,7 @@ export class CommentService {
                 date: firebase.database.ServerValue.TIMESTAMP,
                 author: author.id
             })
+        this.notification.comment(author, snippet, snippetAuthor)
     }
 
     private commentsPath(snippet: Snippet) {
