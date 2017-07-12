@@ -17,15 +17,38 @@ export class SnippetService {
 
     all(options?: any): Observable<Snippet[]> {
         return this
-            .database
-            .list(this.snippetsPath(), options)
+            .allFromDatabase(options)
             .map((snippets: any[]) => this.forgeAll(snippets))
+    }
+
+    lastAdded(): Observable<Snippet[]> {
+        return this
+            .allFromDatabase({
+                query: {
+                    orderByChild: 'date'
+                }
+            })
+            .map((snippets: any[]) => this.forgeAll(snippets).reverse())
+    }
+
+    popular() {
+        return this
+            .allFromDatabase()
+            .map((snippets: any[]) => this.forgeAll(snippets))
+            .map((snippets: Snippet[]) => snippets.sort((snippetA: Snippet, snippetB: Snippet): number => {
+                if (snippetA.date > snippetB.date) {
+                    return 1
+                } else if (snippetA.date < snippetB.date) {
+                    return -1
+                }
+
+                return 0
+            }))
     }
 
     author(author: User): Observable<Snippet[]> {
         return this
-            .database
-            .list(this.snippetsPath(), {
+            .allFromDatabase({
                 query: {
                     orderByChild: 'author',
                     equalTo: author.id
@@ -36,8 +59,7 @@ export class SnippetService {
 
     contributor(author: User): Observable<Snippet[]> {
         return this
-            .database
-            .list(this.snippetsPath(), {
+            .allFromDatabase({
                 query: {
                     orderByChild: 'author',
                     equalTo: author.id
@@ -78,8 +100,7 @@ export class SnippetService {
 
     create(snippet: Snippet, author: User) {
         return this
-            .database
-            .list(this.snippetsPath())
+            .allFromDatabase()
             .push({
                 name: snippet.name,
                 author: author.id,
@@ -135,6 +156,10 @@ export class SnippetService {
         snippet.likes = this.like.all(snippet)
 
         return snippet
+    }
+
+    private allFromDatabase(options?: any) {
+        return this.database.list(this.snippetsPath(), options)
     }
 
     private forgeFromSnapshot(snapshot): Snippet {

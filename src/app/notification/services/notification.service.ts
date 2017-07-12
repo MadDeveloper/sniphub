@@ -68,9 +68,11 @@ export class NotificationService {
 
     markAllAsRead(notifications: Notification[], user: User) {
         notifications.forEach(notification => {
-            this.database
-                .object(this.notificationPath(notification, user))
-                .update({ read: true })
+            if (!notification.read) {
+                this.database
+                    .object(this.notificationPath(notification, user))
+                    .update({ read: true })
+            }
         })
     }
 

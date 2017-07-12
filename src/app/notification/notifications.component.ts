@@ -39,7 +39,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             .subscribe(notifications => {
                 this.notifications = notifications
                 this.loaded = true
-                this.notificationService.markAllAsRead(this.notifications, this.user)
+                this.notificationService.markAllAsRead(notifications, this.user)
             })
     }
 

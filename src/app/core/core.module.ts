@@ -11,7 +11,6 @@ import { UserService } from './services/user/user.service'
 import { UserResolverGuard } from './guards/user/user-resolver.guard'
 import { CoreRoutingModule } from './core-routing.module'
 import { StorageService } from './services/storage/storage.service'
-import { DatabaseHelperService } from './services/database-helper/database-helper.service'
 import { LoaderComponent } from './loader/loader.component'
 import { FirebaseService } from './services/firebase/firebase.service'
 
@@ -47,7 +46,6 @@ export class CoreModule {
                 UserService,
                 UserResolverGuard,
                 StorageService,
-                DatabaseHelperService,
                 FirebaseService
             ]
         }

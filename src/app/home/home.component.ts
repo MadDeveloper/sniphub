@@ -13,14 +13,16 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    snippets: Snippet[] = []
+    lastAddedSnippets: Snippet[] = []
+    lastAddedSnippetsObserver: Subscription
+    popularSnippets: Snippet[] = []
+    popularSnippetsObserver: Subscription
     searching = false
     @ViewChild('searchInput')
     searchInput: ElementRef
     searchTerms = ''
     searchEnabled = false
     loading = false
-    snippetsObserver: Subscription
 
     constructor(
         private router: Router,
@@ -36,18 +38,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
-        if (this.snippetsObserver) {
-            this.snippetsObserver.unsubscribe()
+        if (this.lastAddedSnippetsObserver) {
+            this.lastAddedSnippetsObserver.unsubscribe()
+        }
+
+        if (this.popularSnippetsObserver) {
+            this.popularSnippetsObserver.unsubscribe()
         }
     }
 
     loadSnippets() {
         this.enableLoading()
-        this.snippetsObserver = this
+        this.lastAddedSnippetsObserver = this
             .snippetService
-            .all()
+            .lastAdded()
             .subscribe((snippets: Snippet[]) => {
-                this.snippets = snippets
+                this.lastAddedSnippets = snippets
+                this.loadPopularSnippets()
+            })
+    }
+
+    loadPopularSnippets() {
+        this.enableLoading()
+        this.popularSnippetsObserver = this
+            .snippetService
+            .lastAdded()
+            .subscribe((snippets: Snippet[]) => {
+                this.popularSnippets = snippets
                 this.disableLoading()
             })
     }
