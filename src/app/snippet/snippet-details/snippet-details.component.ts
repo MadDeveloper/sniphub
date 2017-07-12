@@ -41,8 +41,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     requestCodes: Code[] = []
     newCodes: Code[] = []
     isAuthenticated: boolean
-    private snippetAuthor: User
-    private user: User
+    snippetAuthor: User
+    user: User
 
     constructor(
         private commentService: CommentService,

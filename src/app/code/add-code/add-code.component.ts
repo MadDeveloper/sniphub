@@ -7,6 +7,7 @@ import { GuidService } from '../../core/services/guid/guid.service'
 import { CodeService } from '../services/code.service'
 import { RequestService } from '../../request/services/request.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
+import { User } from '../../core/interfaces/user/user'
 
 @Component({
     selector: 'app-add-code',
@@ -24,6 +25,8 @@ export class AddCodeComponent implements OnInit {
     codes: Code[] = []
     @Input()
     snippet: Snippet
+    @Input()
+    author: User
     @Input()
     min = 0
     requested = false
@@ -75,9 +78,7 @@ export class AddCodeComponent implements OnInit {
             if (this.asAuthor) {
                 await this.addCodeAsAuthor(code)
             } else {
-                const request = this.requestService.forge(this.authentication.currentUser(), code, this.snippet)
-
-                await this.requestService.add(request)
+                await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)
             }
 
             this.requestedSuccessfully = true

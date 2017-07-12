@@ -10,7 +10,8 @@ export interface Notification {
     user: Observable<User>
     snippetName: string
     snippetId: string
-    request?: Observable<Request>
+    request?: boolean
+    requestId?: string
     read: boolean
     date: Date
 }

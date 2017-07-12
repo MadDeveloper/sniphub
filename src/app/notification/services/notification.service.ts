@@ -3,7 +3,6 @@ import { find } from 'lodash'
 import { Subject } from 'rxjs/Subject'
 import { Notification } from '../interfaces/notification'
 import { NotificationType } from '../interfaces/notification-type.enum'
-import { RequestService } from '../../request/services/request.service'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { User } from '../../core/interfaces/user/user'
 import { Observable } from 'rxjs/Observable'
@@ -13,11 +12,11 @@ import { Like } from '../../snippet/interfaces/like'
 import { Comment } from '../../snippet/interfaces/comment'
 import { Snippet } from '../../snippet/interfaces/snippet'
 import * as firebase from 'firebase'
+import { Request } from '../../request/interfaces/request'
 
 @Injectable()
 export class NotificationService {
     constructor(
-        private request: RequestService,
         private database: AngularFireDatabase,
         private user: UserService) { }
 
@@ -66,6 +65,22 @@ export class NotificationService {
             })
     }
 
+    request(author: User, snippet: Snippet, toUser: User, request: Request) {
+        return this
+            .database
+            .list(this.notificationsUserPath(toUser))
+            .push({
+                type: NotificationType.REQUEST,
+                user: author.id,
+                snippetName: snippet.name,
+                snippetId: snippet.id,
+                read: false,
+                date: firebase.database.ServerValue.TIMESTAMP,
+                request: true,
+                requestId: request.id
+            })
+    }
+
     markAllAsRead(notifications: Notification[], user: User) {
         notifications.forEach(notification => {
             if (!notification.read) {
@@ -97,15 +112,14 @@ export class NotificationService {
     }
 
     forge(notification): Notification {
-        const request = notification.request ? this.request.find(notification.request) : null
-
         return {
             id: notification.$key,
             type: notification.type,
             user: this.user.find(notification.user),
             snippetName: notification.snippetName,
             snippetId: notification.snippetId,
-            request,
+            request: notification.request || null,
+            requestId: notification.requestId || null,
             read: notification.read,
             date: new Date(notification.date)
         }

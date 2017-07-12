@@ -11,6 +11,7 @@ import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
 import { Observable } from 'rxjs/Observable'
 import { AngularFireDatabase } from 'angularfire2/database'
+import { NotificationService } from '../../notification/services/notification.service'
 
 @Injectable()
 export class RequestService {
@@ -20,7 +21,8 @@ export class RequestService {
         private language: LanguageService,
         // private snippet: SnippetService,
         private code: CodeService,
-        private database: AngularFireDatabase) { }
+        private database: AngularFireDatabase,
+        private notification: NotificationService) { }
 
     async all(): Promise<Request[]> {
         return Promise.resolve([
@@ -36,7 +38,7 @@ export class RequestService {
 
     find(id: string): Observable<Request> {
         const requests = [{
-            id: 1,
+            id: '1',
             user: this.user.find('ddDADa13ff42'),
             date: new Date(),
             code: this.code.mockOne(),
@@ -70,23 +72,64 @@ export class RequestService {
         }
     }
 
-    async accept(request: Request): Promise<boolean> {
+    accept(request: Request): Promise<boolean> {
         return Promise.resolve(true)
     }
 
-    async reject(request: Request): Promise<boolean> {
+    reject(request: Request): Promise<boolean> {
         return Promise.resolve(true)
     }
 
-    async add(request: Request): Promise<boolean> {
-        return Promise.resolve(true)
+    forgeForDatabase(code: Code, author: User, asRequest = false) {
+        let request = {
+            user: author.id,
+            code: code.code,
+            language: code.language.value
+        }
+
+        if (asRequest) {
+            request = Object.assign({}, request, {
+                request: true,
+                validated: false
+            })
+        }
+
+        return request
+    }
+
+    add(code: Code, author: User, snippet: Snippet, snippetAuthor: User) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const request = this.forge(author, code, snippet)
+
+                request.id = this
+                    .database
+                    .list(this.requestsSnippetPath(snippet))
+                    .push(code.id).key
+
+                await this.code.create(code, snippet, author, true)
+                await this.notification.request(author, snippet, snippetAuthor, request)
+
+                resolve(request)
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 
     private requestsPath() {
         return '/requests'
     }
 
-    private requestPath(id: string) {
-        return `${this.requestsPath()}/${id}`
+    private requestsSnippetPath(snippet: Snippet) {
+        return `${this.requestsPath()}/${snippet.id}`
+    }
+
+    private requestPath(snippet: Snippet, id: string) {
+        return `${this.requestsSnippetPath(snippet)}/${id}`
+    }
+
+    private uniqFirebaseId() {
+        return this.database.app.database().ref().push().key
     }
 }

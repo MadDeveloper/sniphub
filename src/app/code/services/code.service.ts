@@ -26,11 +26,11 @@ export class CodeService {
             .map((codes: any[]): Code[] => this.forgeAll(codes))
     }
 
-    create(code: Code, snippet: Snippet, author: User) {
+    create(code: Code, snippet: Snippet, author: User, asRequest = false) {
         return this
             .database
             .list(this.codesSnippetPath(snippet))
-            .push(this.forgeForDatabase(code, author))
+            .update(code.id, this.forgeForDatabase(code, author, asRequest))
     }
 
     createAll(codes: Code[], snippet: Snippet, author: User) {
@@ -65,7 +65,9 @@ export class CodeService {
             id: code.$key,
             language: this.language.find({ value: code.language }),
             author: this.user.find(code.author),
-            code: code.code
+            code: code.code,
+            request: code.request || false,
+            validated: code.validated || false
         }
     }
 
@@ -79,12 +81,21 @@ export class CodeService {
         return codesFormatted
     }
 
-    forgeForDatabase(code: Code, author: User) {
-        return {
+    forgeForDatabase(code: Code, author: User, asRequest = false) {
+        let codeForDatabase = {
             user: author.id,
             code: code.code,
             language: code.language.value
         }
+
+        if (asRequest) {
+            codeForDatabase = Object.assign({}, codeForDatabase, {
+                request: true,
+                validated: false
+            })
+        }
+
+        return codeForDatabase
     }
 
     findCodeByLanguage(codes: Code[], language: Language) {

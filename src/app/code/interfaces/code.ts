@@ -7,4 +7,6 @@ export interface Code {
     language: Language
     code: string
     author: Observable<User>
+    request?: boolean
+    validated?: boolean
 }
