@@ -19,7 +19,6 @@ export class RequestService {
         private codeEditor: CodeEditorService,
         private user: UserService,
         private language: LanguageService,
-        // private snippet: SnippetService,
         private code: CodeService,
         private database: AngularFireDatabase,
         private notification: NotificationService) { }
@@ -36,16 +35,11 @@ export class RequestService {
         ])
     }
 
-    find(id: string): Observable<Request> {
-        const requests = [{
-            id: '1',
-            user: this.user.find('ddDADa13ff42'),
-            date: new Date(),
-            code: this.code.mockOne(),
-            snippet: null // this.snippet.mockOne()
-        }]
-
-        return Observable.of(requests[0])
+    find(id: string, snippet: Snippet): Observable<Request> {
+        return this
+            .database
+            .object(this.requestPath(snippet, id))
+            .map((request: any): Request => this.forgeFromDatabase(request, snippet))
     }
 
     async forSnippet(snippet: Snippet): Promise<Request[]> {
@@ -65,10 +59,14 @@ export class RequestService {
     forge(user: User, code: Code, snippet: Snippet): Request {
         return {
             id: null,
-            user,
-            date: new Date(),
-            code,
-            snippet
+            code: Observable.of(code)
+        }
+    }
+
+    forgeFromDatabase(request: any, snippet: Snippet): Request {
+        return {
+            id: request.$key,
+            code: this.code.find(request.code, snippet)
         }
     }
 

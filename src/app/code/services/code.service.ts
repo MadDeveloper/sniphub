@@ -23,7 +23,14 @@ export class CodeService {
         return this
             .database
             .list(this.codesSnippetPath(snippet))
-            .map((codes: any[]): Code[] => this.forgeAll(codes))
+            .map((codes: any[]): Code[] => this.filterRequestsNotValidated(this.forgeAll(codes)))
+    }
+
+    find(id: string, snippet: Snippet) {
+        return this
+            .database
+            .object(this.codePath(id, snippet))
+            .map((code: any): Code => this.forge(code))
     }
 
     create(code: Code, snippet: Snippet, author: User, asRequest = false) {
@@ -102,6 +109,10 @@ export class CodeService {
         return find(codes, current => current.language.value === language.value)
     }
 
+    filterRequestsNotValidated(codes: Code[]): Code[] {
+        return codes.filter((code: Code) => !code.request || (code.request && code.validated))
+    }
+
     private uniqFirebaseId() {
         return this.database.app.database().ref().push().key
     }
@@ -112,5 +123,9 @@ export class CodeService {
 
     private codesSnippetPath(snippet: Snippet) {
         return `${this.codesPath()}/${snippet.id}`
+    }
+
+    private codePath(id: string, snippet: Snippet) {
+        return `${this.codesSnippetPath(snippet)}/${id}`
     }
 }

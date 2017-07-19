@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core'
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router'
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve, Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable'
-import { Location } from '@angular/common'
-import { Request } from '../../request/interfaces/request'
 import { RequestService } from '../../request/services/request.service'
+import { Request } from '../interfaces/request'
 
 @Injectable()
 export class SnippetRequestResolverGuard implements Resolve<Request> {
     constructor(
         private request: RequestService,
-        private location: Location) { }
+        private router: Router) { }
 
-    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Request> {
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Request> {
         const id = route.params['id']
-        const request = await this.request.find(id)
 
-        if (request) {
-            return Promise.resolve(null)
-        }
+        return this
+            .request
+            .find(id, null)
+            .map((request: Request): Request => {
+                if (request) {
+                    return request
+                }
 
-        this.location.back() // todo: redirect to specific 404 view
+                this.router.navigate(['/404'])
 
-        return Promise.resolve(null)
+                return null
+            })
+            .take(1)
     }
 }

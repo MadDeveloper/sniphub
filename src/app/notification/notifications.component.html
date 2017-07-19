@@ -4,21 +4,30 @@
             <div class="row py-2">
                 <div class="col">
                     <div class="d-flex align-items-center">
-                        <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author d-flex align-items-center mr-1">
-                            <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar mr-2">
-                            <span>{{ (notification.user | async)?.username }}</span>
+                        <a [routerLink]="'/profile/' + (notification.user | async)?.id">
+                            <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar small mr-2">
                         </a>
-                        <span *ngIf="isCommentNotification(notification)">
-                             has commented your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
-                        </span>
-                        <span *ngIf="isLikeNotification(notification)">
-                             has liked your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
-                        </span>
-                        <span *ngIf="isRequestNotification(notification)">
-                            <span>has developed your <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.</span>
-                            <a [routerLink]="'/requests/' + notification.request.id" class="ml-1">See request</a>
-                        </span>
-                        <span class="meta ml-2">{{ notification.date | amTimeAgo }}</span>
+                        <div class="ml-2 d-flex flex-column">
+                            <div>
+                                <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author">{{ (notification.user | async)?.username }}</a>
+                                <span *ngIf="isCommentNotification(notification)">
+                                    has commented your
+                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                                </span>
+                                <span *ngIf="isLikeNotification(notification)">
+                                    has liked your
+                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                                </span>
+                                <span *ngIf="isRequestNotification(notification)">
+                                    <span>
+                                        has developed your
+                                        <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
+                                    </span>
+                                    <a [routerLink]="'/requests/' + notification.request.id" class="ml-1">See request</a>
+                                </span>
+                            </div>
+                            <span class="meta">{{ notification.date | amTimeAgo }}</span>
+                        </div>
                     </div>
                 </div>
             </div>

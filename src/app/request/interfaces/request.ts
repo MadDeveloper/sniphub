@@ -6,8 +6,5 @@ import { Observable } from 'rxjs/Observable'
 
 export interface Request {
     id: string
-    user: User | Observable<User>
-    date: Date
-    code: Code
-    snippet: Snippet
+    code: Observable<Code>
 }
