@@ -71,7 +71,7 @@ export class CodeService {
         return {
             id: code.$key,
             language: this.language.find({ value: code.language }),
-            author: this.user.find(code.author),
+            author: this.user.find(code.user),
             code: code.code,
             request: code.request || false,
             validated: code.validated || false

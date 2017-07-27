@@ -4,6 +4,8 @@ import { NotificationService } from './services/notification.service'
 import { Subscription } from 'rxjs/Subscription'
 import { AuthenticationService } from '../authentication/services/authentication.service'
 import { User } from '../core/interfaces/user/user'
+import { RequestService } from '../request/services/request.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-notifications',
@@ -18,7 +20,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     constructor(
         private notificationService: NotificationService,
-        private authentication: AuthenticationService) { }
+        private authentication: AuthenticationService,
+        private request: RequestService,
+        private router: Router) { }
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
@@ -53,5 +57,11 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     isLikeNotification(notification: Notification) {
         return this.notificationService.isLikeNotification(notification)
+    }
+
+    seeRequest(notification: Notification, event: Event) {
+        event.preventDefault()
+        this.request.storedSnippet = { id: notification.snippetId }
+        this.router.navigate([`/requests/${notification.requestId}`])
     }
 }

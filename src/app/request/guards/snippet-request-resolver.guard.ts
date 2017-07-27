@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve, Router } from '@a
 import { Observable } from 'rxjs/Observable'
 import { RequestService } from '../../request/services/request.service'
 import { Request } from '../interfaces/request'
+import { Snippet } from '../../snippet/interfaces/snippet'
 
 @Injectable()
 export class SnippetRequestResolverGuard implements Resolve<Request> {
@@ -15,7 +16,7 @@ export class SnippetRequestResolverGuard implements Resolve<Request> {
 
         return this
             .request
-            .find(id, null)
+            .find(id, <Snippet>this.request.storedSnippet)
             .map((request: Request): Request => {
                 if (request) {
                     return request

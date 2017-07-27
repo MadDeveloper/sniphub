@@ -6,7 +6,7 @@ import { LanguageService } from '../../code/services/language.service'
 import { SnippetService } from '../../snippet/services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
 import { Request } from '../interfaces/request'
-import { Snippet } from '../../snippet/interfaces/snippet'
+import { Snippet } from '../../snippet/interfaces/snippet';
 import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
 import { Observable } from 'rxjs/Observable'
@@ -15,6 +15,8 @@ import { NotificationService } from '../../notification/services/notification.se
 
 @Injectable()
 export class RequestService {
+    storedSnippet: Partial<Snippet>
+
     constructor(
         private codeEditor: CodeEditorService,
         private user: UserService,
@@ -38,7 +40,7 @@ export class RequestService {
     find(id: string, snippet: Snippet): Observable<Request> {
         return this
             .database
-            .object(this.requestPath(snippet, id))
+            .object(this.requestPath(id, snippet))
             .map((request: any): Request => this.forgeFromDatabase(request, snippet))
     }
 
@@ -66,7 +68,7 @@ export class RequestService {
     forgeFromDatabase(request: any, snippet: Snippet): Request {
         return {
             id: request.$key,
-            code: this.code.find(request.code, snippet)
+            code: this.code.find(request.$value, snippet)
         }
     }
 
@@ -123,7 +125,7 @@ export class RequestService {
         return `${this.requestsPath()}/${snippet.id}`
     }
 
-    private requestPath(snippet: Snippet, id: string) {
+    private requestPath(id: string, snippet: Snippet) {
         return `${this.requestsSnippetPath(snippet)}/${id}`
     }
 

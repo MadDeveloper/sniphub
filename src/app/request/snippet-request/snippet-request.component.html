@@ -2,27 +2,29 @@
     <app-back-link></app-back-link>
 </div>
 <div *ngIf="loaded" class="container segment padded mt-4">
-    <div class="row mb-3">
-        <div class="col">
-            <div class="d-flex align-items-center">
-                <h1 class="h3">{{ request.snippet.name }}</h1>
+    <div *ngIf="request.code | async; let code">
+        <div *ngIf="code.author | async; let author" class="row mb-3">
+            <div *ngIf="snippet | async; let snippet" class="col">
+                <div class="d-flex align-items-center">
+                     <h1 class="h3">{{ snippet.name }}</h1>
+                </div>
+                 <div class="date mr-3">requested {{ snippet.date | amTimeAgo }}</div>
             </div>
-            <div class="date mr-3">requested {{ request.snippet.date | amTimeAgo }}</div>
-        </div>
-        <div class="col">
-            <div class="float-right d-flex align-items-center">
-                <span class="meta mr-2">Requested by</span>
-                <img [src]="request.user.avatar" alt="" class="image avatar">
-                <a [routerLink]="'/profile/' + request.user.id" class="author ml-1">{{ request.user.username }}</a>
+            <div class="col">
+                <div class="float-right d-flex align-items-center">
+                    <span class="meta mr-2">Requested by</span>
+                    <img [src]="author.avatar" alt="" class="image avatar">
+                    <a [routerLink]="'/profile/' + author.id" class="author ml-1">{{ author.username }}</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h2 class="h5">{{ request.code.language.text }}</h2>
+        <div class="row">
+            <div class="col">
+                <h2 class="h5">{{ code.language.text }}</h2>
+            </div>
         </div>
+        <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [code]="code" hideLanguage="true" readonly="nocursor"></app-code-block>
     </div>
-    <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [(code)]="request.code" hideLanguage="true" readonly="nocursor"></app-code-block>
     <div class="row">
         <div class="col">
             <hr class="my-4">

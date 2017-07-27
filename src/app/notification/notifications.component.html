@@ -23,7 +23,7 @@
                                         has developed your
                                         <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
                                     </span>
-                                    <a [routerLink]="'/requests/' + notification.request.id" class="ml-1">See request</a>
+                                    <a href="#" (click)="seeRequest(notification, $event)" class="ml-1">See request</a>
                                 </span>
                             </div>
                             <span class="meta">{{ notification.date | amTimeAgo }}</span>
