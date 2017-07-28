@@ -36,18 +36,11 @@ export class RequestService {
             .map((request: any): Request => this.forgeFromDatabase(request, snippet))
     }
 
-    async forSnippet(snippet: Snippet): Promise<Request[]> {
-        const requests = [{
-            id: 1,
-            user: this.user.find('ddDADa13ff42'),
-            date: new Date(),
-            code: this.code.mockOne(),
-            snippet: null // this.snippet.find('email regex')
-        }]
-
-        return Promise.resolve([
-            // requests.filter(request => request.snippet.id === snippet.id)
-        ])
+    forSnippet(snippet: Snippet): Observable<Request[]> {
+        return this
+            .database
+            .list(this.requestsSnippetPath(snippet))
+            .map((requests: any[]): Request[] => requests.map(request => this.forgeFromDatabase(request, snippet)))
     }
 
     forge(user: User, code: Code, snippet: Snippet): Request {
@@ -58,10 +51,14 @@ export class RequestService {
     }
 
     forgeFromDatabase(request: any, snippet: Snippet): Request {
-        return {
-            id: request.$key,
-            code: this.code.find(request.$value, snippet)
+        if (request.$value) {
+            return {
+                id: request.$key,
+                code: this.code.find(request.$value, snippet)
+            }
         }
+
+        return null
     }
 
     accept(request: Request, code: Code, snippet: Snippet) {
@@ -125,19 +122,19 @@ export class RequestService {
         })
     }
 
-    private requestsPath() {
+    requestsPath() {
         return '/requests'
     }
 
-    private requestsSnippetPath(snippet: Snippet) {
+    requestsSnippetPath(snippet: Snippet) {
         return `${this.requestsPath()}/${snippet.id}`
     }
 
-    private requestPath(id: string, snippet: Snippet) {
+    requestPath(id: string, snippet: Snippet) {
         return `${this.requestsSnippetPath(snippet)}/${id}`
     }
 
-    private uniqFirebaseId() {
+    uniqFirebaseId() {
         return this.database.app.database().ref().push().key
     }
 }

@@ -29,7 +29,7 @@ export class SnippetRequestResolverGuard implements Resolve<Request> {
                     return request
                 }
 
-                this.router.navigate(['/404'])
+                this.router.navigate(['/requests'])
 
                 return null
             })

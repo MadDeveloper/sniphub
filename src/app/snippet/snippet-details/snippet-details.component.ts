@@ -36,6 +36,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     ownSnippet = false
     authorObserver: Subscription
     likedObserver: Subscription
+    requestsObserver: Subscription
     hasPendingRequests = false
     loaded = false
     requestCodes: Code[] = []
@@ -72,7 +73,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     if (this.user) {
                         this.loadSnippetAuthor()
                         this.likedObserver = this.likeService.liked(this.snippet).subscribe(liked => this.liked = liked)
-                        this.hasPendingRequests = (await this.request.forSnippet(this.snippet)).length > 0
+                        this.loadRequests()
                     }
                 }
             })
@@ -89,6 +90,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
         if (this.likedObserver) {
             this.likedObserver.unsubscribe()
+        }
+
+        if (this.requestsObserver) {
+            this.requestsObserver.unsubscribe()
         }
     }
 
@@ -111,6 +116,12 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.codesLoaded = true
                 this.loaded = true
             })
+    }
+
+    loadRequests() {
+        this.requestsObserver = this
+            .request
+            .forSnippet(this.snippet).subscribe(requests => this.hasPendingRequests = requests.length > 0)
     }
 
     focusComment() {

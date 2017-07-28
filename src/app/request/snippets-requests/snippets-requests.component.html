@@ -1,14 +1,14 @@
-<div *ngIf="loaded">
+<div *ngIf="loaded;else loading">
     <div *ngIf="requests.length > 0;else noRequests" class="container segment container-small mt-4 py-2">
         <div *ngFor="let request of requests;let i = index">
-            <div class="row py-2">
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <a [routerLink]="'/profile/' + request.user.id" class="author d-flex align-items-center mr-1">
-                            <img [src]="request.user.avatar" alt="" class="image avatar mr-2">
-                            <span>{{ request.user.username }}</span>
+            <div *ngIf="request.code | async; let code" class="row py-2">
+                <div *ngIf="code.author | async; let author" class="col">
+                    <div *ngIf="author.snippet | async; let snippet" class="d-flex align-items-center">
+                        <a [routerLink]="'/profile/' + author.id" class="author d-flex align-items-center mr-1">
+                            <img [src]="author.avatar" alt="" class="image avatar mr-2">
+                            <span>{{ author.username }}</span>
                         </a>
-                        <span>has developed your <a [routerLink]="'/snippets/' + request.snippet.id">{{ request.snippet.name }}</a> snippet in a new code.</span>
+                        <!-- <span>has developed your <a [routerLink]="'/snippets/' + snippet.id">{{ snippet.name }}</a> snippet in a new code.</span> -->
                         <span class="ml-1">
                             <a [routerLink]="'/requests/' + request.id" class="ml-1">See request</a>
                         </span>
@@ -29,3 +29,12 @@
         </div>
     </ng-template>
 </div>
+<ng-template #loading>
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { RequestService } from '../services/request.service'
 import { Request } from '../interfaces/request'
-import { Subscription } from 'rxjs/Subscription'
 import { ActivatedRoute } from '@angular/router'
 
 @Component({
@@ -9,9 +8,8 @@ import { ActivatedRoute } from '@angular/router'
   templateUrl: './snippets-requests.component.html',
   styleUrls: ['./snippets-requests.component.scss']
 })
-export class SnippetsRequestsComponent implements OnInit, OnDestroy {
-    private requests: Request[] = []
-    private routeDataObserver: Subscription
+export class SnippetsRequestsComponent implements OnInit {
+    requests: Request[] = []
     loaded = false
 
     constructor(
@@ -19,16 +17,11 @@ export class SnippetsRequestsComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute) { }
 
     ngOnInit() {
-        this.routeDataObserver = this
-            .route
+        this.route
             .data
             .subscribe((data: { requests: Request[] }) => {
                 this.requests = data[0]
                 this.loaded = true
             })
-    }
-
-    ngOnDestroy() {
-        this.routeDataObserver.unsubscribe()
     }
 }
