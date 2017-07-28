@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
-import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve } from '@angular/router'
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Resolve, Router } from '@angular/router'
 import { Observable } from 'rxjs/Observable'
-import { Location } from '@angular/common'
 import { RequestService } from '../../request/services/request.service'
 import { Request } from '../../request/interfaces/request'
 
@@ -9,19 +8,11 @@ import { Request } from '../../request/interfaces/request'
 export class SnippetsRequestsResolverGuard implements Resolve<Request[]> {
     constructor(
         private request: RequestService,
-        private location: Location) { }
+        private router: Router) { }
 
-    async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Request[]> {
-        const id = parseInt(route.params['id'], 10)
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Request[]> {
+        this.router.navigate(['/'])
 
-        const requests = await this.request.all()
-
-        if (requests) {
-            return Promise.resolve(requests)
-        }
-
-        this.location.back()
-
-        return Promise.resolve(null)
+        return null
     }
 }

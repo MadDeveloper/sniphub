@@ -13,10 +13,17 @@ export class SnippetRequestResolverGuard implements Resolve<Request> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Request> {
         const id = route.params['id']
+        const storedSnippet = <Snippet>this.request.storedSnippet
+
+        if (!storedSnippet) {
+            this.router.navigate(['/'])
+
+            return null
+        }
 
         return this
             .request
-            .find(id, <Snippet>this.request.storedSnippet)
+            .find(id, storedSnippet)
             .map((request: Request): Request => {
                 if (request) {
                     return request

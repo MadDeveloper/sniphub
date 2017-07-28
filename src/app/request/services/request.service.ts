@@ -6,7 +6,7 @@ import { LanguageService } from '../../code/services/language.service'
 import { SnippetService } from '../../snippet/services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
 import { Request } from '../interfaces/request'
-import { Snippet } from '../../snippet/interfaces/snippet';
+import { Snippet } from '../../snippet/interfaces/snippet'
 import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
 import { Observable } from 'rxjs/Observable'
@@ -25,16 +25,8 @@ export class RequestService {
         private database: AngularFireDatabase,
         private notification: NotificationService) { }
 
-    async all(): Promise<Request[]> {
-        return Promise.resolve([
-            // {
-            //     id: 1,
-            //     user: await this.user.find({ id: 1 }),
-            //     date: new Date(),
-            //     code: this.code.mockOne(),
-            //     snippet: this.snippet.find('email regex')
-            // }
-        ])
+    all(user: User): Observable<Request[]> {
+        return null
     }
 
     find(id: string, snippet: Snippet): Observable<Request> {
@@ -72,12 +64,28 @@ export class RequestService {
         }
     }
 
-    accept(request: Request): Promise<boolean> {
-        return Promise.resolve(true)
+    accept(request: Request, code: Code, snippet: Snippet) {
+        return new Promise( async (resolve, reject) => {
+            try {
+                await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
+                await this.database.object(this.requestPath(request.id, snippet)).remove()
+                resolve()
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 
-    reject(request: Request): Promise<boolean> {
-        return Promise.resolve(true)
+    reject(request: Request, code: Code, snippet: Snippet) {
+        return new Promise( async (resolve, reject) => {
+            try {
+                await this.database.object(this.code.codePath(code.id, snippet)).remove()
+                await this.database.object(this.requestPath(request.id, snippet)).remove()
+                resolve()
+            } catch (error) {
+                reject(error)
+            }
+        })
     }
 
     forgeForDatabase(code: Code, author: User, asRequest = false) {

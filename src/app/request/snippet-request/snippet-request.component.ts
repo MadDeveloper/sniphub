@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { SweetAlertService } from 'ng2-sweetalert2'
 import { RequestService } from '../services/request.service'
 import { Request } from '../interfaces/request'
 import { SnippetService } from '../../snippet/services/snippet.service'
-import { Snippet } from '../../snippet/interfaces/snippet';
-import { Observable } from 'rxjs/Observable';
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { Observable } from 'rxjs/Observable'
+import { Code } from '../../code/interfaces/code'
 
 @Component({
     selector: 'app-snippet-request',
     templateUrl: './snippet-request.component.html',
     styleUrls: ['./snippet-request.component.scss']
 })
-export class SnippetRequestComponent implements OnInit {
+export class SnippetRequestComponent implements OnInit, OnDestroy {
     request: Request
     snippet: Observable<Snippet>
-    private snippetObserver: Subscription
+    private codeObserver: Subscription
+    private code: Code
     loaded = false
     accepted = false
     rejected = false
@@ -33,17 +35,50 @@ export class SnippetRequestComponent implements OnInit {
             .data
             .subscribe((data: { request: Request }) => {
                 this.request = data[0]
-                this.loaded = true
+                this.loadCode()
                 this.loadSnippet()
             })
+    }
+
+    ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        this.codeObserver.unsubscribe()
     }
 
     loadSnippet() {
         this.snippet = this.snippetService.find(this.requestService.storedSnippet.id)
     }
 
+    loadCode() {
+        this.codeObserver = this.request.code.subscribe(code => {
+            this.code = code
+            this.loaded = true
+        })
+    }
+
+    async confirmAccept() {
+        try {
+            const accepted = await this.swal.swal({
+                title: 'Are you sure?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Accept',
+                cancelButtonText: 'Cancel'
+            })
+
+            if (accepted) {
+                this.accept()
+            }
+        } catch (reason) {
+            // we do nothing
+        }
+    }
+
     accept() {
-        this.requestService.accept(this.request)
+        this.requestService.accept(this.request, this.code, <Snippet>this.requestService.storedSnippet)
         this.accepted = true
     }
 
@@ -66,7 +101,7 @@ export class SnippetRequestComponent implements OnInit {
     }
 
     reject = () => {
-        this.requestService.reject(this.request)
+        this.requestService.reject(this.request, this.code, <Snippet>this.requestService.storedSnippet)
         this.rejected = true
     }
 }

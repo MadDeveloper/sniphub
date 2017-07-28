@@ -133,3 +133,20 @@ hr {
 .swal2-container * {
     font-family: inherit;
 }
+
+.label {
+    display: inline-block;
+    line-height: inherit;
+    vertical-align: baseline;
+    margin: 0 .14285714em;
+    background-color: $medium-light-color;
+    background-image: none;
+    padding: .5833em .833em;
+    color: inherit;
+    text-transform: none;
+    font-weight: 700;
+    border: none;
+    border-radius: .28571429rem;
+    -webkit-transition: background .1s ease;
+    transition: background .1s ease;
+}

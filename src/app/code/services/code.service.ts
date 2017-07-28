@@ -117,15 +117,15 @@ export class CodeService {
         return this.database.app.database().ref().push().key
     }
 
-    private codesPath() {
+    codesPath() {
         return '/codes'
     }
 
-    private codesSnippetPath(snippet: Snippet) {
+    codesSnippetPath(snippet: Snippet) {
         return `${this.codesPath()}/${snippet.id}`
     }
 
-    private codePath(id: string, snippet: Snippet) {
+    codePath(id: string, snippet: Snippet) {
         return `${this.codesSnippetPath(snippet)}/${id}`
     }
 }

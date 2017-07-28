@@ -20,7 +20,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <h2 class="h5">{{ code.language.text }}</h2>
+                <h2 class="h5">Request for <span class="label">{{ code.language.text }}</span> language</h2>
             </div>
         </div>
         <app-code-block (onChangeCodeBlock)="codeBlockChange($event)" [code]="code" hideLanguage="true" readonly="nocursor"></app-code-block>
@@ -32,7 +32,7 @@
     </div>
     <div class="row">
         <div *ngIf="!accepted && !rejected" class="col">
-            <button class="btn outlined success mr-3" (click)="accept()">Accept</button>
+            <button class="btn outlined success mr-3" (click)="confirmAccept()">Accept</button>
             <button class="btn outlined danger" (click)="confirmReject()">Reject</button>
         </div>
         <div class="col">
