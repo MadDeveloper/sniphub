@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./snippets-requests.component.scss']
 })
 export class SnippetsRequestsComponent implements OnInit {
-    requests: Request[] = []
+    requests: Request[]
     loaded = false
 
     constructor(

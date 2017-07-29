@@ -4,7 +4,7 @@
 <div *ngIf="loaded" class="container segment padded mt-4">
     <div *ngIf="request.code | async; let code">
         <div *ngIf="code.author | async; let author" class="row mb-3">
-            <div *ngIf="snippet | async; let snippet" class="col">
+            <div *ngIf="request.snippet | async; let snippet" class="col">
                 <div class="d-flex align-items-center">
                      <h1 class="h3">{{ snippet.name }}</h1>
                 </div>

@@ -8,7 +8,7 @@ import { Snippet } from '../../snippet/interfaces/snippet'
 import { Request } from '../interfaces/request'
 
 @Injectable()
-export class SnippetsRequestsResolverGuard implements Resolve<Request[]> {
+export class SnippetsRequestsResolverGuard implements Resolve<Observable<Request[]>> {
     constructor(
         private request: RequestService,
         private router: Router,
@@ -19,7 +19,8 @@ export class SnippetsRequestsResolverGuard implements Resolve<Request[]> {
         return this
             .snippet
             .author(this.authentication.currentUser())
-            .mergeMap((snippets: Snippet[]) => Observable.forkJoin(snippets.map((snippet: Snippet) => this.request.forSnippet(snippet))))
-            .map((requests: Request[][]): Request[] => [].concat(...requests))
+            .mergeMap((snippets: Snippet[]) => snippets.map((snippet: Snippet) => this.request.forSnippet(snippet)))
+            .mergeAll()
+            .first()
     }
 }

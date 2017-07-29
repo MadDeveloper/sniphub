@@ -23,7 +23,8 @@ export class RequestService {
         private language: LanguageService,
         private code: CodeService,
         private database: AngularFireDatabase,
-        private notification: NotificationService) { }
+        private notification: NotificationService,
+        private snippet: SnippetService) { }
 
     all(user: User): Observable<Request[]> {
         return null
@@ -46,6 +47,7 @@ export class RequestService {
     forge(user: User, code: Code, snippet: Snippet): Request {
         return {
             id: null,
+            snippet: this.snippet.find(snippet.id),
             code: Observable.of(code)
         }
     }
@@ -54,6 +56,7 @@ export class RequestService {
         if (request.$value) {
             return {
                 id: request.$key,
+                snippet: this.snippet.find(snippet.id),
                 code: this.code.find(request.$value, snippet)
             }
         }

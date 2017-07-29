@@ -16,8 +16,9 @@ import { Code } from '../../code/interfaces/code'
 })
 export class SnippetRequestComponent implements OnInit, OnDestroy {
     request: Request
-    snippet: Observable<Snippet>
+    snippet: Snippet
     private codeObserver: Subscription
+    private snippetObserver: Subscription
     private code: Code
     loaded = false
     accepted = false
@@ -46,10 +47,11 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
 
     closeSubscriptions() {
         this.codeObserver.unsubscribe()
+        this.snippetObserver.unsubscribe()
     }
 
     loadSnippet() {
-        this.snippet = this.snippetService.find(this.requestService.storedSnippet.id)
+        this.snippetObserver = this.request.snippet.subscribe(snippet => this.snippet = snippet)
     }
 
     loadCode() {
