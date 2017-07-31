@@ -50,7 +50,7 @@
                 </div>
 	        </div>
         </div>
-        <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-md-8 col-12 mt-4 clickable" (click)="goToRequests()">
+        <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-12 mt-4 clickable" (click)="goToRequests()">
             <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
                 <span><i class="fa fa-bell-o"></i> You have awaiting code requests for your snippets.</span>
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>

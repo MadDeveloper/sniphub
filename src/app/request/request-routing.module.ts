@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core'
 import { SnippetsRequestsComponent } from './snippets-requests/snippets-requests.component'
 import { AuthenticationGuard } from '../authentication/guards/authentication.guard'
 import { SnippetRequestComponent } from './snippet-request/snippet-request.component'
-import { SnippetsRequestsResolverGuard } from './guards/snippets-requests-resolver.guard'
 import { SnippetRequestResolverGuard } from './guards/snippet-request-resolver.guard'
 
 @NgModule({
@@ -11,8 +10,7 @@ import { SnippetRequestResolverGuard } from './guards/snippet-request-resolver.g
         {
             path: 'requests',
             component: SnippetsRequestsComponent,
-            canActivate: [ AuthenticationGuard ],
-            resolve: [ SnippetsRequestsResolverGuard ]
+            canActivate: [ AuthenticationGuard ]
         },
         {
             path: 'requests/:id',

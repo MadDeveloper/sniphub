@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core'
 import { RequestService } from '../services/request.service'
 import { Request } from '../interfaces/request'
-import { ActivatedRoute } from '@angular/router'
+import { SnippetService } from '../../snippet/services/snippet.service'
+import { AuthenticationService } from '../../authentication/services/authentication.service'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { Observable } from 'rxjs/Observable'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-snippets-requests',
@@ -9,19 +13,29 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./snippets-requests.component.scss']
 })
 export class SnippetsRequestsComponent implements OnInit {
-    requests: Request[]
-    loaded = false
+    requests: Observable<Request[]>
 
     constructor(
-        private requestService: RequestService,
-        private route: ActivatedRoute) { }
+        private request: RequestService,
+        private snippet: SnippetService,
+        private authentication: AuthenticationService,
+        private router: Router) { }
 
     ngOnInit() {
-        this.route
-            .data
-            .subscribe((data: { requests: Request[] }) => {
-                this.requests = data[0]
-                this.loaded = true
-            })
+        this.loadRequests()
+    }
+
+    loadRequests() {
+        this.requests = this
+            .snippet
+            .author(this.authentication.currentUser())
+            .mergeMap((snippets: Snippet[]) => snippets.map((snippet: Snippet) => this.request.forSnippet(snippet)))
+            .mergeAll()
+    }
+
+    seeRequest(request: Request, snippet: Snippet, event: Event) {
+        event.preventDefault()
+        this.request.storedSnippet = snippet
+        this.router.navigate([`/requests/${request.id}`])
     }
 }

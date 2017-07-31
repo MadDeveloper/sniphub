@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router'
 import { CoreModule } from '../core/core.module'
 import { MomentModule } from 'angular2-moment'
 import { CodeModule } from '../code/code.module'
-import { SnippetsRequestsResolverGuard } from './guards/snippets-requests-resolver.guard'
 import { SnippetRequestResolverGuard } from './guards/snippet-request-resolver.guard'
 
 @NgModule({
@@ -31,8 +30,7 @@ export class RequestModule {
             ngModule: RequestModule,
             providers: [
                 RequestService,
-                SnippetRequestResolverGuard,
-                SnippetsRequestsResolverGuard
+                SnippetRequestResolverGuard
             ]
         }
     }

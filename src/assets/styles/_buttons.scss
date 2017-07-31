@@ -11,9 +11,20 @@
     min-width: 90px;
     padding: 0.5rem 1rem;
     line-height: inherit;
+    transition: all .3s;
 
     &:hover {
         cursor: pointer;
+    }
+
+    &.outlined {
+        background-color: transparent;
+        border-color: #757575;
+        color: black;
+
+        &:hover {
+            border-color: black;
+        }
     }
 
     &.btn-primary {
@@ -25,23 +36,32 @@
     }
 
     &.danger {
-        border-color: $danger-color !important;
-        color: $danger-color !important;
+        border-color: $danger-color;
+        color: $danger-color;
+
+        &:hover {
+            border-color: $dark-danger-color;
+            color: $dark-danger-color;
+        }
     }
 
     &.success {
-        border-color: $success-color !important;
-        color: $success-color !important;
+        border-color: $success-color;
+        color: $success-color;
+
+        &:hover {
+            border-color: $dark-success-color;
+            color: $dark-success-color;
+        }
     }
 
     &.primary {
-        border-color: $primary-color !important;
-        color: $primary-color !important;
-    }
+        border-color: $primary-color;
+        color: $primary-color;
 
-    &.outlined {
-        background-color: transparent;
-        border-color: #757575;
-        color: black;
+        &:hover {
+            border-color: $darker-primary-color;
+            color: $darker-primary-color;
+        }
     }
 }
