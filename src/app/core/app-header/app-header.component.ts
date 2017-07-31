@@ -14,6 +14,9 @@ export class AppHeaderComponent implements OnInit {
     searchTerms = ''
     @ViewChild('searchInput')
     searchInput: ElementRef
+    // @ViewChild('mainSearchInput')
+    // mainSearchInput: ElementRef
+    searching = false
 
     constructor(private router: Router) { }
 
@@ -26,12 +29,12 @@ export class AppHeaderComponent implements OnInit {
     }
 
     toggleSearch() {
-        if (this.searchInput.nativeElement.value.length === 0) {
+        if (this.searchTerms.length === 0) {
             this.searchEnabled = !this.searchEnabled
         }
     }
 
-    goSearch() {
+    search() {
         this.router.navigate(['/search', { terms: this.searchTerms }])
     }
 }

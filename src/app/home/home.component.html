@@ -1,24 +1,3 @@
-<section id="search-segment" class="background color primary pt-4 pb-5">
-    <div class="container">
-        <div class="row text color white">
-            <div id="search-wrapper" class="col">
-                <h1 id="input-title" class="mb-3 clickable" (click)="focusSearchInput($event)">I don't want to code</h1>
-                <div class="input-icon huge">
-                    <input #searchInput
-                        (keyup)="search(searchInput.value)"
-                        (focus)="toggleSearch()"
-                        (blur)="toggleSearch()"
-                        [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
-                        id="main-search-input"
-                        class="unbordered backgrounded"
-                        type="text"
-                        placeholder="email regex, clone array...">
-                    <i class="fa fa-search icon"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <section class="container mt-4">
     <div *ngIf="!loading; else loadingSnippets">
         <div *ngIf="!searching; else searchView">

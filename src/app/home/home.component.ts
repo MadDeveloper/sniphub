@@ -17,11 +17,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     lastAddedSnippetsObserver: Subscription
     popularSnippets: Snippet[] = []
     popularSnippetsObserver: Subscription
-    searching = false
-    @ViewChild('searchInput')
-    searchInput: ElementRef
-    searchTerms = ''
-    searchEnabled = false
     loading = false
 
     constructor(
@@ -67,21 +62,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                 this.popularSnippets = snippets
                 this.disableLoading()
             })
-    }
-
-    focusSearchInput(event: Event) {
-        this.searchInput.nativeElement.focus()
-    }
-
-    search(terms: string) {
-        this.searching = terms.length > 0
-        this.searchTerms = terms
-    }
-
-    toggleSearch() {
-        if (this.searchInput.nativeElement.value.length === 0) {
-            this.searchEnabled = !this.searchEnabled
-        }
     }
 
     enableLoading() {

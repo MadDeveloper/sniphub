@@ -3,23 +3,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-2 col-3 d-flex align-items-center">
-                    <a class="navbar-brand py-0" routerLink="/">Snipz</a>
+                    <a class="navbar-brand py-0" routerLink="/">SnipHub</a>
                 </div>
                 <div class="col-md-3 col-sm-4 col-9 push-md-7 push-sm-6 pl-0 d-flex align-items-center justify-content-end">
                     <app-header-icons-actions></app-header-icons-actions>
                 </div>
-                <div class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center search-col" style="height: 35px">
-                    <div *ngIf="!homePage" class="form-inline input-icon w-100">
+                <div class="col-md-7 col-sm-6 col-12 pull-md-3 pull-sm-4 d-flex align-items-center search-col">
+                    <div class="input-icon medium">
                         <input #searchInput
                             type="text"
                             class="unbordered backgrounded"
-                            (keyup)="goSearch()"
-                            [ngClass]="searchEnabled ? '' : 'dark-primary clickable'"
-                            [(ngModel)]="searchTerms"
+                            id="main-search-input"
                             placeholder="I don't want to code..."
+                            [(ngModel)]="searchTerms"
+                            (keyup)="search()"
                             (focus)="toggleSearch()"
-                            (blur)="toggleSearch()">
-                        <i class="icon fa fa-search" aria-hidden="true"></i>
+                            (blur)="toggleSearch()"
+                            [ngClass]="searchEnabled ? '' : 'dark-primary clickable'">
+                        <i class="fa fa-search icon"></i>
                     </div>
                 </div>
             </div>

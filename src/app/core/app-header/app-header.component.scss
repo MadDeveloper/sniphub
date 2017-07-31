@@ -1,13 +1,11 @@
 @import '../../../assets/styles/variables';
 
 header {
-    position: -webkit-sticky;
-    position: -moz-sticky;
-    position: -ms-sticky;
-    position: -o-sticky;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 1000;
+    width: 100%;
 
     nav {
         background-color: $primary-color;
@@ -28,6 +26,15 @@ header {
                 @media screen and(max-width: $screen-xs) {
                     margin-top: 1rem;
                 }
+            }
+
+            input#main-search-input {
+                border: none;
+                padding: 7px 20px;
+                padding-right: 70px;
+                border-radius: 4px;
+                font-size: 18px;
+                width: 100%;
             }
         }
     }

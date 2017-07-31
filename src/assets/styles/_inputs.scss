@@ -100,6 +100,7 @@ textarea {
 }
 
 .input-icon {
+    width: 100%;
     position: relative;
 
     &.huge {
@@ -113,6 +114,20 @@ textarea {
             font-size: 25px;
             top: 12px;
             right: 25px;
+        }
+    }
+
+    &.medium {
+        input {
+            font-size: 18px;
+            padding: .67rem 2rem;
+            padding-right: 55px;
+        }
+
+        .icon {
+            font-size: 18px;
+            top: 11px;
+            right: 21px;
         }
     }
 
