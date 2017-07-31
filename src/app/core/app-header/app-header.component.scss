@@ -1,12 +1,15 @@
 @import '../../../assets/styles/variables';
 
 header {
-    // position: relative;
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
     nav {
-        // width: 100%;
-        // position: fixed;
-        // z-index: 100;
         background-color: $primary-color;
         padding: 1rem;
 

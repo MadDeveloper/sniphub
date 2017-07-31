@@ -13,3 +13,13 @@ input#main-search-input {
     border-radius: 6px;
     font-size: 2rem;
 }
+
+#search-segment {
+    position: -webkit-sticky;
+    position: -moz-sticky;
+    position: -ms-sticky;
+    position: -o-sticky;
+    position: sticky;
+    top: 63px;
+    z-index: 1000;
+}
