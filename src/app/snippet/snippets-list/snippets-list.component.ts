@@ -13,6 +13,7 @@ import { config } from '../../../config'
 })
 export class SnippetsListComponent {
     static nameMaxLength = config.snippet.maxLengthName
+    static descriptionMaxLength = config.snippet.maxLengthDescription
 
     @Input()
     snippets: Snippet[]
@@ -31,5 +32,13 @@ export class SnippetsListComponent {
         }
 
         return name
+    }
+
+    truncateDescription(description: string) {
+        if (description.length > SnippetsListComponent.descriptionMaxLength) {
+            return `${description.substring(0, SnippetsListComponent.descriptionMaxLength - 3)}...`
+        }
+
+        return description
     }
 }

@@ -5,6 +5,7 @@ export const config = {
         }
     },
     snippet: {
-        maxLengthName: 70
+        maxLengthName: 70,
+        maxLengthDescription: 100
     }
 }

@@ -35,6 +35,8 @@ export class AppHeaderComponent implements OnInit {
     }
 
     search() {
-        this.router.navigate(['/search', { terms: this.searchTerms }])
+        if (this.searchTerms.length > 0) {
+            this.router.navigate(['/search', { terms: this.searchTerms }])
+        }
     }
 }
