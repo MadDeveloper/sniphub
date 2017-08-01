@@ -1,0 +1,16 @@
+@import 'variables';
+
+.list {
+    .item {
+        padding: 1rem;
+        border-bottom: 1px solid $light-grey-color;
+
+        &.active {
+            background-color: rgba(220, 220, 220, .3);
+        }
+    }
+
+    .item:last-child {
+        border-color: transparent;
+    }
+}

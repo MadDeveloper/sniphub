@@ -1,39 +1,32 @@
 <div *ngIf="loaded">
-    <div *ngIf="notifications.length > 0; else noNotifications" class="container segment container-small mt-4 py-2">
-        <div *ngFor="let notification of notifications; let i = index">
-            <div class="row py-2">
-                <div class="col">
-                    <div class="d-flex align-items-center">
-                        <a [routerLink]="'/profile/' + (notification.user | async)?.id">
-                            <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar small mr-2">
-                        </a>
-                        <div class="ml-2 d-flex flex-column">
-                            <div>
-                                <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author">{{ (notification.user | async)?.username }}</a>
-                                <span *ngIf="isCommentNotification(notification)">
-                                    has commented your
-                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+    <div *ngIf="notifications.length > 0; else noNotifications" class="container segment container-small mt-4 px-0">
+        <div class="list">
+            <div class="item" *ngFor="let notification of notifications; let i = index" [ngClass]="{ active: !notification.read }">
+                <div class="d-flex align-items-center">
+                    <a [routerLink]="'/profile/' + (notification.user | async)?.id">
+                        <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar small mr-2">
+                    </a>
+                    <div class="ml-2 d-flex flex-column">
+                        <div>
+                            <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author">{{ (notification.user | async)?.username }}</a>
+                            <span *ngIf="isCommentNotification(notification)">
+                                has commented your
+                                <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                            </span>
+                            <span *ngIf="isLikeNotification(notification)">
+                                has liked your
+                                <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                            </span>
+                            <span *ngIf="isRequestNotification(notification)">
+                                <span>
+                                    has developed your
+                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
                                 </span>
-                                <span *ngIf="isLikeNotification(notification)">
-                                    has liked your
-                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
-                                </span>
-                                <span *ngIf="isRequestNotification(notification)">
-                                    <span>
-                                        has developed your
-                                        <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
-                                    </span>
-                                    <a href="#" (click)="seeRequest(notification, $event)" class="ml-1">See request</a>
-                                </span>
-                            </div>
-                            <span class="meta">{{ notification.date | amTimeAgo }}</span>
+                                <a href="#" (click)="seeRequest(notification, $event)" class="ml-1">See request</a>
+                            </span>
                         </div>
+                        <span class="meta">{{ notification.date | amTimeAgo }}</span>
                     </div>
-                </div>
-            </div>
-            <div *ngIf="i < notifications.length - 1" class="row">
-                <div class="col">
-                    <hr>
                 </div>
             </div>
         </div>
