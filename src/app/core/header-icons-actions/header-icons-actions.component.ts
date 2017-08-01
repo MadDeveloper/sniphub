@@ -30,10 +30,12 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             .filter(event => event instanceof NavigationEnd)
             .subscribe( (event: NavigationEnd) => this.checkAuthentication())
 
-        this.notificationObserver = this
-            .notification
-            .unread(this.user)
-            .subscribe(this.checkUnreadNotifications)
+        if (this.authentication.logged) {
+            this.notificationObserver = this
+                .notification
+                .unread(this.user)
+                .subscribe(this.checkUnreadNotifications)
+        }
     }
 
     ngOnDestroy() {
