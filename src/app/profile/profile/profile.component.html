@@ -34,11 +34,11 @@
                                 <div class="text color meta">
                                     <span>
                                         <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                        <span class="ml-1">3350</span>
+                                        <span class="ml-1">{{ (likes | async)?.length || 0 }}</span>
                                     </span>
                                     <span tooltip="Languages availables for the snippet">
                                         <i class="fa fa-code ml-2" aria-hidden="true"></i>
-                                        <span class="ml-1">5</span>
+                                        <span class="ml-1">{{ (codes | async)?.length || 0 }}</span>
                                     </span>
                                 </div>
                                 <div *ngIf="ownProfile()" class="hidden-md-up mt-3">
@@ -56,20 +56,24 @@
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
-        <div *ngIf="snippetsLoaded; else loadingSnippets" class="col-12 mt-5">
+        <div *ngIf="snippetsLoaded; else loadingSnippets" class="col-12 pt-5">
             <div *ngIf="authorSnippets.length > 0 || contributorSnippets.length > 0;else noSnippets">
                 <div class="row">
                     <div class="col">
                         <h3>Author</h3>
+                        <hr>
                     </div>
                 </div>
-                <div *ngIf="ownProfile()" class="my-3">
-                    <a class="btn outlined" routerLink="/snippets/new">New snippet</a>
+                <div *ngIf="ownProfile()" class="row pt-2 pb-4">
+                    <div class="col">
+                        <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
+                    </div>
                 </div>
                 <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
-                <div class="row mt-3 mb-3">
+                <div class="row mt-5 mb-3">
                     <div class="col">
                         <h3>Contributor</h3>
+                        <hr>
                     </div>
                 </div>
                 <app-snippets-list [snippets]="contributorSnippets"></app-snippets-list>

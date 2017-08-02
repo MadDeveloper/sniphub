@@ -135,7 +135,7 @@ export class AuthenticationService {
     }
 
     reloadUser(user: User) {
-        this.user = user
+        this.user = Object.assign({}, user)
         this.userChanged()
     }
 }

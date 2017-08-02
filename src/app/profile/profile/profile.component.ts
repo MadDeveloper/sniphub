@@ -10,6 +10,10 @@ import { Notification } from '../../notification/interfaces/notification'
 import { Observable } from 'rxjs/Observable'
 import { UserService } from '../../core/services/user/user.service'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
+import { LikeService } from '../../snippet/services/like.service'
+import { Like } from '../../snippet/interfaces/like'
+import { CodeService } from '../../code/services/code.service'
+import { Code } from '../../code/interfaces/code'
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +27,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     snippetsLoaded = false
     snippetsObserver: Subscription
     user: User
+    likes: Observable<Like[]>
+    codes: Observable<Code[]>
     userSnapshot: User
     loggedUser: User
     pendingNotifications: boolean
@@ -36,12 +42,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     constructor(
-        private snippetService: SnippetService,
+        private snippet: SnippetService,
         private route: ActivatedRoute,
         private router: Router,
         private authentication: AuthenticationService,
         private notification: NotificationService,
         private userService: UserService,
+        private like: LikeService,
+        private code: CodeService,
         private firebaseService: FirebaseService,
         private cdr: ChangeDetectorRef) { }
 
@@ -88,17 +96,34 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     loadSnippets() {
-        this.snippetsObserver = this.snippetService
+        this.snippetsObserver = this.snippet
             .author(this.user)
             .mergeMap(authorSnippets => {
                 this.authorSnippets = authorSnippets
+                this.loadLikes()
 
-                return this.snippetService.contributor(this.user)
+                return this.snippet.contributor(this.user)
             })
             .subscribe(contributorSnippets => {
                 this.contributorSnippets = contributorSnippets
+                this.loadCodes()
                 this.snippetsLoaded = true
             })
+    }
+
+    loadLikes() {
+        this.likes = Observable
+            .from(this.authorSnippets)
+            .mergeMap(snippet => this.like.all(snippet))
+    }
+
+    loadCodes() {
+        this.codes = Observable
+            .from(this.authorSnippets)
+            .mergeMap(snippet => this.code.all(snippet))
+            .concat(Observable
+                .from(this.authorSnippets)
+                .mergeMap(snippet => this.code.all(snippet)))
     }
 
     ngOnDestroy() {
@@ -144,6 +169,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
             if (this.userSnapshot.username !== this.user.username) {
                 this.userService.changeUsername(this.user)
+                this.authentication.reloadUser(this.user)
                 this.newUserSnapshot()
             }
 
