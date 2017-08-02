@@ -7,13 +7,15 @@ import { LikeService } from './like.service'
 import { Observable } from 'rxjs/Observable'
 import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
+import { CodeService } from '../../code/services/code.service'
 
 @Injectable()
 export class SnippetService {
     constructor(
         private database: AngularFireDatabase,
         private user: UserService,
-        private like: LikeService) { }
+        private like: LikeService,
+        private code: CodeService) { }
 
     all(options?: any): Observable<Snippet[]> {
         return this
@@ -153,6 +155,7 @@ export class SnippetService {
             likes: null
         }
 
+        snippet.codes = this.code.all(snippet)
         snippet.likes = this.like.all(snippet)
 
         return snippet
