@@ -1,4 +1,4 @@
-<div *ngIf="!hideLanguage" class="d-flex align-items-center mb-4">
+<div *ngIf="!hideLanguage" class="d-flex mb-4">
     <ng-select [active]="code.language.value ? [code.language] : null"
         [items]="languages"
         (selected)="changeLanguage($event)"
@@ -6,16 +6,17 @@
         class="mr-3"
         style="width: 230px">
     </ng-select>
-    <span *ngIf="withAuthor" class="meta">
-        contribution by
-        <a [routerLink]="'/profile/' + (code.author | async)?.id" class="author">
-            {{ (code.author | async)?.username }}
-        </a>
-    </span>
 </div>
 <div>
     <codemirror #codemirror
         [(ngModel)]="code.code"
         [config]="config">
     </codemirror>
+    <div *ngIf="withAuthor" class="mt-3">
+        <div *ngIf="code.author | async; let author" class="d-flex align-items-center meta">
+            code by
+            <img [src]="author.avatar" alt="" class="image avatar ml-2">
+            <a [routerLink]="'/profile/' + author.id" class="author">{{ author.username }}</a>
+        </div>
+    </div>
 </div>
