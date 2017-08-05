@@ -40,7 +40,8 @@
             {{ snippet.description }}
         </div>
     </div>
-    <div class="row mb-4">
+    <app-code-block [codes]="codes" readonly="true" withAuthor="true"></app-code-block>
+    <div class="row mt-4">
         <div class="col unselectable">
             <span class="h4 clickable" (click)="like()">
                 <i class="fa" [ngClass]="liked ? 'fa-heart' : 'fa-heart-o'" aria-hidden="true"></i>
@@ -55,7 +56,6 @@
             </span>
         </div>
     </div>
-    <app-code-block [codes]="codes" readonly="true" withAuthor="true"></app-code-block>
     <div *ngIf="!ownSnippet && isAuthenticated">
         <hr class="my-3">
         <h4>Propose the snippet in another language</h4>

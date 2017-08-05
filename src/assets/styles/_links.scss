@@ -1,26 +1,30 @@
 @import 'variables';
 
 a {
+    color: $primary-color;
+
     &:hover,
     &:active,
     &:focus {
         text-decoration: none;
     }
+}
 
-    &.link {
-        &.white {
-            color: #fff;
+.link {
+    color: $primary-color;
 
-            &:hover {
-                color: $light-color;
-            }
+    &.white {
+        color: #fff;
+
+        &:hover {
+            color: $light-color;
         }
-        &.meta {
-            color: $dark-grey-color;
+    }
+    &.meta {
+        color: $dark-grey-color;
 
-            &:hover {
-                color: $default-color;
-            }
+        &:hover {
+            color: $default-color;
         }
     }
 }

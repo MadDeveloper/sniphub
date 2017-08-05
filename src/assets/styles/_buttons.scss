@@ -64,4 +64,48 @@
             color: $darker-primary-color;
         }
     }
+
+
+    &.facebook{
+        background-color: #0288D1;
+        color: #fff;
+
+        &:hover{
+            background-color:#0277BD;
+        }
+    }
+
+    &.google{
+        background-color: #E64A19;
+        color: #fff;
+
+        &:hover {
+            background-color: #D84315;
+        }
+    }
+
+    &.github{
+        background-color: #616161;
+        color: #fff;
+
+        &:hover {
+            background-color: #424242;
+        }
+    }
+
+    &.medium {
+        font-size: 17px;
+    }
+
+    &.large {
+        font-size: 25px;
+        border-width: 2px;
+    }
+
+    &.link {
+        background: none;
+        margin: 0;
+        padding: 0;
+        min-width: auto;
+    }
 }

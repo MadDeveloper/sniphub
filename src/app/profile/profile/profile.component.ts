@@ -143,7 +143,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         return this.loggedUser && this.user && this.loggedUser.id === this.user.id
     }
 
-    signOut() {
+    signOut(event: Event) {
+        event.preventDefault()
         this.authentication.logout()
     }
 

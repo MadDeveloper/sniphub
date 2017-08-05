@@ -1,29 +1,24 @@
 import { Injectable } from '@angular/core'
 import { SnippetService } from '../../snippet/services/snippet.service'
 import { Snippet } from '../../snippet/interfaces/snippet'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable'
 
 @Injectable()
 export class SearchService {
-    constructor(private snippet: SnippetService) { }
+    terms$: BehaviorSubject<string> = new BehaviorSubject(null)
 
-    searchByAll(terms: string): Observable<Snippet[]> {
-        // const snippets = await this.snippet.all()
+    constructor(private snippet: SnippetService) {}
 
-        // terms = terms.toLowerCase()
-
-        // return Promise.resolve(
-        //     snippets.filter(snippet => snippet.name.toLowerCase().includes(terms) || snippet.description.toLowerCase().includes(terms))
-        // )
-        return null
+    changeTerms(terms: string) {
+        this.terms$.next(terms)
     }
 
-    async searchByName(terms: string): Promise<Snippet[]> {
-        // const snippets = this.snippet.all()
+    searchByAll(terms: string): Observable<Snippet[]> {
+        return Observable.of([])
+    }
 
-        // return Promise.resolve(
-        //     snippets.filter(snippet => snippet.name.includes(terms))
-        // )
-        return Promise.resolve([])
+    searchByName(terms: string): Observable<Snippet[]> {
+        return Observable.of([])
     }
 }

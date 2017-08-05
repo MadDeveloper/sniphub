@@ -14,36 +14,15 @@
     }
 
     .social-connect {
-        button {
-            width: 100%;
-            // font-size: 14px;
-            margin: 5px 0px;
-            color: white;
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            i {
-                margin-right: 8px;
+            .fa {
+                font-size: 19px;
+                margin-right: 1rem;
             }
-
-        }
-        .btn-facebook{
-            background-color: #0288D1;
-        }
-        .btn-facebook:hover{
-                background-color:#0277BD;
-        }
-
-        .btn-google{
-            background-color: #E64A19;
-        }
-
-        .btn-google:hover{
-            background-color: #D84315;
-        }
-        .btn-github{
-            background-color: #616161;
-        }
-        .btn-github:hover{
-            background-color: #424242;
         }
     }
 }

@@ -11,7 +11,8 @@ import { Location } from '@angular/common'
 export class BackLinkComponent {
     constructor(private location: Location) { }
 
-    back() {
+    back(event: Event) {
+        event.preventDefault()
         this.location.back()
     }
 }

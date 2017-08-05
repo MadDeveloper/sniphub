@@ -2,13 +2,13 @@
     <div *ngIf="notifications.length > 0; else noNotifications" class="container segment container-small mt-4 px-0">
         <div class="list">
             <div class="item" *ngFor="let notification of notifications; let i = index" [ngClass]="{ active: !notification.read }">
-                <div class="d-flex align-items-center">
-                    <a [routerLink]="'/profile/' + (notification.user | async)?.id">
-                        <img src="{{ (notification.user | async)?.avatar }}" alt="" class="image avatar small mr-2">
+                <div *ngIf="notification.user | async; let user" class="d-flex align-items-center">
+                    <a [routerLink]="'/profile/' + user.id">
+                        <img [src]="user.avatar" alt="" class="image avatar small mr-2">
                     </a>
                     <div class="ml-2 d-flex flex-column">
                         <div>
-                            <a [routerLink]="'/profile/' + (notification.user | async)?.id" class="author">{{ (notification.user | async)?.username }}</a>
+                            <a [routerLink]="'/profile/' + user.id" class="author">{{ user.username }}</a>
                             <span *ngIf="isCommentNotification(notification)">
                                 has commented your
                                 <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.

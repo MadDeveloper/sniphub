@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { SearchService } from './services/search.service'
@@ -11,46 +11,40 @@ import { Observable } from 'rxjs/Observable'
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, OnDestroy, OnChanges {
-    snippets: Observable<Snippet[]>
-    private routeParamsObserver: Subscription
+export class SearchComponent implements OnInit, OnDestroy {
     @Input()
-    private terms: string
+    terms: string = null
+    snippets: Observable<Snippet[]>
+    termsObserver: Subscription
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
         private searchService: SearchService) { }
 
-    async ngOnInit() {
-        this.routeParamsObserver = this
-            .route
-            .params
-            .subscribe((data: { terms: string }) => {
-                if (data.terms) {
-                    this.terms = data.terms
-
-                    if (this.terms.length > 0) {
-                        this.search()
-                    }
-                }
-            })
-        this.snippets = this.snippetService.all()
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        this.terms = changes.terms.currentValue
-
-        if (this.terms.length > 0) {
-            this.search()
-        }
+    ngOnInit() {
+        this.observeTerms()
     }
 
     ngOnDestroy() {
-        this.routeParamsObserver.unsubscribe()
+        this.closeSubscriptions()
     }
 
-    async search() {
+    closeSubscriptions() {
+        this.termsObserver.unsubscribe()
+    }
+
+    observeTerms() {
+        this.termsObserver = this.searchService
+            .terms$
+            .subscribe(terms => {
+                if (this.terms !== terms) {
+                    this.search()
+                }
+        })
+    }
+
+    search() {
         this.snippets = this.searchService.searchByAll(this.terms)
     }
 }
