@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable'
 import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
 import { CodeService } from '../../code/services/code.service'
+import { config } from '../../../config'
 
 @Injectable()
 export class SnippetService {
@@ -27,7 +28,8 @@ export class SnippetService {
         return this
             .allFromDatabase({
                 query: {
-                    orderByChild: 'date'
+                    orderByChild: 'date',
+                    limitToLast: config.snippet.maxLastestAddedDisplayed
                 }
             })
             .map((snippets: any[]) => this.forgeAll(snippets).reverse())
@@ -35,7 +37,12 @@ export class SnippetService {
 
     popular() {
         return this
-            .allFromDatabase()
+            .allFromDatabase({
+                query: {
+                    orderByChild: 'likesCounter',
+                    limitToLast: config.snippet.maxPopularDisplayed
+                }
+            })
             .map((snippets: any[]) => this.forgeAll(snippets))
             .map((snippets: Snippet[]) => snippets.sort((snippetA: Snippet, snippetB: Snippet): number => {
                 if (snippetA.date > snippetB.date) {
@@ -107,7 +114,8 @@ export class SnippetService {
                 name: snippet.name,
                 author: author.id,
                 description: snippet.description,
-                date: firebase.database.ServerValue.TIMESTAMP
+                date: firebase.database.ServerValue.TIMESTAMP,
+                likesCounter: snippet.likesCounter
             })
     }
 
@@ -128,6 +136,29 @@ export class SnippetService {
             .remove()
     }
 
+    increaseLikesCounter(snippet: Snippet) {
+        if (isNaN(snippet.likesCounter)) {
+            snippet.likesCounter = 0
+        }
+
+        return this.updateLikesCounter(snippet, ++snippet.likesCounter)
+    }
+
+    decreaseLikesCounter(snippet: Snippet) {
+        if (snippet.likesCounter > 0) {
+            return this.updateLikesCounter(snippet, --snippet.likesCounter )
+        }
+
+        return Promise.reject('Cannot decrease to a negative likes counter')
+    }
+
+    updateLikesCounter(snippet: Snippet, counter: number) {
+        return this
+            .database
+            .object(this.snippetPath(snippet.id))
+            .update({ likesCounter: counter })
+    }
+
     mockOne(): Snippet {
         return {
             id: null,
@@ -136,7 +167,8 @@ export class SnippetService {
             date: null,
             author: null,
             codes: null,
-            likes: null
+            likes: null,
+            likesCounter: null
         }
     }
 
@@ -152,7 +184,8 @@ export class SnippetService {
             description: snippetFetched.description,
             date: snippetFetched.date,
             codes: null,
-            likes: null
+            likes: null,
+            likesCounter: snippetFetched.likesCounter
         }
 
         snippet.codes = this.code.all(snippet)

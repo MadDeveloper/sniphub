@@ -144,6 +144,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     like() {
         if (!this.liked) {
             this.likeService.like(this.snippet, this.snippetAuthor)
+            this.snippetService.increaseLikesCounter(this.snippet)
             this.liked = true
         } else {
             this.unlike()
@@ -152,6 +153,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     unlike() {
         this.likeService.unlike(this.snippet)
+        this.snippetService.decreaseLikesCounter(this.snippet)
         this.liked = false
     }
 

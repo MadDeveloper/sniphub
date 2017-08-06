@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.enableLoading()
         this.popularSnippetsObserver = this
             .snippetService
-            .lastAdded()
+            .popular()
             .subscribe((snippets: Snippet[]) => {
                 this.popularSnippets = snippets
                 this.disableLoading()

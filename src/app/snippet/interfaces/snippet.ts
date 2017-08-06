@@ -11,4 +11,5 @@ export interface Snippet {
     author: Observable<User>
     codes: Code[] | Observable<Code[]>
     likes?: Like[] | Observable<Like[]>
+    likesCounter: number
 }

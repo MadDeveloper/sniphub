@@ -45,7 +45,7 @@
         <div class="col unselectable">
             <span class="h4 clickable" (click)="like()">
                 <i class="fa" [ngClass]="liked ? 'fa-heart' : 'fa-heart-o'" aria-hidden="true"></i>
-                <span class="ml-1">{{ (likes | async)?.length }}</span>
+                <span class="ml-1">{{ snippet.likesCounter }}</span>
             </span>
             <span class="h4 ml-3" tooltip="Languages availables for the snippet">
                 <i class="fa fa-code" aria-hidden="true"></i>
