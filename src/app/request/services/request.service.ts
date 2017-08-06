@@ -74,6 +74,7 @@ export class RequestService {
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 await this.addContribution(author, snippet)
+                await this.snippet.increaseCodesCounter(snippet)
                 resolve()
             } catch (error) {
                 reject(error)

@@ -12,4 +12,5 @@ export interface Snippet {
     codes: Code[] | Observable<Code[]>
     likes?: Like[] | Observable<Like[]>
     likesCounter: number
+    codesCounter: number
 }

@@ -155,6 +155,29 @@ export class SnippetService {
             .update({ likesCounter: counter })
     }
 
+    increaseCodesCounter(snippet: Snippet) {
+        if (isNaN(snippet.codesCounter)) {
+            snippet.codesCounter = 0
+        }
+
+        return this.updateCodesCounter(snippet, ++snippet.codesCounter)
+    }
+
+    decreaseCodesCounter(snippet: Snippet) {
+        if (snippet.codesCounter > 0) {
+            return this.updateCodesCounter(snippet, --snippet.codesCounter )
+        }
+
+        return Promise.reject('Cannot decrease to a negative codes counter')
+    }
+
+    updateCodesCounter(snippet: Snippet, counter: number) {
+        return this
+            .database
+            .object(this.snippetPath(snippet.id))
+            .update({ codesCounter: counter })
+    }
+
     mockOne(): Snippet {
         return {
             id: null,
@@ -164,7 +187,8 @@ export class SnippetService {
             author: null,
             codes: null,
             likes: null,
-            likesCounter: null
+            likesCounter: null,
+            codesCounter: null
         }
     }
 
@@ -181,7 +205,8 @@ export class SnippetService {
             date: snippetFetched.date,
             codes: null,
             likes: null,
-            likesCounter: snippetFetched.likesCounter
+            likesCounter: snippetFetched.likesCounter,
+            codesCounter: snippetFetched.codesCounter
         }
 
         snippet.codes = this.code.all(snippet)
