@@ -52,7 +52,7 @@
                 </div>
                 <div *ngIf="ownProfile()" class="row pt-2 pb-4">
                     <div class="col">
-                        <a class="btn outlined primary medium" routerLink="/snippets/new">Create new snippet</a>
+                        <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
                     </div>
                 </div>
                 <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
@@ -72,7 +72,7 @@
                     <div *ngIf="ownProfile();else noSnippetsExternalProfile">
                         <div class="text-center">You don't have created or contributed to snippets for the moment</div>
                         <div class="text-center mt-3">
-                            <a class="btn outlined primary medium" routerLink="/snippets/new">Create your first snippet</a>
+                            <a class="btn outlined primary" routerLink="/snippets/new">Create your first snippet</a>
                         </div>
                     </div>
                     <ng-template #noSnippetsExternalProfile>

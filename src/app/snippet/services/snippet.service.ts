@@ -67,10 +67,10 @@ export class SnippetService {
     }
 
     contributor(author: User) {
-        return Observable.of([])
-        // return this
-        //     .allContributionsFromDatabase(author)
-        //     .map((snippetsId: any[]) => snippetsId.map(id => this.find(id)))
+        return this
+            .allContributionsFromDatabase(author)
+            .switchMap((contributions: any[]) => contributions.map(contribution => this.find(contribution.$key)))
+            .mergeAll()
     }
 
     find(id: string): Observable<Snippet> {
@@ -195,7 +195,7 @@ export class SnippetService {
     }
 
     private allContributionsFromDatabase(author: User, options?: any) {
-        return this.database.object(this.authorContributionsPath(author))
+        return this.database.list(this.authorContributionsPath(author))
     }
 
     private forgeFromSnapshot(snapshot): Snippet {

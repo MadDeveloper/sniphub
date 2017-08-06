@@ -22,8 +22,8 @@ import { Code } from '../../code/interfaces/code'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     routeDataObserver: Subscription
-    authorSnippets: Snippet[]
-    contributorSnippets: Snippet[]
+    authorSnippets: Snippet[] = []
+    contributorSnippets: Snippet[] = []
     snippetsLoaded = false
     snippetsObserver: Subscription
     user: User
@@ -105,7 +105,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 return this.snippet.contributor(this.user)
             })
             .subscribe(contributorSnippets => {
-                this.contributorSnippets = contributorSnippets
+                // console.log('here', contributorSnippets)
+                this.contributorSnippets.push(contributorSnippets)
                 this.loadCodes()
                 this.snippetsLoaded = true
             })
