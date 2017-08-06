@@ -56,13 +56,15 @@
                     </div>
                 </div>
                 <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
-                <div class="row mt-5 mb-3">
-                    <div class="col">
-                        <h3>Contributor</h3>
-                        <hr>
+                <div *ngIf="contributorSnippets.length > 0">
+                    <div class="row mt-5 mb-3">
+                        <div class="col">
+                            <h3>Contributor</h3>
+                            <hr>
+                        </div>
                     </div>
+                    <app-snippets-list [snippets]="contributorSnippets"></app-snippets-list>
                 </div>
-                <app-snippets-list [snippets]="contributorSnippets"></app-snippets-list>
             </div>
             <ng-template #noSnippets>
                 <div class="meta">
