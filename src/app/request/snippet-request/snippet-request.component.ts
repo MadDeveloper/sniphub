@@ -8,6 +8,7 @@ import { SnippetService } from '../../snippet/services/snippet.service'
 import { Snippet } from '../../snippet/interfaces/snippet'
 import { Observable } from 'rxjs/Observable'
 import { Code } from '../../code/interfaces/code'
+import { User } from '../../core/interfaces/user/user'
 
 @Component({
     selector: 'app-snippet-request',
@@ -17,12 +18,14 @@ import { Code } from '../../code/interfaces/code'
 export class SnippetRequestComponent implements OnInit, OnDestroy {
     request: Request
     snippet: Snippet
-    private codeObserver: Subscription
-    private snippetObserver: Subscription
-    private code: Code
+    author: User
+    code: Code
     loaded = false
     accepted = false
     rejected = false
+    private authorObserver: Subscription
+    private codeObserver: Subscription
+    private snippetObserver: Subscription
 
     constructor(
         private requestService: RequestService,
@@ -46,6 +49,7 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
+        this.authorObserver.unsubscribe()
         this.codeObserver.unsubscribe()
         this.snippetObserver.unsubscribe()
     }
@@ -57,6 +61,13 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     loadCode() {
         this.codeObserver = this.request.code.subscribe(code => {
             this.code = code
+            this.loadAuthor()
+        })
+    }
+
+    loadAuthor() {
+        this.authorObserver = this.code.author.subscribe(author => {
+            this.author = author
             this.loaded = true
         })
     }
@@ -80,7 +91,7 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     }
 
     accept() {
-        this.requestService.accept(this.request, this.code, <Snippet>this.requestService.storedSnippet)
+        this.requestService.accept(this.request, this.code, this.author, <Snippet>this.requestService.storedSnippet)
         this.accepted = true
     }
 

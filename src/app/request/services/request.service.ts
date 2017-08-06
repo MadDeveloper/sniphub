@@ -27,7 +27,11 @@ export class RequestService {
         private snippet: SnippetService) { }
 
     all(user: User): Observable<Request[]> {
-        return null
+        return this
+            .snippet
+            .author(user)
+            .mergeMap((snippets: Snippet[]) => snippets.map((snippet: Snippet) => this.forSnippet(snippet)))
+            .mergeAll()
     }
 
     find(id: string, snippet: Snippet): Observable<Request> {
@@ -64,11 +68,12 @@ export class RequestService {
         return null
     }
 
-    accept(request: Request, code: Code, snippet: Snippet) {
+    accept(request: Request, code: Code, author: User, snippet: Snippet) {
         return new Promise( async (resolve, reject) => {
             try {
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
+                await this.addContribution(author, snippet)
                 resolve()
             } catch (error) {
                 reject(error)
@@ -86,6 +91,13 @@ export class RequestService {
                 reject(error)
             }
         })
+    }
+
+    addContribution(author: User, snippet: Snippet) {
+        return this
+            .database
+            .object(this.snippet.authorContributionsPath(author))
+            .update({ [snippet.id]: true })
     }
 
     forgeForDatabase(code: Code, author: User, asRequest = false) {

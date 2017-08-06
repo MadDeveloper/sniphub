@@ -66,15 +66,11 @@ export class SnippetService {
             .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
-    contributor(author: User): Observable<Snippet[]> {
-        return this
-            .allFromDatabase({
-                query: {
-                    orderByChild: 'author',
-                    equalTo: author.id
-                }
-            })
-            .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
+    contributor(author: User) {
+        return Observable.of([])
+        // return this
+        //     .allContributionsFromDatabase(author)
+        //     .map((snippetsId: any[]) => snippetsId.map(id => this.find(id)))
     }
 
     find(id: string): Observable<Snippet> {
@@ -198,6 +194,10 @@ export class SnippetService {
         return this.database.list(this.snippetsPath(), options)
     }
 
+    private allContributionsFromDatabase(author: User, options?: any) {
+        return this.database.object(this.authorContributionsPath(author))
+    }
+
     private forgeFromSnapshot(snapshot): Snippet {
         const id = snapshot.key
         const snippetFetched = snapshot.val()
@@ -213,5 +213,13 @@ export class SnippetService {
 
     private snippetPath(id: string) {
         return `${this.snippetsPath()}/${id}`
+    }
+
+    contributionsPath() {
+        return 'contributions'
+    }
+
+    authorContributionsPath(author: User) {
+        return `${this.contributionsPath()}/${author.id}`
     }
 }

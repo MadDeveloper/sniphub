@@ -26,11 +26,7 @@ export class SnippetsRequestsComponent implements OnInit {
     }
 
     loadRequests() {
-        this.requests = this
-            .snippet
-            .author(this.authentication.currentUser())
-            .mergeMap((snippets: Snippet[]) => snippets.map((snippet: Snippet) => this.request.forSnippet(snippet)))
-            .mergeAll()
+        this.requests = this.request.all(this.authentication.currentUser())
     }
 
     seeRequest(request: Request, snippet: Snippet, event: Event) {
