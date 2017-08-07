@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { SweetAlertService } from 'ng2-sweetalert2'
 import { Code } from '../interfaces/code'
 import { Snippet } from '../../snippet/interfaces/snippet'
 import { LanguageService } from '../services/language.service'
@@ -8,6 +7,7 @@ import { CodeService } from '../services/code.service'
 import { RequestService } from '../../request/services/request.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { User } from '../../core/interfaces/user/user'
+import swal from 'sweetalert2'
 
 @Component({
     selector: 'app-add-code',
@@ -37,8 +37,7 @@ export class AddCodeComponent implements OnInit {
         private guid: GuidService,
         private codeService: CodeService,
         private requestService: RequestService,
-        private authentication: AuthenticationService,
-        private swal: SweetAlertService) { }
+        private authentication: AuthenticationService) { }
 
     ngOnInit() {
         if (!Array.isArray(this.codes)) {
@@ -52,7 +51,7 @@ export class AddCodeComponent implements OnInit {
 
     async confirmRemove(code: Code) {
         try {
-            const rejected = await this.swal.swal({
+            const rejected = await swal({
                 title: 'Are you sure?',
                 text: 'You won\'t be able to get back your code.',
                 type: 'warning',

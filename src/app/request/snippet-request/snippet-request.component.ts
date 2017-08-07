@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
-import { SweetAlertService } from 'ng2-sweetalert2'
 import { RequestService } from '../services/request.service'
 import { Request } from '../interfaces/request'
 import { SnippetService } from '../../snippet/services/snippet.service'
@@ -9,6 +8,7 @@ import { Snippet } from '../../snippet/interfaces/snippet'
 import { Observable } from 'rxjs/Observable'
 import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
+import swal from 'sweetalert2'
 
 @Component({
     selector: 'app-snippet-request',
@@ -30,8 +30,7 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
     constructor(
         private requestService: RequestService,
         private snippetService: SnippetService,
-        private route: ActivatedRoute,
-        private swal: SweetAlertService) { }
+        private route: ActivatedRoute) { }
 
     ngOnInit() {
         this
@@ -74,7 +73,7 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
 
     async confirmAccept() {
         try {
-            const accepted = await this.swal.swal({
+            const accepted = await swal({
                 title: 'Are you sure?',
                 type: 'warning',
                 showCancelButton: true,
@@ -97,7 +96,7 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
 
     async confirmReject() {
         try {
-            const rejected = await this.swal.swal({
+            const rejected = await swal({
                 title: 'Are you sure?',
                 type: 'warning',
                 showCancelButton: true,

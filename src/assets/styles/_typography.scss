@@ -1,3 +1,5 @@
+@import 'variables';
+
 .bold {
     font-weight: bold;
 }
@@ -23,4 +25,20 @@
 
 .meta {
     color: $dark-grey-color;
+}
+
+.title {
+    font-size: $title-font-size;
+}
+
+.subtitle {
+    font-size: $subtitle-font-size;
+}
+
+.small-title {
+    font-size: $small-title-font-size;
+}
+
+.fa {
+    font-family: FontAwesome;
 }

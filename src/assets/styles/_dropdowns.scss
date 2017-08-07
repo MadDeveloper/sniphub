@@ -1,0 +1,18 @@
+.dropdown-menu {
+    overflow: hidden;
+    box-shadow: 0 0 50px rgba(150, 150, 150, 0.2);
+    padding: 0;
+
+    &.ui-select-choices {
+        display: block;
+    }
+
+    .dropdown-item {
+        padding: .7rem 1.14rem;
+    }
+
+    .dropdown-icon {
+        font-size: 18px;
+        margin-right: .78rem;
+    }
+}

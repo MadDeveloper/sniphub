@@ -10,12 +10,12 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 import { RequestService } from '../../request/services/request.service'
 import { LikeService } from '../services/like.service'
 import { CodeService } from '../../code/services/code.service'
-import { SweetAlertService } from 'ng2-sweetalert2'
 import { CommentService } from '../services/comment.service'
 import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
 import { SnippetService } from '../services/snippet.service'
 import { User } from '../../core/interfaces/user/user'
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-snippet-details',
@@ -53,7 +53,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
         private likeService: LikeService,
         private codeService: CodeService,
-        private swal: SweetAlertService,
         private snippetService: SnippetService) { }
 
     ngOnInit() {
@@ -163,7 +162,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     async confirmDelete() {
         try {
-            const rejected = await this.swal.swal({
+            const rejected = await swal({
                 title: 'Are you sure?',
                 text: `You won't be able to get back your snippet.`,
                 type: 'warning',
@@ -185,7 +184,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
             await this.snippetService.delete(this.snippet)
             this.router.navigate(['/profile'])
         } catch (error) {
-            this.swal.swal({
+            swal({
                 title: 'Oops...',
                 text: 'Something went wrong! Please retry again or later.',
                 type: 'error'

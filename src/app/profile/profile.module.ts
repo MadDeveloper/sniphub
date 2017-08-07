@@ -6,10 +6,12 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component'
 import { SnippetModule } from '../snippet/snippet.module'
 import { RouterModule } from '@angular/router'
 import { CoreModule } from '../core/core.module'
+import { BsDropdownModule } from 'ngx-bootstrap'
 
 @NgModule({
     imports: [
         SharedModule,
+        BsDropdownModule,
         RouterModule,
         CoreModule,
         ProfileRoutingModule,

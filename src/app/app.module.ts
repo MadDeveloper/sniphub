@@ -22,7 +22,6 @@ import { routes } from './app-routing.module'
 import { environment } from '../environments/environment'
 
 // === Services
-import { SweetAlertService } from 'ng2-sweetalert2'
 
 // === Components
 import { AppComponent } from './app.component'
@@ -57,7 +56,7 @@ import { AuthenticationModule } from './authentication/authentication.module'
         CodeModule.forRoot(),
         ProfileModule
     ],
-    providers: [ SweetAlertService ],
+    providers: [],
     bootstrap: [ AppComponent ]
 })
 export class AppModule { }

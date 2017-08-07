@@ -13,6 +13,14 @@ a {
 .link {
     color: $primary-color;
 
+    &.default {
+        color: $default-color;
+
+        &:hover {
+            color: $dark-grey-color;
+        }
+    }
+
     &.white {
         color: #fff;
 

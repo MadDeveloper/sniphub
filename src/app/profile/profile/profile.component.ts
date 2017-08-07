@@ -13,6 +13,7 @@ import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
 import { Code } from '../../code/interfaces/code'
 import { find } from 'lodash'
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-profile',
@@ -179,6 +180,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.user.avatar = firebaseUser.photoURL
             this.userService.changeAvatar(this.user)
             this.authentication.reloadUser(this.user)
+        }
+    }
+
+    async promptGitHubAccount(event: Event) {
+        event.preventDefault()
+
+        try {
+            const githubAccount: string = await swal({
+                title: '<i class="fa fa-github title mr-4"></i>GitHub account',
+                html: 'Copy and paste your <span class="bold">GitHub</span> account link here',
+                input: 'text',
+                inputPlaceholder: 'https://github.com/john.doe',
+                showCancelButton: true
+            })
+
+            if (githubAccount.length > 0) {
+
+            }
+        } catch (error) {
+            // todo
         }
     }
 }

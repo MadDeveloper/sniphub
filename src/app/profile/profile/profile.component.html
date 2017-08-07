@@ -16,22 +16,33 @@
                 <div>
                     <h3 *ngIf="!ownProfile() || (ownProfile() && !editing)" (click)="setUsernameEditable()" class="mr-4" [ngClass]="{ editable: ownProfile(), clickable: ownProfile() }">{{ user.username }}</h3>
                     <input #username [hidden]="!editing" type="text" class="username-input h3 mb-3" (blur)="editUsername()" (keyup.enter)="editUsername()" [(ngModel)]="user.username" autofocus>
-                    <div class="h5 unselectable">
-                        <div class="d-flex align-items-center text color meta">
+                    <div class="h4 unselectable">
+                        <div class="d-flex align-items-center meta">
                             <span>
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <span class="ml-1">{{ likes }}</span>
                             </span>
-                            <span tooltip="Languages availables for the snippet">
-                                <i class="fa fa-code ml-2" aria-hidden="true"></i>
+                            <span class="ml-4" tooltip="Languages availables for the snippet">
+                                <i class="fa fa-code" aria-hidden="true"></i>
                                 <span class="ml-1">{{ codes }}</span>
+                            </span>
+                            <span class="ml-4">
+                                <i class="fa fa-github" aria-hidden="true"></i>
                             </span>
                         </div>
                     </div>
-                    <div *ngIf="ownProfile()" class="mt-2">
-                        <a href="#" class="link meta" (click)="signOut($event)">
-                            <i class="fa fa-sign-out" aria-hidden="true"></i> Sign out
-                        </a>
+                    <div *ngIf="ownProfile()" class="btn-group mt-2" dropdown>
+                        <i dropdownToggle class="fa fa-cog clickable font-icon huge" aria-hidden="true"></i>
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                            <li class="dropdown-item clickable" role="menuitem" (click)="promptGitHubAccount($event)">
+                                <i class="fa fa-github dropdown-icon" aria-hidden="true"></i>
+                                Change my <span class="bold">GitHub</span> account
+                            </li>
+                            <li class="dropdown-item clickable" role="menuitem" (click)="signOut($event)">
+                                <i class="fa fa-sign-out dropdown-icon" aria-hidden="true"></i>
+                                Sign out
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
