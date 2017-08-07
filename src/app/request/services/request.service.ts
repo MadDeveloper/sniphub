@@ -30,8 +30,9 @@ export class RequestService {
         return this
             .snippet
             .author(user)
-            .mergeMap((snippets: Snippet[]) => snippets.map((snippet: Snippet) => this.forSnippet(snippet)))
+            .map((snippets: Snippet[]) => Observable.zip(...snippets.map((snippet: Snippet) => this.forSnippet(snippet))))
             .mergeAll()
+            .map((snippets: Request[][]): Request[] => [].concat(...snippets).reverse())
     }
 
     find(id: string, snippet: Snippet): Observable<Request> {

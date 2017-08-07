@@ -84,6 +84,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             const author = this.authentication.currentUser()
 
             this.saving = true
+            this.snippet.codesCounter = this.codes.length
 
             if (this.editing) {
                 await this.snippetService.update(this.snippet)

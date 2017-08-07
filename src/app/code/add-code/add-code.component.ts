@@ -75,7 +75,7 @@ export class AddCodeComponent implements OnInit {
 
     async request(code: Code) {
         try {
-            if (this.asAuthor) {
+            if (!this.asAuthor) {
                 await this.addCodeAsAuthor(code)
             } else {
                 await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)

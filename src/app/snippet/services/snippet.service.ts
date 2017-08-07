@@ -111,7 +111,8 @@ export class SnippetService {
                 author: author.id,
                 description: snippet.description,
                 date: firebase.database.ServerValue.TIMESTAMP,
-                likesCounter: snippet.likesCounter
+                likesCounter: snippet.likesCounter,
+                codesCounter: snippet.codesCounter
             })
     }
 
@@ -187,8 +188,8 @@ export class SnippetService {
             author: null,
             codes: null,
             likes: null,
-            likesCounter: null,
-            codesCounter: null
+            likesCounter: 0,
+            codesCounter: 0
         }
     }
 

@@ -1,7 +1,7 @@
 <div *ngIf="loaded">
     <div *ngIf="notifications.length > 0; else noNotifications" class="container segment container-small mt-4 px-0">
         <div class="list">
-            <div class="item" *ngFor="let notification of notifications; let i = index" [ngClass]="{ active: !notification.read }">
+            <div class="item" *ngFor="let notification of notifications" [ngClass]="{ active: !notification.read }">
                 <div *ngIf="notification.user | async; let user" class="d-flex align-items-center">
                     <a [routerLink]="'/profile/' + user.id">
                         <img [src]="user.avatar" alt="" class="image avatar small mr-2">
