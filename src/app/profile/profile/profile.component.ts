@@ -100,14 +100,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
                 return this.snippet.contributor(this.user)
             })
-            .subscribe(contributorSnippet => {
-                // console.log('here', contributorSnippets)
-                if (!find(this.authorSnippets, { id: contributorSnippet.id })) {
-                    this.contributorSnippets.push(contributorSnippet)
-                    this.countCodes()
-                    this.countLikes()
-                }
-
+            .subscribe(contributorSnippets => {
+                this.contributorSnippets = contributorSnippets.filter(snippet => !find(this.authorSnippets, { id: snippet.id }))
+                this.countCodes()
+                this.countLikes()
                 this.snippetsLoaded = true
             })
     }

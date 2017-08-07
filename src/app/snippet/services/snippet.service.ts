@@ -66,10 +66,10 @@ export class SnippetService {
             .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
-    contributor(author: User) {
+    contributor(author: User): Observable<Snippet[]> {
         return this
             .allContributionsFromDatabase(author)
-            .switchMap((contributions: any[]) => contributions.map(contribution => this.find(contribution.$key)))
+            .map((contributions: any[]) => Observable.zip(...contributions.map(contribution => this.find(contribution.$key))))
             .mergeAll()
     }
 
