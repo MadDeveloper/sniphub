@@ -183,6 +183,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
     }
 
+    changeGitHubAccount(githubAccount) {
+        this.user.github = githubAccount
+
+        if (this.userSnapshot.github !== this.user.github) {
+            this.userService.changeGitHub(this.user)
+            this.authentication.reloadUser(this.user)
+        }
+    }
+
     async promptGitHubAccount(event: Event) {
         event.preventDefault()
 
@@ -191,13 +200,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 title: '<i class="fa fa-github title mr-4"></i>GitHub account',
                 html: 'Copy and paste your <span class="bold">GitHub</span> account link here',
                 input: 'text',
+                inputValue: this.user.github,
                 inputPlaceholder: 'https://github.com/john.doe',
                 showCancelButton: true
             })
 
-            if (githubAccount.length > 0) {
-
-            }
+            this.changeGitHubAccount(githubAccount)
         } catch (error) {
             // todo
         }

@@ -26,17 +26,17 @@
                                 <i class="fa fa-code" aria-hidden="true"></i>
                                 <span class="ml-1">{{ codes }}</span>
                             </span>
-                            <span class="ml-4">
+                            <a *ngIf="user.github" class="ml-4" [href]="user.github" target="_blank">
                                 <i class="fa fa-github" aria-hidden="true"></i>
-                            </span>
+                            </a>
                         </div>
                     </div>
                     <div *ngIf="ownProfile()" class="btn-group mt-2" dropdown>
                         <i dropdownToggle class="fa fa-cog clickable font-icon huge" aria-hidden="true"></i>
                         <ul *dropdownMenu class="dropdown-menu" role="menu">
-                            <li class="dropdown-item clickable" role="menuitem" (click)="promptGitHubAccount($event)">
+                            <li class="dropdown-item d-flex align-items-center clickable" role="menuitem" (click)="promptGitHubAccount($event)">
                                 <i class="fa fa-github dropdown-icon" aria-hidden="true"></i>
-                                Change my <span class="bold">GitHub</span> account
+                                Change my <span class="bold mx-1">GitHub</span> account
                             </li>
                             <li class="dropdown-item clickable" role="menuitem" (click)="signOut($event)">
                                 <i class="fa fa-sign-out dropdown-icon" aria-hidden="true"></i>

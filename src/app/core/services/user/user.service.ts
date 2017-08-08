@@ -17,7 +17,7 @@ export class UserService {
                 let user: User = null
 
                 if (userFetched.$exists()) {
-                    user = this.buildOne(userFetched)
+                    user = this.forgeFromDatabase(userFetched)
                 }
 
                 return user
@@ -40,7 +40,7 @@ export class UserService {
                     const userFetched = usersFetched[0]
 
                     if (userFetched.$exists()) {
-                        user = this.buildOne(userFetched)
+                        user = this.forgeFromDatabase(userFetched)
                     }
                 }
 
@@ -57,7 +57,7 @@ export class UserService {
                 }
 
                 try {
-                    return Promise.resolve(this.buildOne(await this.create(user)))
+                    return Promise.resolve(this.forgeFromDatabase(await this.create(user)))
                 } catch (error) {
                     return Promise.reject(error)
                 }
@@ -71,7 +71,8 @@ export class UserService {
             .set({
                 email: user.email,
                 username: user.username,
-                avatar: user.avatar
+                avatar: user.avatar,
+                github: user.github
             })
     }
 
@@ -82,7 +83,8 @@ export class UserService {
             .update({
                 avatar: user.avatar,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                github: user.github
             })
     }
 
@@ -108,16 +110,24 @@ export class UserService {
             .update({ username: user.username })
     }
 
+    changeGitHub(user: User) {
+        return this
+            .database
+            .object(this.userPath(user.id))
+            .update({ github: user.github })
+    }
+
     checkPasswordStrength(password: string) {
         return true
     }
 
-    private buildOne(userFetched): User {
+    forgeFromDatabase(userFetched): User {
         return {
             id: userFetched.$key,
             username: userFetched.username,
             email: userFetched.email,
-            avatar: userFetched.avatar
+            avatar: userFetched.avatar,
+            github: userFetched.github
         }
     }
 

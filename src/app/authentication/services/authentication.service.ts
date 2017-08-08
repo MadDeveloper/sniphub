@@ -52,7 +52,8 @@ export class AuthenticationService {
                     id: userFirebase.uid,
                     email: providerData.email,
                     username: providerData.displayName,
-                    avatar: providerData.photoURL
+                    avatar: providerData.photoURL,
+                    github: null
                 })
                 .subscribe(async (userPromise: Promise<User>) => {
                     if (!this.logged) {
