@@ -14,7 +14,7 @@
     </codemirror>
     <div *ngIf="withAuthor" class="mt-3">
         <div *ngIf="code.author | async; let author" class="d-flex align-items-center meta">
-            code by
+            contribution by
             <img [src]="author.avatar" alt="" class="image avatar ml-2">
             <a [routerLink]="'/profile/' + author.id" class="author">{{ author.username }}</a>
         </div>
