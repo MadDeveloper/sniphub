@@ -114,16 +114,28 @@ export class AuthenticationService {
         // this.router.navigate([url])
     // }
 
-    loginGoogle() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    async loginGoogle() {
+        try {
+            await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        } catch (error) {
+            this.failsSignIn(error)
+        }
     }
 
-    loginGitHub() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider())
+    async loginGitHub() {
+        try {
+            await this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider())
+        } catch (error) {
+            this.failsSignIn(error)
+        }
     }
 
-    loginFacebook() {
-        this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+    async loginFacebook() {
+        try {
+            await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        } catch (error) {
+            this.failsSignIn(error)
+        }
     }
 
     logout() {

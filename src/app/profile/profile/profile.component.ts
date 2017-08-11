@@ -35,7 +35,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     notifications: Notification[]
     notificationsObserver: Subscription
     notificationsLoaded = false
-    editing = false
     username: ElementRef
     @ViewChild('username') set usernameRef(username: ElementRef) {
         this.username = username
@@ -151,25 +150,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.router.navigate(['/requests'])
     }
 
-    setUsernameEditable() {
+    editUsername(username: string) {
         if (this.ownProfile()) {
-            this.editing = true
-            // if we remove timeout, focus() won't work because the input won't be displayed yet
-            setTimeout(() => this.username.nativeElement.focus(), 0)
-        }
-    }
-
-    editUsername() {
-        if (this.ownProfile()) {
-            this.editing = false
+            this.user.username = username
 
             if (this.userSnapshot.username !== this.user.username) {
                 this.userService.changeUsername(this.user)
                 this.authentication.reloadUser(this.user)
                 this.newUserSnapshot()
             }
-
-            this.cdr.detectChanges()
         }
     }
 
@@ -183,12 +172,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    changeGitHubAccount(githubAccount) {
-        this.user.github = githubAccount
+    async promptUsername(event: Event) {
+        event.preventDefault()
 
-        if (this.userSnapshot.github !== this.user.github) {
-            this.userService.changeGitHub(this.user)
-            this.authentication.reloadUser(this.user)
+        try {
+            const username: string = await swal({
+                title: '<i class="fa fa-user title mr-4"></i>Username',
+                html: 'Type here the new username you want to use',
+                input: 'text',
+                inputValue: this.user.username,
+                inputPlaceholder: 'John Doe',
+                showCancelButton: true
+            })
+
+            this.editUsername(username)
+        } catch (error) {
+            // todo
+        }
+    }
+
+    changeGitHubAccount(githubAccount) {
+        if (this.ownProfile()) {
+            this.user.github = githubAccount
+
+            if (this.userSnapshot.github !== this.user.github) {
+                this.userService.changeGitHub(this.user)
+                this.authentication.reloadUser(this.user)
+            }
         }
     }
 

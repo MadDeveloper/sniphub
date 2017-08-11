@@ -11,14 +11,16 @@
         </div>
         <div class="col">
             <div *ngIf="snippet.author | async; let author" class="float-right d-flex align-items-center">
-                <div *ngIf="ownSnippet" class="btn-group mr-3" dropdown>
+                <div *ngIf="ownSnippet" class="btn-group mr-3" dropdown placement="bottom right">
                     <i dropdownToggle class="fa fa-cog clickable font-icon huge" aria-hidden="true"></i>
-                    <ul *dropdownMenu class="dropdown-menu" role="menu">
-                        <li class="clickable" role="menuitem">
-                            <a class="dropdown-item" [routerLink]="'/snippets/edit/' + snippet.id ">Edit the snippet</a>
+                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li class="dropdown-item d-flex align-items-center clickable" role="menuitem" [routerLink]="'/snippets/edit/' + snippet.id ">
+                            <i class="fa fa-pencil dropdown-icon" aria-hidden="true"></i>
+                            Edit the snippet
                         </li>
-                        <li class="clickable" role="menuitem">
-                            <button class="dropdown-item clickable" (click)="confirmDelete()">Delete the snippet</button>
+                        <li class="dropdown-item d-flex align-items-center clickable" role="menuitem" (click)="confirmDelete()">
+                            <i class="fa fa-trash dropdown-icon" aria-hidden="true"></i>
+                            <span>Delete the snippet</span>
                         </li>
                     </ul>
                 </div>
