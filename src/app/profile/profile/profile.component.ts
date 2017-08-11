@@ -21,7 +21,6 @@ import swal from 'sweetalert2'
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-    routeDataObserver: Subscription
     authorSnippets: Snippet[] = []
     contributorSnippets: Snippet[] = []
     snippetsLoaded = false
@@ -68,8 +67,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.user = Object.assign({}, this.loggedUser)
                 this.newUserSnapshot()
             } else {
-                this.routeDataObserver = this
-                    .route
+                this.route
                     .data
                     .subscribe((data: { user: User }) => {
                         this.user = Object.assign({}, data[0])
@@ -93,7 +91,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     loadSnippets() {
-        this.snippetsObserver = this.snippet
+        this.snippetsObserver = this
+            .snippet
             .author(this.user)
             .mergeMap(authorSnippets => {
                 this.authorSnippets = authorSnippets

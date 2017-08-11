@@ -44,7 +44,6 @@ import { AuthenticationModule } from './authentication/authentication.module'
         AngularFireDatabaseModule,
         AngularFireAuthModule,
         CoreModule.forRoot(),
-        RouterModule.forRoot( routes ),
         AuthenticationModule.forRoot(),
         BsDropdownModule.forRoot(),
         TooltipModule.forRoot(),
@@ -54,7 +53,8 @@ import { AuthenticationModule } from './authentication/authentication.module'
         RequestModule.forRoot(),
         SnippetModule.forRoot(),
         CodeModule.forRoot(),
-        ProfileModule
+        ProfileModule,
+        RouterModule.forRoot( routes )
     ],
     providers: [],
     bootstrap: [ AppComponent ]

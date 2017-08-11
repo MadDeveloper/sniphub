@@ -65,7 +65,7 @@
         height: 100%;
         top: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, .5);
+        background-color: rgba(0, 0, 0, .7);
         opacity: 0;
         color: #fff;
         transition-property: opacity;
@@ -85,10 +85,10 @@
     &:hover {
         cursor: pointer;
 
-        .image {
-            -webkit-filter: blur(5px) grayscale(.7);
-            filter: blur(5px) grayscale(.7);
-        }
+        // .image {
+            // -webkit-filter: blur(5px) grayscale(.7);
+            // filter: blur(5px) grayscale(.7);
+        // }
 
         .caption {
             opacity: 1;

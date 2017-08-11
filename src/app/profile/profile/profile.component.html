@@ -1,7 +1,7 @@
 <div *ngIf="user" class="container mt-4">
 	<div class="row">
         <div class="col">
-            <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <div class="d-flex justify-content-center mr-5">
                     <div *ngIf="ownProfile();else normalAvatar" class="image-group avatar" (click)="syncAvatar()">
                         <img #avatar [src]="user.avatar" alt="" class="image avatar large">

@@ -1,12 +1,12 @@
 <div *ngIf="requests | async; let requests; else loading">
-    <div *ngIf="requests.length > 0; else noRequests" class="container segment container-small mt-4 py-2">
+    <div *ngIf="requests.length > 0; else noRequests" class="container segment container-small mt-4 px-0">
         <div class="list">
             <div class="item" *ngFor="let request of requests">
-                <div *ngIf="request.code | async; let code" class="row py-2">
+                <div *ngIf="request.code | async; let code" class="row">
                     <div *ngIf="code.author | async; let author" class="col">
                         <div *ngIf="request.snippet | async; let snippet" class="d-flex align-items-center">
                             <a [routerLink]="'/profile/' + author.id" class="author d-flex align-items-center mr-1">
-                                <img [src]="author.avatar" alt="" class="image avatar mr-2">
+                                <img [src]="author.avatar" alt="" class="image avatar small mr-2">
                                 <span>{{ author.username }}</span>
                             </a>
                             <span>has developed your <a [routerLink]="'/snippets/' + snippet.id">{{ snippet.name }}</a> snippet in a new code.</span>
