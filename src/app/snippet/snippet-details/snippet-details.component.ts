@@ -25,7 +25,6 @@ import swal from 'sweetalert2'
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
     notification: any
     snippet: Snippet
-    likes: Observable<Like[]>
     liked = false
     codes: Code[] = []
     codesLoaded = false
@@ -58,7 +57,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.route
             .data
-            .subscribe(async (data: { snippet: Snippet }) => {
+            .subscribe((data: { snippet: Snippet }) => {
                 this.user = this.authentication.currentUser()
 
                 this.snippet = data[0]
@@ -66,7 +65,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 if (this.snippet) {
                     this.isAuthenticated = this.authentication.logged
                     this.comments = this.commentService.all(this.snippet)
-                    this.likes = this.likeService.all(this.snippet)
                     this.loadCodes()
 
                     if (this.user) {
@@ -142,6 +140,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     like() {
         if (!this.liked) {
+            this.snippet.likesCounter++;
             this.likeService.like(this.snippet, this.snippetAuthor)
             this.snippetService.increaseLikesCounter(this.snippet)
             this.liked = true
@@ -151,6 +150,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     unlike() {
+        this.snippet.likesCounter--;
         this.likeService.unlike(this.snippet)
         this.snippetService.decreaseLikesCounter(this.snippet)
         this.liked = false

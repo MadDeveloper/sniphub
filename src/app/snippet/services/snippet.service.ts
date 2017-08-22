@@ -140,49 +140,39 @@ export class SnippetService {
     }
 
     increaseLikesCounter(snippet: Snippet) {
-        if (isNaN(snippet.likesCounter)) {
-            snippet.likesCounter = 0
-        }
-
-        return this.updateLikesCounter(snippet, ++snippet.likesCounter)
+        return this
+            .database
+            .object(this.likesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count + 1)
     }
 
     decreaseLikesCounter(snippet: Snippet) {
-        if (snippet.likesCounter > 0) {
-            return this.updateLikesCounter(snippet, --snippet.likesCounter )
-        }
-
-        return Promise.reject('Cannot decrease to a negative likes counter')
-    }
-
-    updateLikesCounter(snippet: Snippet, counter: number) {
         return this
             .database
-            .object(this.snippetPath(snippet.id))
-            .update({ likesCounter: counter })
+            .object(this.likesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count - 1)
     }
 
     increaseCodesCounter(snippet: Snippet) {
-        if (isNaN(snippet.codesCounter)) {
-            snippet.codesCounter = 0
-        }
-
-        return this.updateCodesCounter(snippet, ++snippet.codesCounter)
+        return this
+            .database
+            .object(this.codesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count + 1)
     }
 
     decreaseCodesCounter(snippet: Snippet) {
-        if (snippet.codesCounter > 0) {
-            return this.updateCodesCounter(snippet, --snippet.codesCounter )
-        }
-
-        return Promise.reject('Cannot decrease to a negative codes counter')
-    }
-
-    updateCodesCounter(snippet: Snippet, counter: number) {
         return this
             .database
-            .object(this.snippetPath(snippet.id))
-            .update({ codesCounter: counter })
+            .object(this.codesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count - 1)
     }
 
     mockOne(): Snippet {
@@ -239,12 +229,20 @@ export class SnippetService {
         return this.forge(snippetFetched)
     }
 
-    private snippetsPath() {
+    snippetsPath() {
         return '/snippets'
     }
 
-    private snippetPath(id: string) {
+    snippetPath(id: string) {
         return `${this.snippetsPath()}/${id}`
+    }
+
+    likesCounterPath(snippet: Snippet) {
+        return `${this.snippetPath(snippet.id)}/likesCounter`
+    }
+
+    codesCounterPath(snippet: Snippet) {
+        return `${this.snippetPath(snippet.id)}/codesCounter`
     }
 
     contributionsPath() {

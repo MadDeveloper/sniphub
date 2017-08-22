@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable'
 import { UserService } from '../../core/services/user/user.service'
 import { GuidService } from '../../core/services/guid/guid.service'
 import * as firebase from 'firebase'
-import { NotificationService } from '../../notification/services/notification.service';
+import { NotificationService } from '../../notification/services/notification.service'
 
 @Injectable()
 export class CommentService {
@@ -48,14 +48,18 @@ export class CommentService {
     }
 
     add(content, author: User, snippet: Snippet, snippetAuthor: User) {
-        this.database
+        if (author.id !== snippetAuthor.id) {
+            this.notification.comment(author, snippet, snippetAuthor)
+        }
+
+        return this
+            .database
             .list(this.commentsPath(snippet))
             .push({
                 content,
                 date: firebase.database.ServerValue.TIMESTAMP,
                 author: author.id
             })
-        this.notification.comment(author, snippet, snippetAuthor)
     }
 
     private commentsPath(snippet: Snippet) {

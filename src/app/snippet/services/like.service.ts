@@ -21,7 +21,9 @@ export class LikeService {
     like(snippet: Snippet, snippetAuthor: User) {
         const user = this.authentication.currentUser()
 
-        this.notification.like(snippet, user, snippetAuthor)
+        if (user.id !== snippetAuthor.id) {
+            this.notification.like(snippet, user, snippetAuthor)
+        }
 
         return this.database
             .object(this.likesSnippetPath(snippet))
