@@ -13,6 +13,7 @@ import { CoreRoutingModule } from './core-routing.module'
 import { StorageService } from './services/storage/storage.service'
 import { LoaderComponent } from './loader/loader.component'
 import { FirebaseService } from './services/firebase/firebase.service'
+import { ElasticService } from './services/user/elastic.service'
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ export class CoreModule {
             providers: [
                 GuidService,
                 UserService,
+                ElasticService,
                 UserResolverGuard,
                 StorageService,
                 FirebaseService

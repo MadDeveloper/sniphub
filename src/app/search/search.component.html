@@ -1,5 +1,5 @@
 <section class="mt-4">
-    <div *ngIf="snippets | async; let snippets; else loading">
+    <div *ngIf="!loading; else loadingSnippets">
         <div *ngIf="snippets.length > 0; else noResults" class="container">
             <div class="row mb-4">
                 <div class="col">
@@ -15,7 +15,7 @@
             </div>
         </ng-template>
     </div>
-    <ng-template #loading>
+    <ng-template #loadingSnippets>
         <div class="row">
             <div class="col d-flex justify-content-center mt-5">
                 <app-loader></app-loader>

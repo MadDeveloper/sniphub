@@ -1,22 +1,17 @@
 <section class="container mt-4">
     <div *ngIf="!loading; else loadingSnippets">
-        <div *ngIf="!searching; else searchView">
-            <div class="row mt-4 mb-3">
-                <div class="col">
-                    <h3>Lastest added</h3>
-                </div>
+        <div class="row mt-4 mb-3">
+            <div class="col">
+                <h3>Lastest added</h3>
             </div>
-            <app-snippets-list [snippets]="lastAddedSnippets"></app-snippets-list>
-            <div class="row mt-5 mb-3">
-                <div class="col">
-                    <h3>Popular</h3>
-                </div>
-            </div>
-            <app-snippets-list [snippets]="popularSnippets"></app-snippets-list>
         </div>
-        <ng-template #searchView>
-            <app-search [terms]="searchTerms"></app-search>
-        </ng-template>
+        <app-snippets-list [snippets]="lastAddedSnippets"></app-snippets-list>
+        <div class="row mt-5 mb-3">
+            <div class="col">
+                <h3>Popular</h3>
+            </div>
+        </div>
+        <app-snippets-list [snippets]="popularSnippets"></app-snippets-list>
     </div>
     <ng-template #loadingSnippets>
         <div class="row mt-5">

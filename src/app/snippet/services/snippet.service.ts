@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { find } from 'lodash'
-import { Snippet } from '../interfaces/snippet'
+import { Snippet } from '../interfaces/snippet';
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
@@ -193,7 +193,7 @@ export class SnippetService {
         return snippets.map((snippet: any): Snippet => this.forge(snippet))
     }
 
-    forge(snippetFetched): Snippet {
+    forge(snippetFetched, options = { withCodes: true, withLikes: true }): Snippet {
         const snippet: Snippet = {
             id: snippetFetched.$key,
             name: snippetFetched.name,
@@ -206,8 +206,39 @@ export class SnippetService {
             codesCounter: snippetFetched.codesCounter
         }
 
-        snippet.codes = this.code.all(snippet)
-        snippet.likes = this.like.all(snippet)
+        if (options.withCodes) {
+            snippet.codes = this.code.all(snippet)
+        }
+
+        if (options.withLikes) {
+            snippet.likes = this.like.all(snippet)
+        }
+
+        return snippet
+    }
+
+    forgeFromElastic(snippetElastic, options = { withCodes: false, withLikes: false }): Snippet {
+        const snippetSource = snippetElastic._source
+
+        const snippet: Snippet = {
+            id: snippetElastic._id,
+            name: snippetSource.name,
+            author: this.user.find(snippetSource.author),
+            description: snippetSource.description,
+            date: snippetSource.date,
+            codes: null,
+            likes: null,
+            likesCounter: snippetSource.likesCounter,
+            codesCounter: snippetSource.codesCounter
+        }
+
+        if (options.withCodes) {
+            snippet.codes = this.code.all(snippet)
+        }
+
+        if (options.withLikes) {
+            snippet.likes = this.like.all(snippet)
+        }
 
         return snippet
     }

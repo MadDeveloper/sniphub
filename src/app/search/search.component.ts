@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { SearchService } from './services/search.service'
 import { Snippet } from '../snippet/interfaces/snippet'
@@ -12,15 +12,16 @@ import { Observable } from 'rxjs/Observable'
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
-    @Input()
     terms: string = null
-    snippets: Observable<Snippet[]>
+    snippets: Snippet[] = []
+    loading = false
     termsObserver: Subscription
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
-        private searchService: SearchService) { }
+        private searchService: SearchService,
+        private router: Router) { }
 
     ngOnInit() {
         this.observeTerms()
@@ -38,13 +39,20 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.termsObserver = this.searchService
             .terms$
             .subscribe(terms => {
-                if (this.terms !== terms) {
-                    this.search()
+                if (!terms) {
+                    this.router.navigateByUrl('/')
+                } else {
+                    if (this.terms !== terms) {
+                        this.terms = terms
+                        this.search()
+                    }
                 }
-        })
+            })
     }
 
-    search() {
-        this.snippets = this.searchService.searchByAll(this.terms)
+    async search() {
+        this.loading = true
+        this.snippets = await this.searchService.search(this.terms)
+        this.loading = false
     }
 }
