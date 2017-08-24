@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { find } from 'lodash'
-import { Snippet } from '../interfaces/snippet';
+import { Snippet } from '../interfaces/snippet'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { LikeService } from './like.service'
@@ -12,6 +12,11 @@ import { config } from '../../../config'
 
 @Injectable()
 export class SnippetService {
+    cache = {
+        lastestAdded: null,
+        popular: null
+    }
+
     constructor(
         private database: AngularFireDatabase,
         private user: UserService,
@@ -24,7 +29,11 @@ export class SnippetService {
             .map((snippets: any[]) => this.forgeAll(snippets))
     }
 
-    lastAdded(): Observable<Snippet[]> {
+    lastestAdded(): Observable<Snippet[]> {
+        if (this.cache.lastestAdded) {
+            return Observable.of(this.cache.lastestAdded)
+        }
+
         return this
             .allFromDatabase({
                 query: {
@@ -33,9 +42,14 @@ export class SnippetService {
                 }
             })
             .map((snippets: any[]) => this.forgeAll(snippets).reverse())
+            .do(snippets => this.cache.lastestAdded = snippets)
     }
 
     popular() {
+        if (this.cache.popular) {
+            return Observable.of(this.cache.popular)
+        }
+
         return this
             .allFromDatabase({
                 query: {
@@ -53,6 +67,7 @@ export class SnippetService {
 
                 return 0
             }))
+            .do(snippets => this.cache.popular = snippets)
     }
 
     author(author: User): Observable<Snippet[]> {

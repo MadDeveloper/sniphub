@@ -13,8 +13,8 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    lastAddedSnippets: Snippet[] = []
-    lastAddedSnippetsObserver: Subscription
+    lastestAddedSnippets: Snippet[] = []
+    lastestAddedSnippetsObserver: Subscription
     popularSnippets: Snippet[] = []
     popularSnippetsObserver: Subscription
     loading = false
@@ -33,8 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
-        if (this.lastAddedSnippetsObserver) {
-            this.lastAddedSnippetsObserver.unsubscribe()
+        if (this.lastestAddedSnippetsObserver) {
+            this.lastestAddedSnippetsObserver.unsubscribe()
         }
 
         if (this.popularSnippetsObserver) {
@@ -44,11 +44,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     loadSnippets() {
         this.enableLoading()
-        this.lastAddedSnippetsObserver = this
+        this.lastestAddedSnippetsObserver = this
             .snippetService
-            .lastAdded()
+            .lastestAdded()
             .subscribe((snippets: Snippet[]) => {
-                this.lastAddedSnippets = snippets
+                this.lastestAddedSnippets = snippets
                 this.loadPopularSnippets()
             })
     }

@@ -7,6 +7,8 @@ import { ElasticService } from '../../core/services/user/elastic.service'
 
 @Injectable()
 export class SearchService {
+    lastSearchResults: Snippet[]
+    lastSearchResultsTerms: string
     terms$: BehaviorSubject<string> = new BehaviorSubject(null)
 
     constructor(
@@ -21,7 +23,10 @@ export class SearchService {
         try {
             const response = await this.elastic.search(terms)
 
-            return this.parse(response)
+            this.lastSearchResultsTerms = terms
+            this.lastSearchResults = this.parse(response)
+
+            return this.lastSearchResults
         } catch (error) {
             console.error(`Error when searching with search service.\n${error}`)
         }

@@ -41,6 +41,9 @@ export class SearchComponent implements OnInit, OnDestroy {
             .subscribe(terms => {
                 if (!terms) {
                     this.router.navigateByUrl('/')
+                } else if (this.searchService.lastSearchResultsTerms === terms) {
+                    this.terms = terms
+                    this.snippets = this.searchService.lastSearchResults
                 } else {
                     if (this.terms !== terms) {
                         this.terms = terms
