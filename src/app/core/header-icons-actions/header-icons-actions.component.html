@@ -1,0 +1,19 @@
+<div id="header-icons-wrapper">
+    <div class="d-flex align-items-center justify-content-end">
+        <a *ngIf="!logged" routerLink="/signin">
+            <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <a *ngIf="logged" class="clickable" routerLink="/snippets/new">
+            <i class="fa fa-plus-square-o icon-menu ml-0" aria-hidden="true"></i>
+        </a>
+        <a *ngIf="logged" class="clickable notification-group" routerLink="/notifications">
+            <i class="fa fa-bell-o icon-menu" aria-hidden="true"></i>
+            <span *ngIf="hasNotifications" class="notification-alert"></span>
+        </a>
+        <a *ngIf="logged" class="clickable" routerLink="/profile">
+            <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>

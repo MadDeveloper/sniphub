@@ -1,0 +1,38 @@
+@import 'variables';
+
+a {
+    color: $primary-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+        text-decoration: none;
+    }
+}
+
+.link {
+    color: $primary-color;
+
+    &.default {
+        color: $default-color;
+
+        &:hover {
+            color: $dark-grey-color;
+        }
+    }
+
+    &.white {
+        color: #fff;
+
+        &:hover {
+            color: $light-color;
+        }
+    }
+    &.meta {
+        color: $dark-grey-color;
+
+        &:hover {
+            color: $default-color;
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "SnipHub",
+  "short_name": "SnipHub",
+  "icons": [
+    {
+      "src": "assets/images/unknown.jpg",
+      "sizes": "192x192",
+      "type": "image\/jpg"
+    }
+  ],
+  "theme_color": "#0277BD",
+  "background_color": "#f8f8f8",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/"
+}

@@ -1,0 +1,44 @@
+@import 'variables';
+
+.bold {
+    font-weight: bold;
+}
+
+.uppercased {
+    text-transform: uppercase;
+}
+
+.font-icon {
+    &.huge {
+        font-size: 25px;
+    }
+}
+
+.author {
+    font-weight: bold !important;
+    color: $default-color !important;
+
+    &:hover {
+        color: $default-color !important;
+    }
+}
+
+.meta {
+    color: $dark-grey-color;
+}
+
+.title {
+    font-size: $title-font-size;
+}
+
+.subtitle {
+    font-size: $subtitle-font-size;
+}
+
+.small-title {
+    font-size: $small-title-font-size;
+}
+
+.fa {
+    font-family: FontAwesome;
+}

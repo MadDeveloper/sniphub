@@ -1,0 +1,25 @@
+<section class="mt-4">
+    <div *ngIf="!loading; else loadingSnippets">
+        <div *ngIf="snippets.length > 0; else noResults" class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h3>Showing <span class="text color primary">{{ snippets.length }}</span> results availables</h3>
+                </div>
+            </div>
+            <app-snippets-list [snippets]="snippets"></app-snippets-list>
+        </div>
+        <ng-template #noResults>
+            <div class="container my-5 meta">
+                <h1 class="display-4 text-center"><i class="fa fa-search" aria-hidden="true"></i></h1>
+                <div class="text-center">No results found for this search</div>
+            </div>
+        </ng-template>
+    </div>
+    <ng-template #loadingSnippets>
+        <div class="row">
+            <div class="col d-flex justify-content-center mt-5">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </ng-template>
+</section>

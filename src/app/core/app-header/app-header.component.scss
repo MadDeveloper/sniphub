@@ -1,0 +1,43 @@
+@import '../../../assets/styles/variables';
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+
+    nav {
+        background-color: $primary-color;
+        padding: 1rem;
+
+        a {
+            color: #fff;
+        }
+
+        .container-fluid {
+            max-width: 1300px;
+
+            @media screen and(max-width: $screen-sm) {
+                margin: 0 !important;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .search-col {
+                @media screen and(max-width: $screen-sm) {
+                    margin-top: 1rem;
+                }
+            }
+
+            input#main-search-input {
+                border: none;
+                padding: 10px 20px;
+                padding-right: 55px;
+                border-radius: 4px;
+                font-size: 17px;
+                width: 100%;
+            }
+        }
+    }
+}

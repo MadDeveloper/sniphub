@@ -1,0 +1,48 @@
+<div *ngIf="editing" class="container mt-4">
+    <app-back-link></app-back-link>
+</div>
+<div *ngIf="loaded && snippet" class="container segment mt-4">
+    <div class="row mt-4 mb-2">
+        <div class="col">
+            <h1 *ngIf="!editing;else headerEdit" class="h2">Create a new snippet</h1>
+            <ng-template #headerEdit>
+                <h1 class="h2">Editing the snippet <span class="text color primary">{{ snapshot.name }}</span></h1>
+            </ng-template>
+            <span class="text color meta">A snippet contains a small region of re-usable source code available in one or many languages.</span>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <input-counter [(ngModel)]="snippet.name" [disabled]="saving" placeholder="Name" [minlength]="3" [maxlength]="nameMaxLength" className="input"></input-counter>
+            </div>
+            <div class="form-group mt-4">
+                <textarea rows="4" [(ngModel)]="snippet.description" [disabled]="saving" placeholder="Description (optional)" class="not-resizable"></textarea>
+            </div>
+            <div class="mt-4">
+                <div [hidden]="!editing">
+                    <h2 class="h3">Edit the languages codes to your snippet</h2>
+                    <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
+                    <hr>
+                    <app-code-block [(codes)]="codes"></app-code-block>
+                </div>
+                <div [hidden]="editing">
+                    <h2 class="h3">Add languages codes to your new snippet</h2>
+                    <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
+                    <hr>
+                    <app-add-code [(codes)]="codes" infiniteCode="true" min="1"></app-add-code>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="mb-3">
+                <button class="btn primary outlined" (click)="save()" [disabled]="saving">Save</button>
+            </div>
+            <div *ngIf="error" class="mb-3">
+                <div class="alert alert-danger">
+                    <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ error }}.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

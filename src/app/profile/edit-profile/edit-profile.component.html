@@ -1,0 +1,66 @@
+<div class="container segment editprofile mt-4">
+    <div class="row">
+        <div class="col-md-3 col-sm-4 col-12 menu pl-0">
+            <nav class="nav flex-column tabs">
+                <a class="nav-link" (click)="changeTab('profile')" [ngClass]="activeTab === 'profile' ? 'active': ''" click>Edit profile</a>
+                <a class="nav-link" (click)="changeTab('password')" [ngClass]="activeTab === 'password' ? 'active' : ''">Change password</a>
+            </nav>
+        </div>
+        <div class="col-md-9 col-sm-8 col-12 tab-content px-5 py-4">
+            <div class="row mb-5">
+                <div class="col">
+                    <div class="d-flex align-items-center">
+                        <img src="http://www.amazingit.in/wp-content/uploads/2016/01/images.jpg" alt="" class="image avatar medium">
+                        <h2 class="ml-1">{{ usernameSnapshot }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" [ngClass]="{active: activeTab == 'profile'}" >
+                <div class="form-group row">
+                    <label for="username" class="col-md-3 col-4 col-form-label bold text-right">Username</label>
+                    <div class="col-md-7 col">
+                        <input type="text" id="username" [(ngModel)]="user.username">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-md-3 col-4 col-form-label bold text-right">Email</label>
+                    <div class="col-md-7 col">
+                        <input type="email" id="email" [(ngModel)]="user.email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-md-3 offset-4 col-md-7 col-8 mt-2">
+                        <button class="btn primary outlined w-100">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" [ngClass]="{active: activeTab == 'password'}" >
+                <div class="form-group row">
+                    <label for="old-password" class="col-md-3 col-4 col-form-label bold text-right">Old password</label>
+                    <div class="col-md-7 col">
+                        <input type="password" id="old-password" [(ngModel)]="oldPassword">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-md-3 col-4 col-form-label bold text-right">New password</label>
+                    <div class="col-md-7 col">
+                        <input type="password" id="password" [(ngModel)]="password">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="password-confirm" class="col-md-3 col-4 col-form-label bold text-right">Confirm password</label>
+                    <div class="col-md-7 col">
+                        <input type="password" id="password-confirm" [(ngModel)]="passwordConfirm">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-md-3 offset-4 col-md-7 col-8 mt-2">
+                        <button class="btn primary outlined w-100">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
