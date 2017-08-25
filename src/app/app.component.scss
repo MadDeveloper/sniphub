@@ -1,9 +1,0 @@
-@import '../assets/styles/variables';
-
-#main {
-    margin-top: 100px;
-
-    @media screen and(max-width: $screen-sm) {
-        margin-top: 140px;
-    }
-}
