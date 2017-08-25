@@ -3,6 +3,7 @@ $fa-font-path : '../node_modules/font-awesome/fonts';
 
 //== Colors
 $default-color: #292b2c;
+$light-default-color: rgba(0,0,0,.6);
 $primary-color: #0277BD;
 $dark-primary-color: #0168a5;
 $darker-primary-color: #27496d;
@@ -17,6 +18,7 @@ $dark-danger-color: #c0392b;
 $warning-color: #f39c12;
 $success-color: #5cb85c;
 $dark-success-color: #16a085;
+$tooltip-color: ​#434a54;
 
 //== Sizes
 $max-container-width: 850px;

@@ -54,7 +54,7 @@
         </div>
         <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-12 mt-4 clickable" (click)="goToRequests()">
             <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
-                <span><i class="fa fa-bell-o"></i> You have awaiting code requests for your snippets.</span>
+                <span><i class="fa fa-code"></i> You have awaiting code requests for your snippets.</span>
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
@@ -62,7 +62,10 @@
             <div *ngIf="authorSnippets.length > 0 || contributorSnippets.length > 0;else noSnippets">
                 <div class="row">
                     <div class="col">
-                        <h3>Author</h3>
+                        <div class="col d-flex align-items-center">
+                            <h3 class="mr-3">Author</h3>
+                            <span class="badge h4 mb-0">{{ authorSnippets.length }}</span>
+                        </div>
                         <hr>
                     </div>
                 </div>
@@ -74,8 +77,11 @@
                 <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
                 <div *ngIf="contributorSnippets.length > 0">
                     <div class="row mt-5 mb-3">
-                        <div class="col">
-                            <h3>Contributor</h3>
+                        <div class="col d-flex align-items-center">
+                            <h3 class="mr-3">Contributor</h3>
+                            <span class="badge h4 mb-0">{{ contributorSnippets.length }}</span>
+                        </div>
+                        <div class="col-12">
                             <hr>
                         </div>
                     </div>

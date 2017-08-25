@@ -3,7 +3,7 @@ import { Client } from 'elasticsearch'
 import { config } from '../../../../config'
 
 @Injectable()
-export class ElasticService {c
+export class ElasticService {
     client: Client
 
     constructor() {

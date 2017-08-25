@@ -24,6 +24,7 @@
 
         &:hover {
             border-color: black;
+            background-color: $light-color !important;
         }
     }
 
@@ -31,7 +32,7 @@
         background-color: $primary-color;
 
         &:hover {
-            background-color: $dark-primary-color;
+            background-color: $dark-primary-color !important;
         }
     }
 
