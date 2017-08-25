@@ -4,26 +4,9 @@
     outline: none !important;
 }
 
-.clickable:hover {
-    cursor: pointer;
-}
-
 .date {
     color: $dark-grey-color;
     font-size: .875em;
-}
-
-.unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.inherit-font-size {
-    font-size: inherit;
 }
 
 .line {
@@ -32,4 +15,22 @@
     width: 100%;
     flex-shrink:1;
     margin: 10px 0px;
+}
+
+.position {
+    &.relative {
+        position: relative;
+    }
+
+    &.fixed {
+        position: fixed;
+    }
+
+    &.absolute {
+        position: absolute
+    }
+
+    &.sticky {
+        position: sticky;
+    }
 }
