@@ -8,6 +8,7 @@ export const config = {
         minLengthName: 3,
         maxLengthName: 70,
         maxLengthDescription: 1000,
+        maxLengthDescriptionShort: 100,
         maxPopularDisplayed: 30,
         maxLastestAddedDisplayed: 30
     },

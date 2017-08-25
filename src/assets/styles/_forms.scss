@@ -23,7 +23,6 @@ input {
         font-weight: inherit;
         font-family: inherit;
 
-
         &:focus,
         &:hover {
             border: 1px solid $primary-color;
@@ -102,8 +101,19 @@ textarea {
     }
 }
 
-.ng-invalid:not(form)  {
+.invalid {
     border-color: $danger-color;
+
+    input,
+    textarea {
+        border-color: $danger-color;
+    }
+}
+
+.form-group {
+    .alert-danger {
+        margin-top: 1rem;
+    }
 }
 
 .input-icon {
@@ -154,6 +164,7 @@ textarea {
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
+    box-shadow: 0 0 0px 1000px white inset;
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */

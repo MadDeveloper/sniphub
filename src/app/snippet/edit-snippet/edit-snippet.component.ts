@@ -25,9 +25,13 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     code: Code
     languages: Language[]
     loaded = false
-    nameMaxLength = config.snippet.maxLengthName
+    minLengthName = config.snippet.minLengthName
+    maxLengthName = config.snippet.maxLengthName
     saving = false
-    error: any
+    errors = {
+        name: null,
+        global: null
+    }
 
     constructor(
         private route: ActivatedRoute,
@@ -81,22 +85,51 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
     async save() {
         try {
-            const author = this.authentication.currentUser()
+            if (this.verify()) {
+                const author = this.authentication.currentUser()
+                const codes = this.filterEmptyCodes(this.codes)
 
-            this.saving = true
-            this.snippet.codesCounter = this.codes.length
+                this.saving = true
+                this.snippet.codesCounter = codes.length
 
-            if (this.editing) {
-                await this.snippetService.update(this.snippet)
-                await this.codeService.updateAll(this.codes, this.snippet, author)
-            } else {
-                this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
-                await this.codeService.createAll(this.codes, this.snippet, author)
+                if (this.editing) {
+                    await this.snippetService.update(this.snippet)
+                    await this.codeService.updateAll(codes, this.snippet, author)
+                } else {
+                    this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
+                    await this.codeService.createAll(codes, this.snippet, author)
+                }
+
+                this.router.navigate([`/snippets/${this.snippet.id}`])
             }
-
-            this.router.navigate([`/snippets/${this.snippet.id}`])
         } catch (error) {
-            this.error = error
+            this.errors.global = error
         }
+    }
+
+    verify() {
+        if (!this.snippet.name || this.snippet.name.length < this.minLengthName) {
+            this.errors.name = `The snippet name cannot have less than ${this.minLengthName} characters`
+            this.scrollTop()
+
+            return false
+        }
+
+        if (this.snippet.name.length > this.maxLengthName) {
+            this.errors.name = `The snippet name cannot exceeds ${this.maxLengthName} characters`
+            this.scrollTop()
+
+            return false
+        }
+
+        return true
+    }
+
+    scrollTop() {
+        window.scrollTo(0, 0)
+    }
+
+    filterEmptyCodes(codes: Code[]): Code[] {
+        return codes.filter(code => code.code.length > 0 && code.language.text)
     }
 }

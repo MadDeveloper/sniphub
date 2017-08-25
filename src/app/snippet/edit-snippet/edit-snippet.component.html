@@ -15,20 +15,24 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <input-counter [(ngModel)]="snippet.name" [disabled]="saving" placeholder="Name" [minlength]="3" [maxlength]="nameMaxLength" className="input"></input-counter>
+                <input-counter [(ngModel)]="snippet.name" [disabled]="saving" placeholder="Name of the snippet" [minlength]="minLengthName" [maxlength]="maxLengthName" className="input" [ngClass]="{ invalid: errors.name }" required></input-counter>
+                <div *ngIf="errors.name" class="alert alert-danger">
+                    <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>
+                    {{ errors.name }}
+                </div>
             </div>
-            <div class="form-group mt-4">
-                <textarea rows="4" [(ngModel)]="snippet.description" [disabled]="saving" placeholder="Description (optional)" class="not-resizable"></textarea>
+            <div class="form-group">
+                <input-counter [(ngModel)]="snippet.description" [disabled]="saving" placeholder="Short snippet description (optional)" className="input"></input-counter>
             </div>
-            <div class="mt-4">
+            <div class="mt-5">
                 <div [hidden]="!editing">
-                    <h2 class="h3">Edit the languages codes to your snippet</h2>
+                    <h2 class="h4">Edit the languages codes to your snippet</h2>
                     <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
                     <hr>
                     <app-code-block [(codes)]="codes"></app-code-block>
                 </div>
                 <div [hidden]="editing">
-                    <h2 class="h3">Add languages codes to your new snippet</h2>
+                    <h2 class="h4">Add languages codes to your new snippet</h2>
                     <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
                     <hr>
                     <app-add-code [(codes)]="codes" infiniteCode="true" min="1"></app-add-code>
@@ -38,9 +42,9 @@
             <div class="mb-3">
                 <button class="btn primary outlined" (click)="save()" [disabled]="saving">Save</button>
             </div>
-            <div *ngIf="error" class="mb-3">
+            <div *ngIf="errors.global" class="mb-3">
                 <div class="alert alert-danger">
-                    <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ error }}.
+                    <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ errors.global }}.
                 </div>
             </div>
         </div>
