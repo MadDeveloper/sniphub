@@ -5,8 +5,9 @@ export const config = {
         }
     },
     snippet: {
+        minLengthName: 3,
         maxLengthName: 70,
-        maxLengthDescription: 100,
+        maxLengthDescription: 1000,
         maxPopularDisplayed: 30,
         maxLastestAddedDisplayed: 30
     },

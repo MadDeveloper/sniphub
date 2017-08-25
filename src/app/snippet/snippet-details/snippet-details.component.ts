@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
 import { SnippetService } from '../services/snippet.service'
 import { User } from '../../core/interfaces/user/user'
+import { config } from '../../../config'
 import swal from 'sweetalert2'
 
 @Component({
@@ -25,6 +26,8 @@ import swal from 'sweetalert2'
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
     notification: any
     snippet: Snippet
+    description: string
+    descriptionExpanded = false
     liked = false
     codes: Code[] = []
     codesLoaded = false
@@ -63,8 +66,12 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.snippet = data[0]
 
                 if (this.snippet) {
+                    this.description = this.snippet.description
+                    this.truncateDescription()
+
                     this.isAuthenticated = this.authentication.logged
                     this.comments = this.commentService.all(this.snippet)
+
                     this.loadCodes()
 
                     if (this.user) {
@@ -125,6 +132,23 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.comment.nativeElement.focus()
     }
 
+    truncateDescription() {
+        if (this.isDescriptionTooLong()) {
+            this.description = `${this.description.substring(0, config.snippet.maxLengthDescription - 3)}...`
+            this.descriptionExpanded = false
+        }
+    }
+
+    isDescriptionTooLong() {
+        return this.description.length > config.snippet.maxLastestAddedDisplayed
+    }
+
+    expandDescription(event: Event) {
+        event.preventDefault()
+        this.description = this.snippet.description
+        this.descriptionExpanded = true
+    }
+
     addComment(event: Event) {
         event.preventDefault()
 
@@ -140,7 +164,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     like() {
         if (!this.liked) {
-            this.snippet.likesCounter++;
+            this.snippet.likesCounter++
             this.likeService.like(this.snippet, this.snippetAuthor)
             this.snippetService.increaseLikesCounter(this.snippet)
             this.liked = true
@@ -150,7 +174,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     unlike() {
-        this.snippet.likesCounter--;
+        this.snippet.likesCounter--
         this.likeService.unlike(this.snippet)
         this.snippetService.decreaseLikesCounter(this.snippet)
         this.liked = false

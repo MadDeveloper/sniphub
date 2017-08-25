@@ -39,7 +39,8 @@
     </div>
     <div class="row py-4">
         <div class="col">
-            {{ snippet.description }}
+            {{ description }}
+            <a *ngIf="isDescriptionTooLong() && !descriptionExpanded" href="#" (click)="expandDescription($event)">Read more</a>
         </div>
     </div>
     <app-code-block [codes]="codes" readonly="true" withAuthor="true"></app-code-block>

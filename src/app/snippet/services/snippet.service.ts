@@ -208,7 +208,7 @@ export class SnippetService {
         return snippets.map((snippet: any): Snippet => this.forge(snippet))
     }
 
-    forge(snippetFetched, options = { withCodes: true, withLikes: true }): Snippet {
+    forge(snippetFetched, options = { withCodes: false, withLikes: false }): Snippet {
         const snippet: Snippet = {
             id: snippetFetched.$key,
             name: snippetFetched.name,
