@@ -5,10 +5,12 @@ import { NotificationService } from './services/notification.service'
 import { SharedModule } from '../shared/shared.module'
 import { RouterModule } from '@angular/router'
 import { MomentModule } from 'angular2-moment'
+import { CoreModule } from '../core/core.module'
 
 @NgModule({
     imports: [
         SharedModule,
+        CoreModule,
         RouterModule,
         MomentModule,
         NotificationRoutingModule
