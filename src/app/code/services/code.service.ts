@@ -128,4 +128,8 @@ export class CodeService {
     codePath(id: string, snippet: Snippet) {
         return `${this.codesSnippetPath(snippet)}/${id}`
     }
+
+    filterEmptyCodes(codes: Code[]): Code[] {
+        return codes.filter(code => code.code.length > 0 && code.language.text)
+    }
 }

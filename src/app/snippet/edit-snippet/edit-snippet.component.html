@@ -28,12 +28,18 @@
                 <div [hidden]="!editing">
                     <h2 class="h4">Edit the languages codes to your snippet</h2>
                     <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
+                    <div class="alert alert-info mb-3">
+                        <i class="fa fa-info" aria-hidden="true"></i> Codes without any code or language selected won't be pushed.
+                    </div>
                     <hr>
                     <app-code-block [(codes)]="codes"></app-code-block>
                 </div>
                 <div [hidden]="editing">
                     <h2 class="h4">Add languages codes to your new snippet</h2>
                     <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
+                    <div class="alert alert-info mb-3">
+                        <i class="fa fa-info" aria-hidden="true"></i> Codes without any code or language selected won't be pushed.
+                    </div>
                     <hr>
                     <app-add-code [(codes)]="codes" infiniteCode="true" min="1"></app-add-code>
                 </div>

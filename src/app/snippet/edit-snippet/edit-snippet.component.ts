@@ -87,17 +87,17 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         try {
             if (this.verify()) {
                 const author = this.authentication.currentUser()
-                const codes = this.filterEmptyCodes(this.codes)
+                const codes = this.codeService.filterEmptyCodes(this.codes)
 
                 this.saving = true
                 this.snippet.codesCounter = codes.length
 
                 if (this.editing) {
                     await this.snippetService.update(this.snippet)
-                    await this.codeService.updateAll(codes, this.snippet, author)
+                    await this.codeService.updateAll(this.codes, this.snippet, author)
                 } else {
                     this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
-                    await this.codeService.createAll(codes, this.snippet, author)
+                    await this.codeService.createAll(this.codes, this.snippet, author)
                 }
 
                 this.router.navigate([`/snippets/${this.snippet.id}`])
@@ -109,7 +109,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
     verify() {
         if (!this.snippet.name || this.snippet.name.length < this.minLengthName) {
-            this.errors.name = `The snippet name cannot have less than ${this.minLengthName} characters`
+            this.errors.name = `The snippet name cannot has less than ${this.minLengthName} characters`
             this.scrollTop()
 
             return false
@@ -127,9 +127,5 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
     scrollTop() {
         window.scrollTo(0, 0)
-    }
-
-    filterEmptyCodes(codes: Code[]): Code[] {
-        return codes.filter(code => code.code.length > 0 && code.language.text)
     }
 }
