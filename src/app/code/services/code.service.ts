@@ -130,6 +130,6 @@ export class CodeService {
     }
 
     filterEmptyCodes(codes: Code[]): Code[] {
-        return codes.filter(code => code.code.length > 0 && code.language.text)
+        return codes.filter(code => code.code && code.code.length > 0 && code.language.text)
     }
 }

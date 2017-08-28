@@ -74,14 +74,23 @@ export class AddCodeComponent implements OnInit {
 
     async request(code: Code) {
         try {
-            if (!this.asAuthor) {
-                await this.addCodeAsAuthor(code)
-            } else {
-                await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)
-            }
+            if (this.codeService.filterEmptyCodes([code]).length > 0) {
 
-            this.requestedSuccessfully = true
-            this.requested = true
+                if (!this.asAuthor) {
+                    await this.addCodeAsAuthor(code)
+                } else {
+                    await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)
+                }
+
+                this.requestedSuccessfully = true
+                this.requested = true
+            } else {
+                swal({
+                    title: 'Request failed',
+                    text: 'You cannot push an empty code (please be sure you have selected a language and entered some code)',
+                    type: 'error'
+                })
+            }
         } catch (error) {
             // todo: error
             console.error(error)
