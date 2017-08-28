@@ -16,7 +16,7 @@
         <div class="col">
             <div class="form-group">
                 <input-counter [(ngModel)]="snippet.name" [disabled]="saving" placeholder="Name of the snippet" [minlength]="minLengthName" [maxlength]="maxLengthName" className="input" [ngClass]="{ invalid: errors.name }" required></input-counter>
-                <div *ngIf="errors.name" class="alert alert-danger">
+                <div #errorName [hidden]="!errors.name" class="alert alert-danger">
                     <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>
                     {{ errors.name }}
                 </div>
@@ -28,20 +28,22 @@
                 <div [hidden]="!editing">
                     <h2 class="h4">Edit the languages codes to your snippet</h2>
                     <div class="text color meta mb-3">You can edit your snippet codes all the time.</div>
-                    <div class="alert alert-info mb-3">
-                        <i class="fa fa-info" aria-hidden="true"></i> Codes without any code or language selected won't be pushed.
-                    </div>
                     <hr>
                     <app-code-block [(codes)]="codes"></app-code-block>
                 </div>
                 <div [hidden]="editing">
                     <h2 class="h4">Add languages codes to your new snippet</h2>
                     <div class="text color meta mb-3">You can supplement your snippet all the time.</div>
-                    <div class="alert alert-info mb-3">
-                        <i class="fa fa-info" aria-hidden="true"></i> Codes without any code or language selected won't be pushed.
-                    </div>
                     <hr>
                     <app-add-code [(codes)]="codes" infiniteCode="true" min="1"></app-add-code>
+                </div>
+                <div #errorCode class="mb-3">
+                    <div *ngIf="!errors.code" class="alert alert-info">
+                        <i class="fa fa-info" aria-hidden="true"></i> Codes without any code or language selected won't be pushed.
+                    </div>
+                    <div *ngIf="errors.code" class="alert alert-danger">
+                        <i class="fa fa-times" aria-hidden="true"></i> {{ errors.code }}
+                    </div>
                 </div>
             </div>
             <hr class="my-4">

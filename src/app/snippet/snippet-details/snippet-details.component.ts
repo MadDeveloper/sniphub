@@ -140,7 +140,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     isDescriptionTooLong() {
-        return this.description.length > config.snippet.maxLastestAddedDisplayed
+        return this.description && this.description.length > config.snippet.maxLastestAddedDisplayed
     }
 
     expandDescription(event: Event) {

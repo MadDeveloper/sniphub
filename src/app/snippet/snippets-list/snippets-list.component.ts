@@ -27,7 +27,7 @@ export class SnippetsListComponent {
     }
 
     truncateDescription(description: string) {
-        if (description.length > config.snippet.maxLengthDescriptionShort) {
+        if (description && description.length > config.snippet.maxLengthDescriptionShort) {
             return `${description.substring(0, config.snippet.maxLengthDescriptionShort - 3)}...`
         }
 

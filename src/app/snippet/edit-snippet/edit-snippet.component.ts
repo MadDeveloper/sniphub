@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core'
 import { ActivatedRoute, RouterStateSnapshot, Router } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { Snippet } from '../interfaces/snippet'
@@ -8,6 +8,8 @@ import { SnippetService } from '../services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { config } from '../../../config'
+import { element } from 'protractor'
+import * as $ from 'jquery'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -30,8 +32,11 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     saving = false
     errors = {
         name: null,
+        code: null,
         global: null
     }
+    @ViewChild('errorName') errorName: ElementRef
+    @ViewChild('errorCode') errorCode: ElementRef
 
     constructor(
         private route: ActivatedRoute,
@@ -110,22 +115,33 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     verify() {
         if (!this.snippet.name || this.snippet.name.length < this.minLengthName) {
             this.errors.name = `The snippet name cannot has less than ${this.minLengthName} characters`
-            this.scrollTop()
+            this.scrollTo(this.errorName.nativeElement)
 
             return false
         }
 
         if (this.snippet.name.length > this.maxLengthName) {
             this.errors.name = `The snippet name cannot exceeds ${this.maxLengthName} characters`
-            this.scrollTop()
+            this.scrollTo(this.errorName.nativeElement)
 
             return false
         }
 
+        this.errors.name = null
+
+        if (this.codeService.filterEmptyCodes(this.codes).length === 0) {
+            this.errors.code = `At least one complete code has to be added`
+            this.scrollTo(this.errorCode.nativeElement)
+
+            return false
+        }
+
+        this.errors.code = null
+
         return true
     }
 
-    scrollTop() {
-        window.scrollTo(0, 0)
+    scrollTo(htmlElement: HTMLElement) {
+        window.scrollTo(0, $(htmlElement).offset().top)
     }
 }
