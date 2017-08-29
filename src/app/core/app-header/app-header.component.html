@@ -27,4 +27,7 @@
             </div>
         </div>
     </nav>
+    <div *ngIf="!hasNetworkConnection" id="offline-wrapper">
+        The application is currently offline
+    </div>
 </header>

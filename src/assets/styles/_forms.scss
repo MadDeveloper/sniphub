@@ -11,7 +11,7 @@ input {
     &[type="password"],
     &[type="email"] {
         border-radius: 3px;
-        border: 1px solid $grey-color;
+        border: 1px solid $grey-translucent-color;
         padding: 0.5rem 1rem;
         outline: none;
         width: 100%;
@@ -59,7 +59,7 @@ input {
 
 textarea {
     border-radius: 3px;
-    border: 1px solid $grey-color;
+    border: 1px solid $grey-translucent-color;
     padding: 0.5rem 1rem;
     outline: none;
     width: 100%;
@@ -157,7 +157,7 @@ textarea {
         position: absolute;
         right: 13px;
         top: 10px;
-        color: $dark-grey-color !important;
+        color: $dark-grey-translucent-color !important;
         pointer-events: none;
     }
 }
@@ -168,19 +168,19 @@ input:-webkit-autofill {
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
     opacity:  1;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
     opacity:  1;
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }

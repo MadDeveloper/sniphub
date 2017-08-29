@@ -17,7 +17,7 @@ a {
         color: $default-color;
 
         &:hover {
-            color: $dark-grey-color;
+            color: $dark-grey-translucent-color;
         }
     }
 
@@ -29,7 +29,7 @@ a {
         }
     }
     &.meta {
-        color: $dark-grey-color;
+        color: $dark-grey-translucent-color;
 
         &:hover {
             color: $default-color;

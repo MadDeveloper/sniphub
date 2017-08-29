@@ -40,4 +40,11 @@ header {
             }
         }
     }
+
+    #offline-wrapper {
+        background-color: $grey-color;
+        color: #fff;
+        padding: .5rem 2rem;
+        text-align: center;
+    }
 }

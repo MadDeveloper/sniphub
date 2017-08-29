@@ -40,7 +40,7 @@
         }
 
         .meta {
-            color: $dark-grey-color;
+            color: $dark-grey-translucent-color;
         }
 
         .description {
@@ -50,6 +50,6 @@
 
     .extra {
         padding: .75rem 1rem !important;
-        color: $dark-grey-color;
+        color: $dark-grey-translucent-color;
     }
 }

@@ -14,6 +14,7 @@ import { StorageService } from './services/storage/storage.service'
 import { LoaderComponent } from './loader/loader.component'
 import { FirebaseService } from './services/firebase/firebase.service'
 import { ElasticService } from './services/elastic/elastic.service'
+import { NetworkService } from './services/network/network.service'
 
 @NgModule({
     imports: [
@@ -48,7 +49,8 @@ export class CoreModule {
                 ElasticService,
                 UserResolverGuard,
                 StorageService,
-                FirebaseService
+                FirebaseService,
+                NetworkService
             ]
         }
     }
