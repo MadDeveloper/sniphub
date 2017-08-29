@@ -12,7 +12,7 @@ import { UserService } from '../../core/services/user/user.service'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
 import { Code } from '../../code/interfaces/code'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 import swal from 'sweetalert2'
 
 @Component({

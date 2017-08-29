@@ -3,7 +3,7 @@ import { SnippetService } from '../../snippet/services/snippet.service'
 import { Snippet } from '../../snippet/interfaces/snippet'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable'
-import { ElasticService } from '../../core/services/user/elastic.service'
+import { ElasticService } from '../../core/services/elastic/elastic.service'
 
 @Injectable()
 export class SearchService {

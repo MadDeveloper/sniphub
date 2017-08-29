@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 import { Subject } from 'rxjs/Subject'
 import { Notification } from '../interfaces/notification'
 import { NotificationType } from '../interfaces/notification-type.enum'

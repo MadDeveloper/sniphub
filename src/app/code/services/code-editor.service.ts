@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 import { modes } from './modes'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 
 @Injectable()
 export class CodeEditorService {

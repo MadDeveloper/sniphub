@@ -9,7 +9,7 @@ import { User } from '../../core/interfaces/user/user'
 import { languages } from './languages'
 import { Observable } from 'rxjs/Observable'
 import { Language } from '../interfaces/language'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 
 @Injectable()
 export class CodeService {

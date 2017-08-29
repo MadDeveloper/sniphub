@@ -1,5 +1,4 @@
-// LANGUAGES
-import 'codemirror'
+// // LANGUAGES
 import 'codemirror/mode/apl/apl'
 import 'codemirror/mode/asciiarmor/asciiarmor'
 import 'codemirror/mode/asn.1/asn.1'
@@ -120,7 +119,7 @@ import 'codemirror/mode/yaml/yaml'
 import 'codemirror/mode/yaml-frontmatter/yaml-frontmatter'
 import 'codemirror/mode/z80/z80'
 
-// HINTS
+// // HINTS
 import 'codemirror/addon/hint/anyword-hint'
 import 'codemirror/addon/hint/css-hint'
 import 'codemirror/addon/hint/html-hint'

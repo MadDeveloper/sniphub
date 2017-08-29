@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 import { languages } from './languages'
 import { Language } from '../interfaces/language'
 

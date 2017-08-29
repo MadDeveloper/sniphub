@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
 import { UserService } from '../../core/services/user/user.service'
 import { CodeEditorService } from '../../code/services/code-editor.service'
 import { LanguageService } from '../../code/services/language.service'
