@@ -7,6 +7,7 @@ import { ElasticService } from '../../core/services/user/elastic.service'
 
 @Injectable()
 export class SearchService {
+    lastSearchResultsTotal: number
     lastSearchResults: Snippet[]
     lastSearchResultsTerms: string
     terms$: BehaviorSubject<string> = new BehaviorSubject(null)
@@ -23,8 +24,11 @@ export class SearchService {
         try {
             const response = await this.elastic.search(terms)
 
+            console.log(response)
+
             this.lastSearchResultsTerms = terms
             this.lastSearchResults = this.parse(response)
+            this.lastSearchResultsTotal = response.hits.total
 
             return this.lastSearchResults
         } catch (error) {

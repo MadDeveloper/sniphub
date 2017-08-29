@@ -60,7 +60,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.route
             .data
-            .subscribe((data: { snippet: Snippet }) => {
+            .subscribe(data => {
                 this.user = this.authentication.currentUser()
 
                 this.snippet = data[0]

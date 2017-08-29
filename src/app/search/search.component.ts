@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable'
 export class SearchComponent implements OnInit, OnDestroy {
     terms: string = null
     snippets: Snippet[] = []
+    total = 0
     loading = false
     termsObserver: Subscription
 
@@ -56,6 +57,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     async search() {
         this.loading = true
         this.snippets = await this.searchService.search(this.terms)
+        this.total = this.searchService.lastSearchResultsTotal
         this.loading = false
     }
 }

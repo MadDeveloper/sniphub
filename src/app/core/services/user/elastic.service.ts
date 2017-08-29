@@ -24,7 +24,8 @@ export class ElasticService {
                             analyze_wildcard: true,
                             split_on_whitespace: true
                         }
-                    }
+                    },
+                    size: config.elastic.sizePerResults
                 }
             })
         } catch (error) {
