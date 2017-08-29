@@ -23,12 +23,6 @@ export class SnippetService {
         private like: LikeService,
         private code: CodeService) { }
 
-    all(options?: any): Observable<Snippet[]> {
-        return this
-            .allFromDatabase(options)
-            .map((snippets: any[]) => this.forgeAll(snippets))
-    }
-
     lastestAdded(): Observable<Snippet[]> {
         if (this.cache.lastestAdded) {
             return Observable.of(this.cache.lastestAdded)

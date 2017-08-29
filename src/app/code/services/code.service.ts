@@ -40,14 +40,7 @@ export class CodeService {
             .update(code.id, this.forgeForDatabase(code, author, asRequest))
     }
 
-    createAll(codes: Code[], snippet: Snippet, author: User) {
-        return this
-            .database
-            .list(this.codesPath())
-            .update(snippet.id, this.forgeAllForDatabase(codes, author))
-    }
-
-    updateAll(codes: Code[], snippet: Snippet, author: User) {
+    saveAll(codes: Code[], snippet: Snippet, author: User) {
         return this
             .database
             .object(this.codesSnippetPath(snippet))

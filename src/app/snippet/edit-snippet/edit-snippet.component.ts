@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 import { config } from '../../../config'
 import { element } from 'protractor'
 import * as $ from 'jquery'
+import { LanguageService } from '../../code/services/language.service'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -43,7 +44,8 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         private snippetService: SnippetService,
         private codeService: CodeService,
         private router: Router,
-        private authentication: AuthenticationService) { }
+        private authentication: AuthenticationService,
+        private language: LanguageService) { }
 
     ngOnInit() {
         if (this.route.snapshot.params['id']) {
@@ -99,11 +101,11 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
                 if (this.editing) {
                     await this.snippetService.update(this.snippet)
-                    await this.codeService.updateAll(this.codes, this.snippet, author)
                 } else {
                     this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
-                    await this.codeService.createAll(this.codes, this.snippet, author)
                 }
+
+                await this.codeService.saveAll(codes, this.snippet, author)
 
                 this.router.navigate([`/snippets/${this.snippet.id}`])
             }
