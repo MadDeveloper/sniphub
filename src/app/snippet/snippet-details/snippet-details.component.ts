@@ -128,7 +128,11 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     focusComment() {
-        this.comment.nativeElement.focus()
+        if (this.isAuthenticated) {
+            this.comment.nativeElement.focus()
+        } else {
+            this.showSignInPopup()
+        }
     }
 
     truncateDescription() {
@@ -162,13 +166,17 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     like() {
-        if (!this.liked) {
-            this.snippet.likesCounter++
-            this.likeService.like(this.snippet, this.snippetAuthor)
-            this.snippetService.increaseLikesCounter(this.snippet)
-            this.liked = true
+        if (this.isAuthenticated) {
+            if (!this.liked) {
+                this.snippet.likesCounter++
+                this.likeService.like(this.snippet, this.snippetAuthor)
+                this.snippetService.increaseLikesCounter(this.snippet)
+                this.liked = true
+            } else {
+                this.unlike()
+            }
         } else {
-            this.unlike()
+            this.showSignInPopup()
         }
     }
 
@@ -213,5 +221,13 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 type: 'error'
             })
         }
+    }
+
+    private showSignInPopup() {
+        swal({
+            title: 'Sign in',
+            html: 'You need to be logged first. <a class="link" routerLink="/signin">Sign in</a>',
+            type: 'info'
+        })
     }
 }

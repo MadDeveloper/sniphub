@@ -4,6 +4,9 @@
     ".write": true,
 	"snippets": {
       ".indexOn": ["likesCounter", "date", "author"]
+    },
+    "users": {
+        ".indexOn": ["/email"]
     }
   }
 }

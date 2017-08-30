@@ -125,7 +125,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     closeSubscriptions() {
         this.snippetsObserver.unsubscribe()
-        this.notificationsObserver.unsubscribe()
+
+        if (this.notificationsObserver) {
+            this.notificationsObserver.unsubscribe()
+        }
     }
 
     newUserSnapshot() {
