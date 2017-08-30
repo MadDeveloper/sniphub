@@ -8,8 +8,6 @@ import { SnippetService } from '../services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { config } from '../../../config'
-import { element } from 'protractor'
-import * as $ from 'jquery'
 import { LanguageService } from '../../code/services/language.service'
 
 @Component({
@@ -144,6 +142,6 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     }
 
     scrollTo(htmlElement: HTMLElement) {
-        window.scrollTo(0, $(htmlElement).offset().top)
+        window.scrollTo(0, htmlElement.offsetTop)
     }
 }

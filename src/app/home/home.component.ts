@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
-import * as $ from 'jquery'
 import { Router } from '@angular/router'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
