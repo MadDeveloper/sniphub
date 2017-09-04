@@ -1,7 +1,7 @@
 import { Client } from 'elasticsearch'
 import { config } from '../../../../config'
 import { Injectable } from '@angular/core'
-import { PaginableResponse } from '../../interfaces/response/elastic/paginable-response'
+import { PaginableResponse } from '../../interfaces/response/paginable-response'
 
 @Injectable()
 export class ElasticService {
@@ -9,7 +9,7 @@ export class ElasticService {
         host: config.elastic.url
     })
 
-    async search(terms: string, page = 0) {
+    async search(terms: string, page = 1) {
         try {
             return await this.client.search({
                 index: 'firebase',
@@ -23,7 +23,7 @@ export class ElasticService {
                         }
                     },
                     size: config.elastic.sizePerResults,
-                    from: page * config.elastic.sizePerResults
+                    from: (page - 1) * config.elastic.sizePerResults
                 }
             })
         } catch (error) {

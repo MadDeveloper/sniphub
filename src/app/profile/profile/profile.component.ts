@@ -22,7 +22,9 @@ import swal from 'sweetalert2'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     authorSnippets: Snippet[] = []
+    canViewMoreAuthorSnippets = false
     contributorSnippets: Snippet[] = []
+    canViewMoreContributorSnippets = false
     snippetsLoaded = false
     snippetsObserver: Subscription
     user: User

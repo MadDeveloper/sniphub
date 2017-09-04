@@ -4,7 +4,7 @@ import { Snippet } from '../../snippet/interfaces/snippet'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable'
 import { ElasticService } from '../../core/services/elastic/elastic.service'
-import { PaginableResponse } from '../../core/interfaces/response/elastic/paginable-response'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { config } from '../../../config'
 
 @Injectable()
@@ -19,7 +19,7 @@ export class SearchService {
         this.terms$.next(terms)
     }
 
-    async search(terms: string, page = 0): Promise<PaginableResponse<Snippet[]>> {
+    async search(terms: string, page = 1): Promise<PaginableResponse<Snippet[]>> {
         try {
             const responseElastic = await this.elastic.search(terms, page)
             const snippets = this.parse(responseElastic)
@@ -46,7 +46,7 @@ export class SearchService {
     }
 
     private calculateCanNext(response: Elasticsearch.SearchResponse<any>, page: number): boolean {
-        const indexLastItem = (page * config.elastic.sizePerResults) + config.elastic.sizePerResults
+        const indexLastItem = page * config.elastic.sizePerResults
 
         return indexLastItem < response.hits.total
     }

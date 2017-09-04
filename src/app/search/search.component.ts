@@ -11,7 +11,7 @@ import { SearchService } from './services/search.service'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
-import { PaginableResponse } from '../core/interfaces/response/elastic/paginable-response'
+import { PaginableResponse } from '../core/interfaces/response/paginable-response'
 import { ScrollService } from '../core/services/scroll/scroll.service'
 
 @Component({

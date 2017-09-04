@@ -8,6 +8,7 @@ import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
 import { CodeService } from '../../code/services/code.service'
 import { config } from '../../../config'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 
 @Injectable()
 export class SnippetService {
@@ -63,12 +64,13 @@ export class SnippetService {
             .do(snippets => this.cache.popular = snippets)
     }
 
-    author(author: User): Observable<Snippet[]> {
+    author(author: User, page = 1): Observable<Snippet[]> {
         return this
             .allFromDatabase({
                 query: {
                     orderByChild: 'author',
-                    equalTo: author.id
+                    equalTo: author.id,
+                    limitToFirst: page * config.snippet.maxAuthorDisplayed
                 }
             })
             .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
@@ -76,7 +78,11 @@ export class SnippetService {
 
     contributor(author: User): Observable<Snippet[]> {
         return this
-            .allContributionsFromDatabase(author)
+            .allContributionsFromDatabase(author, {
+                query: {
+                    limitToFirst: config.snippet.maxContributorDisplayed
+                }
+            })
             .map((contributions: any[]) => {
                 if (contributions.length > 0) {
                     return Observable.zip(...contributions.map(contribution => this.find(contribution.$key)))
@@ -256,7 +262,7 @@ export class SnippetService {
     }
 
     private allContributionsFromDatabase(author: User, options?: any) {
-        return this.database.list(this.authorContributionsPath(author))
+        return this.database.list(this.authorContributionsPath(author), options)
     }
 
     private forgeFromSnapshot(snapshot): Snippet {
