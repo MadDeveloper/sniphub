@@ -14,8 +14,18 @@
     font-size: inherit;
     transition: all .1s ease;
 
+    &.inverted {
+        background-color: $medium-light-color;
+        color: $default-color;
+    }
+
     &:hover {
         background-color: $medium-light-color;
         color: $default-color;
+
+        &.inverted {
+            background-color: $light-grey-color;
+            color: $light-default-color;
+        }
     }
 }

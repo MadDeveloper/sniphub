@@ -71,7 +71,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadingNextPage = true
         }
 
-        this.response = this.response ? await this.response.next() : await this.searchService.search(this.terms)
+        this.response = this.response ? (await this.response.next()) as PaginableResponse<Snippet[]> : await this.searchService.search(this.terms)
         this.total = this.response.total
 
         if (this.firstLoad) {

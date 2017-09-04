@@ -58,47 +58,34 @@
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
-        <div *ngIf="snippetsLoaded; else loadingSnippets" class="col-12 pt-5">
+        <div *ngIf="snippetsAuthorLoaded && snippetsContributorLoaded; else loadingSnippets" class="col-12 pt-5">
             <div *ngIf="authorSnippets.length > 0 || contributorSnippets.length > 0; else noSnippets">
-                <!-- AUTHOR -->
-                <div class="row">
-                    <div class="col">
-                        <div class="d-flex align-items-center">
-                            <h3 class="mr-3 mb-0">Author</h3>
-                            <span class="badge h4 mb-0">{{ authorSnippets.length }}</span>
-                        </div>
-                        <hr>
+                <div class="tabs">
+                    <!-- AUTHOR TAB -->
+                    <div class="tab" [ngClass]="{ disabled: authorSnippets.length === 0, active: activeTab === 'author' }" (click)="toggleTab('author')">
+                        <h3 class="mr-3 mb-0">Author</h3>
+                        <span class="badge inverted h4 mb-0">{{ authorSnippets.length }}</span>
                     </div>
-                </div>
-                <div *ngIf="ownProfile()" class="row pt-2 pb-4">
-                    <div class="col">
-                        <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
-                    </div>
-                </div>
-                <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
-                <div class="row">
-                    <div class="col d-flex justify-content-center">
-                        <button class="btn outlined default">More</button>
+                    <!-- CONTRIBUTOR TAB -->
+                    <div class="tab" [ngClass]="{ disabled: contributorSnippets.length === 0, active: activeTab === 'contributor' }" (click)="toggleTab('contributor')">
+                        <h3 class="mr-3 mb-0">Contributor</h3>
+                        <span class="badge inverted h4 mb-0">{{ contributorSnippets.length }}</span>
                     </div>
                 </div>
 
-                <!-- CONTRIBUTOR -->
-                <div *ngIf="contributorSnippets.length > 0">
-                    <div class="row mt-5 mb-3">
-                        <div class="d-flex align-items-center">
-                            <h3 class="mr-3 mb-0">Contributor</h3>
-                            <span class="badge h4 mb-0">{{ contributorSnippets.length }}</span>
+                <div class="mt-4">
+                    <!-- AUTHOR SNIPPETS -->
+                    <div *ngIf="activeTab === 'author'">
+                        <div *ngIf="ownProfile()" class="row pt-2 pb-4">
+                            <div class="col">
+                                <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <hr>
-                        </div>
+                        <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
                     </div>
-                    <app-snippets-list [snippets]="contributorSnippets"></app-snippets-list>
-                    <div class="row">
-                        <div class="col d-flex justify-content-center">
-                            <button class="btn outlined default">More</button>
-                        </div>
-                    </div>
+
+                    <!-- CONTRIBUTOR SNIPPETS -->
+                    <app-snippets-list *ngIf="activeTab === 'contributor'" class="tab-content" [snippets]="contributorSnippets"></app-snippets-list>
                 </div>
             </div>
             <ng-template #noSnippets>

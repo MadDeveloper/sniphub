@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core'
-import { Snippet } from '../interfaces/snippet'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { UserService } from '../../core/services/user/user.service'
-import { LikeService } from './like.service'
-import { Observable } from 'rxjs/Observable'
-import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
+import { AngularFireDatabase } from 'angularfire2/database'
 import { CodeService } from '../../code/services/code.service'
 import { config } from '../../../config'
-import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
+import { Injectable } from '@angular/core'
+import { LikeService } from './like.service'
+import { Observable } from 'rxjs/Observable'
+import { Snippet } from '../interfaces/snippet'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
 
 @Injectable()
 export class SnippetService {
@@ -64,25 +63,37 @@ export class SnippetService {
             .do(snippets => this.cache.popular = snippets)
     }
 
-    author(author: User, page = 1): Observable<Snippet[]> {
+    author(author: User): Observable<Snippet[]> {
         return this
             .allFromDatabase({
                 query: {
                     orderByChild: 'author',
                     equalTo: author.id,
-                    limitToFirst: page * config.snippet.maxAuthorDisplayed
                 }
             })
             .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
+    // author(author: User, page = 1, lastHits: Snippet[] = []): Observable<PaginableResponse<Snippet[]>> {
+    //     return this
+    //         .allFromDatabase({
+    //             query: {
+    //                 orderByChild: 'author',
+    //                 equalTo: author.id,
+    //                 limitToFirst: page * config.snippet.maxAuthorDisplayed
+    //             }
+    //         })
+    //         .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
+    //         .map(snippets => ({
+    //             canNext: snippets.length - lastHits.length >= config.snippet.maxAuthorDisplayed,
+    //             hits: snippets.slice(),
+    //             next: () => this.author(author, ++page, snippets)
+    //         }))
+    // }
+
     contributor(author: User): Observable<Snippet[]> {
         return this
-            .allContributionsFromDatabase(author, {
-                query: {
-                    limitToFirst: config.snippet.maxContributorDisplayed
-                }
-            })
+            .allContributionsFromDatabase(author)
             .map((contributions: any[]) => {
                 if (contributions.length > 0) {
                     return Observable.zip(...contributions.map(contribution => this.find(contribution.$key)))
@@ -92,6 +103,28 @@ export class SnippetService {
             })
             .mergeAll()
     }
+
+    // contributor(author: User, page = 1): Observable<PaginableResponse<Snippet[]>> {
+    //     return this
+    //         .allContributionsFromDatabase(author, {
+    //             query: {
+    //                 limitToFirst: page * config.snippet.maxContributorDisplayed
+    //             }
+    //         })
+    //         .map((contributions: any[]) => {
+    //             if (contributions.length > 0) {
+    //                 return Observable.zip(...contributions.map(contribution => this.find(contribution.$key)))
+    //             }
+
+    //             return Observable.of([])
+    //         })
+    //         .mergeAll()
+    //         .map(snippets => ({
+    //             canNext: snippets.length >= config.snippet.maxAuthorDisplayed,
+    //             hits: snippets.slice(),
+    //             next: () => this.author(author, ++page)
+    //         }))
+    // }
 
     find(id: string): Observable<Snippet> {
         return this

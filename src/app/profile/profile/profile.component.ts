@@ -12,8 +12,8 @@ import { UserService } from '../../core/services/user/user.service'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
 import { Code } from '../../code/interfaces/code'
-import find from 'lodash-es/find'
 import swal from 'sweetalert2'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 
 @Component({
   selector: 'app-profile',
@@ -22,11 +22,12 @@ import swal from 'sweetalert2'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     authorSnippets: Snippet[] = []
-    canViewMoreAuthorSnippets = false
     contributorSnippets: Snippet[] = []
-    canViewMoreContributorSnippets = false
-    snippetsLoaded = false
-    snippetsObserver: Subscription
+    snippetsAuthorLoaded = false
+    snippetsContributorLoaded = false
+    snippetsAuthorObserver: Subscription
+    snippetsContributorObserver: Subscription
+    activeTab = 'author'
     user: User
     codes = 0
     likes = 0
@@ -81,6 +82,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loadSnippets()
     }
 
+        ngOnDestroy() {
+            this.closeSubscriptions()
+        }
+
+        closeSubscriptions() {
+            if (this.snippetsAuthorObserver) {
+                this.snippetsAuthorObserver.unsubscribe()
+            }
+
+            if (this.snippetsContributorObserver) {
+                this.snippetsContributorObserver.unsubscribe()
+            }
+
+            if (this.notificationsObserver) {
+                this.notificationsObserver.unsubscribe()
+            }
+        }
+
     loadNotifications() {
         this.notificationsObserver = this
             .notification
@@ -93,20 +112,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     loadSnippets() {
-        this.snippetsObserver = this
-            .snippet
-            .author(this.user)
-            .mergeMap(authorSnippets => {
-                this.authorSnippets = authorSnippets
+        this.loadAuthorSnippets()
+        this.loadContributorSnippets()
+    }
 
-                return this.snippet.contributor(this.user)
-            })
-            .subscribe(contributorSnippets => {
-                this.contributorSnippets = contributorSnippets.filter(snippet => !find(this.authorSnippets, { id: snippet.id }))
+    loadAuthorSnippets() {
+        this.snippetsAuthorObserver = this.snippet.author(this.user).subscribe(snippets => {
+            this.authorSnippets = snippets
+            this.snippetsAuthorLoaded = true
+            this.countLikes()
+
+            if (this.snippetsContributorLoaded) {
                 this.countCodes()
-                this.countLikes()
-                this.snippetsLoaded = true
-            })
+            }
+        })
+    }
+
+    loadContributorSnippets() {
+        this.snippetsContributorObserver = this.snippet.contributor(this.user).subscribe(snippets => {
+            this.contributorSnippets = snippets
+            this.snippetsContributorLoaded = true
+
+            if (this.snippetsAuthorLoaded) {
+                this.countCodes()
+            }
+        })
     }
 
     countLikes() {
@@ -118,19 +148,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const codesContributor = this.contributorSnippets.reduce((counter, snippet) => counter + snippet.codesCounter, 0)
 
         this.codes =  codesAuthor + codesContributor
-    }
-
-
-    ngOnDestroy() {
-        this.closeSubscriptions()
-    }
-
-    closeSubscriptions() {
-        this.snippetsObserver.unsubscribe()
-
-        if (this.notificationsObserver) {
-            this.notificationsObserver.unsubscribe()
-        }
     }
 
     newUserSnapshot() {
@@ -222,6 +239,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.changeGitHubAccount(githubAccount)
         } catch (error) {
             // todo
+        }
+    }
+
+    toggleTab(tab: string) {
+        switch (tab) {
+            case 'contributor':
+                if (this.contributorSnippets.length > 0) {
+                    this.activeTab = 'contributor'
+                }
+                break
+
+            default:
+                if (this.authorSnippets.length > 0) {
+                    this.activeTab = 'author'
+                }
+                break
         }
     }
 }
