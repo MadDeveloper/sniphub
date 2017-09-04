@@ -7,6 +7,11 @@
                 </div>
             </div>
             <app-snippets-list [snippets]="snippets"></app-snippets-list>
+            <div *ngIf="loadingNextPage" class="row">
+                <div class="col d-flex justify-content-center mt-5">
+                    <app-loader></app-loader>
+                </div>
+            </div>
         </div>
         <ng-template #noResults>
             <div class="container my-5 meta">

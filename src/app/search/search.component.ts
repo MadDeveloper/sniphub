@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core'
+import { Component, OnInit, OnDestroy, Input, HostListener } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { SearchService } from './services/search.service'
@@ -15,7 +15,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     terms: string = null
     snippets: Snippet[] = []
     total = 0
+    page = 0
     loading = false
+    loadingNextPage = false
     termsObserver: Subscription
 
     constructor(
@@ -55,9 +57,40 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     async search() {
-        this.loading = true
-        this.snippets = await this.searchService.search(this.terms)
+        if (!this.page) {
+            this.loading = true
+        } else {
+            this.loadingNextPage = true
+        }
+
+        const response = await this.searchService.search(this.terms, this.page)
+
+        if (!this.page) {
+            this.snippets = response
+        } else {
+            this.snippets.push(...response)
+        }
+
         this.total = this.searchService.lastSearchResultsTotal
-        this.loading = false
+
+        if (!this.page) {
+            this.loading = false
+        } else {
+            this.loadingNextPage = false
+        }
+    }
+
+    @HostListener('window:scroll', ['$event'])
+    onWindowScroll() {
+        const html = document.documentElement
+        const body = document.body
+        const userScroll = window.innerHeight + (document.documentElement.scrollTop || body.scrollTop)
+        const maxScroll = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight )
+
+        if (userScroll >= maxScroll && !this.loadingNextPage) {
+            // load the rest of the response
+            this.page++
+            this.search()
+        }
     }
 }

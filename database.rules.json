@@ -1,12 +1,12 @@
 {
-  "rules": {
-    ".read": true,
-    ".write": true,
-	"snippets": {
-      ".indexOn": ["likesCounter", "date", "author"]
-    },
-    "users": {
-        ".indexOn": ["/email"]
+    "rules": {
+        ".read": true,
+        ".write": true,
+        "snippets": {
+            ".indexOn": ["likesCounter", "date", "author"]
+        },
+        "users": {
+            ".indexOn": ["/email"]
+        }
     }
-  }
 }

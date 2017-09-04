@@ -20,9 +20,9 @@ export class SearchService {
         this.terms$.next(terms)
     }
 
-    async search(terms: string): Promise<Snippet[]> {
+    async search(terms: string, page = 0): Promise<Snippet[]> {
         try {
-            const response = await this.elastic.search(terms)
+            const response = await this.elastic.search(terms, page)
 
             this.lastSearchResultsTerms = terms
             this.lastSearchResults = this.parse(response)

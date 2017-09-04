@@ -12,7 +12,8 @@ export class ElasticService {
         })
     }
 
-    async search(terms: string) {
+    async search(terms: string, page = 0) {
+        console.log(page)
         try {
             return await this.client.search({
                 index: 'firebase',
@@ -25,7 +26,8 @@ export class ElasticService {
                             split_on_whitespace: true
                         }
                     },
-                    size: config.elastic.sizePerResults
+                    size: config.elastic.sizePerResults,
+                    from: page * config.elastic.sizePerResults
                 }
             })
         } catch (error) {
