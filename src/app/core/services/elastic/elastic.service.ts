@@ -1,19 +1,15 @@
-import { Injectable } from '@angular/core'
 import { Client } from 'elasticsearch'
 import { config } from '../../../../config'
+import { Injectable } from '@angular/core'
+import { PaginableResponse } from '../../interfaces/response/elastic/paginable-response'
 
 @Injectable()
 export class ElasticService {
-    client: Client
-
-    constructor() {
-        this.client = new Client({
-            host: config.elastic.url
-        })
-    }
+    client = new Client({
+        host: config.elastic.url
+    })
 
     async search(terms: string, page = 0) {
-        console.log(page)
         try {
             return await this.client.search({
                 index: 'firebase',

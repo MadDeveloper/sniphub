@@ -1,10 +1,18 @@
-import { Component, OnInit, OnDestroy, Input, HostListener } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
+import {
+    Component,
+    HostListener,
+    Input,
+    OnDestroy,
+    OnInit
+    } from '@angular/core'
+import { Observable } from 'rxjs/Observable'
 import { SearchService } from './services/search.service'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
-import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
+import { PaginableResponse } from '../core/interfaces/response/elastic/paginable-response'
+import { ScrollService } from '../core/services/scroll/scroll.service'
 
 @Component({
   selector: 'app-search',
@@ -14,17 +22,19 @@ import { Observable } from 'rxjs/Observable'
 export class SearchComponent implements OnInit, OnDestroy {
     terms: string = null
     snippets: Snippet[] = []
-    total = 0
-    page = 0
     loading = false
+    firstLoad = false
     loadingNextPage = false
     termsObserver: Subscription
+    total: number
+    response: PaginableResponse<Snippet[]>
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
         private searchService: SearchService,
-        private router: Router) { }
+        private router: Router,
+        private scroll: ScrollService) { }
 
     ngOnInit() {
         this.observeTerms()
@@ -44,11 +54,9 @@ export class SearchComponent implements OnInit, OnDestroy {
             .subscribe(terms => {
                 if (!terms) {
                     this.router.navigateByUrl('/')
-                } else if (this.searchService.lastSearchResultsTerms === terms) {
-                    this.terms = terms
-                    this.snippets = this.searchService.lastSearchResults
                 } else {
                     if (this.terms !== terms) {
+                        this.firstLoad = true
                         this.terms = terms
                         this.search()
                     }
@@ -57,39 +65,28 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     async search() {
-        if (!this.page) {
+        if (this.firstLoad) {
             this.loading = true
         } else {
             this.loadingNextPage = true
         }
 
-        const response = await this.searchService.search(this.terms, this.page)
+        this.response = this.response ? await this.response.next() : await this.searchService.search(this.terms)
+        this.total = this.response.total
 
-        if (!this.page) {
-            this.snippets = response
-        } else {
-            this.snippets.push(...response)
-        }
-
-        this.total = this.searchService.lastSearchResultsTotal
-
-        if (!this.page) {
+        if (this.firstLoad) {
+            this.snippets = this.response.hits
             this.loading = false
+            this.firstLoad = false
         } else {
+            this.snippets.push(...this.response.hits)
             this.loadingNextPage = false
         }
     }
 
     @HostListener('window:scroll', ['$event'])
     onWindowScroll() {
-        const html = document.documentElement
-        const body = document.body
-        const userScroll = window.innerHeight + (document.documentElement.scrollTop || body.scrollTop)
-        const maxScroll = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight )
-
-        if (userScroll >= maxScroll && !this.loadingNextPage) {
-            // load the rest of the response
-            this.page++
+        if (this.scroll.documentScrolledBottom() && !this.loadingNextPage && (!this.response || this.response.canNext)) {
             this.search()
         }
     }
