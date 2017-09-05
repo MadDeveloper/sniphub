@@ -141,21 +141,6 @@ export class SnippetService {
             })
     }
 
-    findAsSnapshot(id: string): Observable<Snippet> {
-        return this
-            .database
-            .object(this.snippetPath(id), { preserveSnapshot: true })
-            .map(snapshot => {
-                let snippet: Snippet = null
-
-                if (snapshot.exists()) {
-                    snippet = this.forgeFromSnapshot(snapshot)
-                }
-
-                return snippet
-            })
-    }
-
     create(snippet: Snippet, author: User) {
         return this
             .allFromDatabase()
@@ -296,15 +281,6 @@ export class SnippetService {
 
     private allContributionsFromDatabase(author: User, options?: any) {
         return this.database.list(this.authorContributionsPath(author), options)
-    }
-
-    private forgeFromSnapshot(snapshot): Snippet {
-        const id = snapshot.key
-        const snippetFetched = snapshot.val()
-
-        snippetFetched.$key = id
-
-        return this.forge(snippetFetched)
     }
 
     snippetsPath() {

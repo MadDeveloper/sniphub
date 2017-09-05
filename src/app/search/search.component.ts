@@ -56,6 +56,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     this.router.navigateByUrl('/')
                 } else {
                     if (this.terms !== terms) {
+                        this.response = null
                         this.firstLoad = true
                         this.terms = terms
                         this.search()
