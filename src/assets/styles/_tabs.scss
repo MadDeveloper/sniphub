@@ -1,0 +1,42 @@
+@import 'variables';
+
+.tabs {
+    display: flex;
+    align-items: center;
+
+    .tab {
+        margin: 0 .5rem;
+        padding: .5rem 1rem;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $default-color;
+        transition: background-color .3s;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            background-color: $light-grey-color;
+            cursor: pointer;
+        }
+
+        &.active {
+            background-color: $light-grey-color;
+        }
+
+        &.disabled {
+            opacity: .4;
+
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
+    }
+}
