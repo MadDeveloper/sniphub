@@ -1,11 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { AuthenticationService } from '../authentication/services/authentication.service'
+import {
+    Component,
+    HostListener,
+    OnDestroy,
+    OnInit
+    } from '@angular/core'
 import { Notification } from './interfaces/notification'
 import { NotificationService } from './services/notification.service'
-import { Subscription } from 'rxjs/Subscription'
-import { AuthenticationService } from '../authentication/services/authentication.service'
-import { User } from '../core/interfaces/user/user'
 import { RequestService } from '../request/services/request.service'
 import { Router } from '@angular/router'
+import { ScrollService } from '../core/services/scroll/scroll.service'
+import { Subscription } from 'rxjs/Subscription'
+import { User } from '../core/interfaces/user/user'
+import { PaginableResponse } from '../core/interfaces/response/paginable-response'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-notifications',
@@ -14,15 +22,18 @@ import { Router } from '@angular/router'
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
     notifications: Notification[]
-    private notificationsObserver: Subscription
+    notificationsObserver: Subscription
+    loadingNextPage = false
     loaded = false
     user: User
+    response: PaginableResponse<Notification[]>
 
     constructor(
         private notificationService: NotificationService,
         private authentication: AuthenticationService,
         private request: RequestService,
-        private router: Router) { }
+        private router: Router,
+        private scroll: ScrollService) { }
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
@@ -38,13 +49,27 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
 
     loadNotifications() {
-        this.notificationsObserver = this.notificationService
-            .all(this.user)
-            .subscribe(notifications => {
-                this.notifications = notifications
-                this.loaded = true
-                this.notificationService.markAllAsRead(notifications, this.user)
-            })
+        const notifications$ = this.response ? this.response.next() as Observable<PaginableResponse<Notification[]>> : this.notificationService.all(this.user)
+
+        this.loadingNextPage = true
+
+        if (this.notificationsObserver) {
+            this.notificationsObserver.unsubscribe()
+        }
+
+        this.notificationsObserver = notifications$.subscribe(response => {
+            this.response = response
+
+            if (this.loaded) {
+                this.notifications.push(...response.hits)
+            } else {
+                this.notifications = response.hits
+            }
+
+            this.loaded = true
+            this.loadingNextPage = false
+            this.notificationService.markAllAsRead(response.hits, this.user)
+        })
     }
 
     isRequestNotification(notification: Notification) {
@@ -63,5 +88,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         event.preventDefault()
         this.request.storedSnippet = { id: notification.snippetId }
         this.router.navigate([`/requests/${notification.requestId}`])
+    }
+
+    @HostListener('window:scroll', ['$event'])
+    onWindowScroll() {
+        if (this.scroll.documentScrolledBottom() && !this.loadingNextPage && (!this.response || this.response.canNext)) {
+            this.loadNotifications()
+        }
     }
 }

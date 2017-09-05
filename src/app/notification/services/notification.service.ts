@@ -1,18 +1,21 @@
-import { Injectable } from '@angular/core'
+import * as firebase from 'firebase'
 import find from 'lodash-es/find'
-import { Subject } from 'rxjs/Subject'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { Comment } from '../../snippet/interfaces/comment'
+import { config } from '../../../config'
+import { FirebaseListFactoryOpts } from 'angularfire2/interfaces'
+import { Injectable } from '@angular/core'
+import { Like } from '../../snippet/interfaces/like'
 import { Notification } from '../interfaces/notification'
 import { NotificationType } from '../interfaces/notification-type.enum'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { User } from '../../core/interfaces/user/user'
 import { Observable } from 'rxjs/Observable'
-import { UserService } from '../../core/services/user/user.service'
-import { SnippetService } from '../../snippet/services/snippet.service'
-import { Like } from '../../snippet/interfaces/like'
-import { Comment } from '../../snippet/interfaces/comment'
-import { Snippet } from '../../snippet/interfaces/snippet'
-import * as firebase from 'firebase'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { Request } from '../../request/interfaces/request'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { SnippetService } from '../../snippet/services/snippet.service'
+import { Subject } from 'rxjs/Subject'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
 
 @Injectable()
 export class NotificationService {
@@ -20,20 +23,44 @@ export class NotificationService {
         private database: AngularFireDatabase,
         private user: UserService) { }
 
-    all(user: User): Observable<Notification[]> {
+    all(user: User, startAt = null): Observable<PaginableResponse<Notification[]>> {
+        const options: FirebaseListFactoryOpts = {
+            query: {
+                orderByKey: true,
+                limitToFirst: config.notifications.maxPerPage
+            }
+        }
+
+        if (startAt) {
+            options.query.startAt = startAt
+        }
+
         return this
             .database
-            .list(this.notificationsUserPath(user), {
-                query: {
-                    orderByChild: 'date'
+            .list(this.notificationsUserPath(user), options)
+            .map((notifications: any[]) => this.forgeAll(notifications))
+            .map(notifications => {
+                const clonedNotifications = notifications.slice()
+                const lastNotification = clonedNotifications.pop()
+
+                return {
+                    canNext: notifications.length >= config.notifications.maxPerPage,
+                    hits: clonedNotifications.reverse(),
+                    next: () => this.all(user, lastNotification.id)
                 }
             })
-            .map((notifications: any[]) => this.forgeAll(notifications).reverse())
+    }
+
+    allRaw(user: User): Observable<Notification[]> {
+        return this
+            .database
+            .list(this.notificationsUserPath(user))
+            .map((notifications: any[]) => this.forgeAll(notifications))
     }
 
     unread(user: User): Observable<Notification[]> {
         return this
-            .all(user)
+            .allRaw(user)
             .map((notifications: Notification[]): Notification[] => notifications.filter(notification => !notification.read))
     }
 

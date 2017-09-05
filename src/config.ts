@@ -5,12 +5,13 @@ export const config = {
         maxLengthDescription: 1000,
         maxLengthDescriptionShort: 100,
         maxPopularDisplayed: 10,
-        maxLastestAddedDisplayed: 20,
-        maxAuthorDisplayed: 10,
-        maxContributorDisplayed: 10
+        maxLastestAddedDisplayed: 20
     },
     elastic: {
         url: 'https://5s886dfw:z7gjc4csm6ylm3zo@pine-2241382.us-east-1.bonsaisearch.net',
         sizePerResults: 20
+    },
+    notifications: {
+        maxPerPage: 20
     }
 }

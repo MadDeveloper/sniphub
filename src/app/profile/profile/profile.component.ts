@@ -1,19 +1,25 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core'
+import swal from 'sweetalert2'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
-import { Snippet } from '../../snippet/interfaces/snippet'
-import { User } from '../../core/interfaces/user/user'
-import { SnippetService } from '../../snippet/services/snippet.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
-import { NotificationService } from '../../notification/services/notification.service'
-import { Notification } from '../../notification/interfaces/notification'
-import { Observable } from 'rxjs/Observable'
-import { UserService } from '../../core/services/user/user.service'
+import {
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+    } from '@angular/core'
+import { Code } from '../../code/interfaces/code'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
-import { Code } from '../../code/interfaces/code'
-import swal from 'sweetalert2'
+import { Observable } from 'rxjs/Observable'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
+import { RequestService } from '../../request/services/request.service'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { SnippetService } from '../../snippet/services/snippet.service'
+import { Subscription } from 'rxjs/Subscription'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
 
 @Component({
   selector: 'app-profile',
@@ -33,10 +39,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     likes = 0
     userSnapshot: User
     loggedUser: User
-    pendingNotifications: boolean
-    notifications: Notification[]
-    notificationsObserver: Subscription
-    notificationsLoaded = false
+    hasPendingRequests: boolean
+    requestsObserver: Subscription
     username: ElementRef
     @ViewChild('username') set usernameRef(username: ElementRef) {
         this.username = username
@@ -47,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private authentication: AuthenticationService,
-        private notification: NotificationService,
+        private request: RequestService,
         private userService: UserService,
         private firebaseService: FirebaseService,
         private cdr: ChangeDetectorRef) { }
@@ -59,7 +63,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.newUserSnapshot()
 
             if (this.ownProfile()) {
-                this.loadNotifications()
+                this.loadRequests()
             }
         }
 
@@ -82,33 +86,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loadSnippets()
     }
 
-        ngOnDestroy() {
-            this.closeSubscriptions()
+    ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        if (this.snippetsAuthorObserver) {
+            this.snippetsAuthorObserver.unsubscribe()
         }
 
-        closeSubscriptions() {
-            if (this.snippetsAuthorObserver) {
-                this.snippetsAuthorObserver.unsubscribe()
-            }
-
-            if (this.snippetsContributorObserver) {
-                this.snippetsContributorObserver.unsubscribe()
-            }
-
-            if (this.notificationsObserver) {
-                this.notificationsObserver.unsubscribe()
-            }
+        if (this.snippetsContributorObserver) {
+            this.snippetsContributorObserver.unsubscribe()
         }
 
-    loadNotifications() {
-        this.notificationsObserver = this
-            .notification
+        if (this.requestsObserver) {
+            this.requestsObserver.unsubscribe()
+        }
+    }
+
+    loadRequests() {
+        this.requestsObserver = this
+            .request
             .all(this.user)
-            .subscribe(notifications => {
-                this.notifications = notifications
-                this.notificationsLoaded = true
-                this.pendingNotifications = this.notifications.length > 0
-            })
+            .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
     }
 
     loadSnippets() {
@@ -161,10 +161,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     signOut(event: Event) {
         event.preventDefault()
         this.authentication.logout()
-    }
-
-    containsRequestsNotifications() {
-        return this.notification.containsRequestsNotifications(this.notifications)
     }
 
     goToRequests() {
