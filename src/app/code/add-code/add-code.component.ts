@@ -76,7 +76,7 @@ export class AddCodeComponent implements OnInit {
         try {
             if (this.codeService.filterEmptyCodes([code]).length > 0) {
 
-                if (!this.asAuthor) {
+                if (this.asAuthor) {
                     await this.addCodeAsAuthor(code)
                 } else {
                     await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)

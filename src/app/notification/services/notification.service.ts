@@ -23,32 +23,27 @@ export class NotificationService {
         private database: AngularFireDatabase,
         private user: UserService) { }
 
-    all(user: User, startAt = null): Observable<PaginableResponse<Notification[]>> {
+    all(user: User, endAt = null): Observable<PaginableResponse<Notification[]>> {
         const options: FirebaseListFactoryOpts = {
             query: {
                 orderByKey: true,
-                limitToFirst: config.notifications.maxPerPage
+                limitToLast: config.notifications.maxPerPage
             }
         }
 
-        if (startAt) {
-            options.query.startAt = startAt
+        if (endAt) {
+            options.query.endAt = endAt
         }
 
         return this
             .database
             .list(this.notificationsUserPath(user), options)
             .map((notifications: any[]) => this.forgeAll(notifications))
-            .map(notifications => {
-                const clonedNotifications = notifications.slice()
-                const lastNotification = clonedNotifications.pop()
-
-                return {
-                    canNext: notifications.length >= config.notifications.maxPerPage,
-                    hits: clonedNotifications.reverse(),
-                    next: () => this.all(user, lastNotification.id)
-                }
-            })
+            .map(notifications => ({
+                canNext: notifications.length >= config.notifications.maxPerPage,
+                hits: notifications.reverse(),
+                next: () => this.all(user, notifications.slice().pop().id)
+            }))
     }
 
     allRaw(user: User): Observable<Notification[]> {
