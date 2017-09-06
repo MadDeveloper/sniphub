@@ -13,5 +13,8 @@ export const config = {
     },
     notifications: {
         maxPerPage: 20
+    },
+    comments: {
+        maxPerPage: 10
     }
 }

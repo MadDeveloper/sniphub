@@ -1,5 +1,5 @@
 <div class="comments">
-    <div *ngFor="let comment of comments | async">
+    <div *ngFor="let comment of comments">
         <div *ngIf="comment.author | async; let author" class="comment">
             <div class="profile">
                 <img [src]="author.avatar" alt="avatar" class="image avatar">

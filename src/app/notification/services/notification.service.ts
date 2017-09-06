@@ -23,7 +23,7 @@ export class NotificationService {
         private database: AngularFireDatabase,
         private user: UserService) { }
 
-    all(user: User, endAt = null): Observable<PaginableResponse<Notification[]>> {
+    all(user: User, endAt: string = null): Observable<PaginableResponse<Notification[]>> {
         const options: FirebaseListFactoryOpts = {
             query: {
                 orderByKey: true,
@@ -39,11 +39,16 @@ export class NotificationService {
             .database
             .list(this.notificationsUserPath(user), options)
             .map((notifications: any[]) => this.forgeAll(notifications))
-            .map(notifications => ({
-                canNext: notifications.length >= config.notifications.maxPerPage,
-                hits: notifications.reverse(),
-                next: () => this.all(user, notifications.slice().pop().id)
-            }))
+            .map(notifications => {
+                const clonedNotifications = notifications.slice().reverse()
+                const lastComment = clonedNotifications.pop()
+
+                return {
+                    canNext: notifications.length >= config.notifications.maxPerPage,
+                    hits: clonedNotifications,
+                    next: () => this.all(user, lastComment.id)
+                }
+            })
     }
 
     allRaw(user: User): Observable<Notification[]> {

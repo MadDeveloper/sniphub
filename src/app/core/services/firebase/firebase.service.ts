@@ -7,4 +7,8 @@ export class FirebaseService {
     currentUser(): FirebaseUser {
         return firebase.auth().currentUser
     }
+
+    uniqId() {
+        return firebase.database().ref().push().key
+    }
 }

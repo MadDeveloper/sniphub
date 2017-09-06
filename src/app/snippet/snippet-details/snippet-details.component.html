@@ -80,4 +80,7 @@
             (keyup.enter)="addComment($event)"></textarea>
     </div>
     <app-comments [comments]="comments"></app-comments>
+    <div *ngIf="loadingComments" class="d-flex justify-content-center">
+        <app-loader></app-loader>
+    </div>
 </div>

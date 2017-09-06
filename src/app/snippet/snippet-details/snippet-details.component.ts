@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Comment } from '../interfaces/comment'
+import { Comment } from '../interfaces/comment'
 import { Subscription } from 'rxjs/Subscription'
 import { Snippet } from '../interfaces/snippet'
 import { Code } from '../../code/interfaces/code'
@@ -10,12 +10,14 @@ import { RequestService } from '../../request/services/request.service'
 import { LikeService } from '../services/like.service'
 import { CodeService } from '../../code/services/code.service'
 import { CommentService } from '../services/comment.service'
-import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
 import { SnippetService } from '../services/snippet.service'
 import { User } from '../../core/interfaces/user/user'
 import { config } from '../../../config'
 import swal from 'sweetalert2'
+import { ScrollService } from '../../core/services/scroll/scroll.service'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
+import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-snippet-details',
@@ -31,7 +33,9 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     codes: Code[] = []
     codesLoaded = false
     codesObserver: Subscription
-    comments: Observable<Comment[]>
+    comments: Comment[] = []
+    commentsObserver: Subscription
+    responseComments: PaginableResponse<Comment[]>
     @ViewChild('comment')
     comment: ElementRef
     ownSnippet = false
@@ -40,6 +44,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     requestsObserver: Subscription
     hasPendingRequests = false
     loaded = false
+    loadingComments = true
     requestCodes: Code[] = []
     newCodes: Code[] = []
     isAuthenticated: boolean
@@ -54,7 +59,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
         private likeService: LikeService,
         private codeService: CodeService,
-        private snippetService: SnippetService) { }
+        private snippetService: SnippetService,
+        private scroll: ScrollService) { }
 
     ngOnInit() {
         this.route
@@ -69,8 +75,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                     this.truncateDescription()
 
                     this.isAuthenticated = this.authentication.logged
-                    this.comments = this.commentService.all(this.snippet)
 
+                    this.loadComments()
                     this.loadCodes()
 
                     if (this.user) {
@@ -98,6 +104,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (this.requestsObserver) {
             this.requestsObserver.unsubscribe()
         }
+
+        if  (this.commentsObserver) {
+            this.commentsObserver.unsubscribe()
+        }
     }
 
     loadSnippetAuthor() {
@@ -119,6 +129,28 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.codesLoaded = true
                 this.loaded = true
             })
+    }
+
+    loadComments() {
+        const comments$ = this.responseComments ? this.responseComments.next() as Observable<PaginableResponse<Comment[]>> : this.commentService.all(this.snippet)
+
+        this.loadingComments = true
+
+        if (this.commentsObserver) {
+            this.commentsObserver.unsubscribe()
+        }
+
+        this.commentsObserver = comments$.subscribe(response => {
+            this.responseComments = response
+
+            if (this.loaded) {
+                this.comments.push(...response.hits)
+            } else {
+                this.comments = response.hits
+            }
+
+            this.loadingComments = false
+        })
     }
 
     loadRequests() {
@@ -155,12 +187,18 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     addComment(event: Event) {
         event.preventDefault()
 
-        const commentContent = this.comment.nativeElement.value.trim()
+        const content = this.comment.nativeElement.value.trim()
 
-        if (commentContent.length > 0) {
+        if (content.length > 0) {
             const author = this.authentication.currentUser()
 
-            this.commentService.add(commentContent, author, this.snippet, this.snippetAuthor)
+            const commentId = this.commentService.add(content, author, this.snippet, this.snippetAuthor).key
+
+            this.comments.unshift(this.commentService.forge({
+                author: author.id,
+                id: commentId,
+                content
+            }))
             this.comment.nativeElement.value = ''
         }
     }
@@ -229,5 +267,12 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
             html: 'You need to be logged first. <a class="link" routerLink="/signin">Sign in</a>',
             type: 'info'
         })
+    }
+
+    @HostListener('window:scroll', ['$event'])
+    onWindowScroll() {
+        if (this.scroll.documentScrolledBottom() && !this.loadingComments && (!this.responseComments || this.responseComments.canNext)) {
+            this.loadComments()
+        }
     }
 }

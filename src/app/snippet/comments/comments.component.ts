@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core'
 import { Comment } from '../interfaces/comment'
-import { Observable } from 'rxjs/Observable'
 
 @Component({
   selector: 'app-comments',
@@ -9,5 +8,5 @@ import { Observable } from 'rxjs/Observable'
 })
 export class CommentsComponent {
     @Input()
-    comments: Observable<Comment[]>
+    comments: Comment[]
 }
