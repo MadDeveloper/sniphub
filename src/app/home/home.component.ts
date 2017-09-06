@@ -12,11 +12,12 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    lastestAddedSnippets: Snippet[] = []
-    lastestAddedSnippetsObserver: Subscription
+    latestAddedSnippets: Snippet[] = []
+    latestAddedSnippetsObserver: Subscription
     popularSnippets: Snippet[] = []
     popularSnippetsObserver: Subscription
     loading = false
+    activeTab = 'popular'
 
     constructor(
         private router: Router,
@@ -32,8 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
-        if (this.lastestAddedSnippetsObserver) {
-            this.lastestAddedSnippetsObserver.unsubscribe()
+        if (this.latestAddedSnippetsObserver) {
+            this.latestAddedSnippetsObserver.unsubscribe()
         }
 
         if (this.popularSnippetsObserver) {
@@ -43,11 +44,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     loadSnippets() {
         this.enableLoading()
-        this.lastestAddedSnippetsObserver = this
+        this.latestAddedSnippetsObserver = this
             .snippetService
-            .lastestAdded()
+            .latestAdded()
             .subscribe((snippets: Snippet[]) => {
-                this.lastestAddedSnippets = snippets
+                this.latestAddedSnippets = snippets
                 this.loadPopularSnippets()
             })
     }
@@ -69,5 +70,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     disableLoading() {
         this.loading = false
+    }
+
+    toggleTab(tab: string) {
+        switch (tab) {
+            case 'latestAdded':
+                if (this.latestAddedSnippets.length > 0) {
+                    this.activeTab = 'latestAdded'
+                }
+                break
+
+            default:
+                if (this.popularSnippets.length > 0) {
+                    this.activeTab = 'popular'
+                }
+                break
+        }
     }
 }

@@ -1,19 +1,28 @@
 <section class="container mt-4">
     <div *ngIf="!loading; else loadingSnippets">
-        <div class="row mt-4 mb-3">
+        <div class="row mt-4">
             <div class="col">
-                <h3>Popular</h3>
+                <div class="tabs">
+                    <!-- POPULAR TAB -->
+                    <div class="tab" [ngClass]="{ disabled: popularSnippets.length === 0, active: activeTab === 'popular' }" (click)="toggleTab('popular')">
+                        <h3 class="mb-0">Popular</h3>
+                    </div>
+                    <!-- LATEST ADDED TAB -->
+                    <div class="tab" [ngClass]="{ disabled: latestAddedSnippets.length === 0, active: activeTab === 'latestAdded' }" (click)="toggleTab('latestAdded')">
+                        <h3 class="mb-0">Latest Added</h3>
+                    </div>
+                </div>
+
                 <hr>
+
+                <div class="mt-3">
+                    <!-- POPULAR SNIPPETS -->
+                    <app-snippets-list *ngIf="activeTab === 'popular'" [snippets]="popularSnippets"></app-snippets-list>
+                    <!-- LATEST ADDED SNIPPETS -->
+                    <app-snippets-list *ngIf="activeTab === 'latestAdded'" [snippets]="latestAddedSnippets"></app-snippets-list>
+                </div>
             </div>
         </div>
-        <app-snippets-list [snippets]="popularSnippets"></app-snippets-list>
-        <div class="row mt-5 mb-3">
-            <div class="col">
-                <h3>Lastest added</h3>
-                <hr>
-            </div>
-        </div>
-        <app-snippets-list [snippets]="lastestAddedSnippets"></app-snippets-list>
     </div>
     <ng-template #loadingSnippets>
         <div class="row mt-5">

@@ -12,8 +12,10 @@ import { UserService } from '../../core/services/user/user.service'
 @Injectable()
 export class SnippetService {
     cache = {
-        lastestAdded: null,
-        popular: null
+        latestAdded: null,
+        popular: null,
+        popularCacheEndValid: null,
+        latestAddedCacheEndValid: null
     }
 
     constructor(
@@ -22,24 +24,27 @@ export class SnippetService {
         private like: LikeService,
         private code: CodeService) { }
 
-    lastestAdded(): Observable<Snippet[]> {
-        if (this.cache.lastestAdded) {
-            return Observable.of(this.cache.lastestAdded)
+    latestAdded(): Observable<Snippet[]> {
+        if (this.cache.latestAdded && this.cache.latestAddedCacheEndValid >= Date.now()) {
+            return Observable.of(this.cache.latestAdded)
         }
 
         return this
             .allFromDatabase({
                 query: {
                     orderByChild: 'date',
-                    limitToLast: config.snippet.maxLastestAddedDisplayed
+                    limitToLast: config.snippet.maxLatestAddedDisplayed
                 }
             })
             .map((snippets: any[]) => this.forgeAll(snippets).reverse())
-            .do(snippets => this.cache.lastestAdded = snippets)
+            .do(snippets => {
+                this.cache.latestAdded = snippets
+                this.cache.latestAddedCacheEndValid = Date.now() + config.snippet.latestAddedCacheDuration
+            })
     }
 
     popular() {
-        if (this.cache.popular) {
+        if (this.cache.popular && this.cache.popularCacheEndValid >= Date.now()) {
             return Observable.of(this.cache.popular)
         }
 
@@ -60,7 +65,10 @@ export class SnippetService {
 
                 return 0
             }))
-            .do(snippets => this.cache.popular = snippets)
+            .do(snippets => {
+                this.cache.popular = snippets
+                this.cache.popularCacheEndValid = Date.now() + config.snippet.popularCacheDuration
+            })
     }
 
     author(author: User): Observable<Snippet[]> {
@@ -74,23 +82,6 @@ export class SnippetService {
             .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
-    // author(author: User, page = 1, lastHits: Snippet[] = []): Observable<PaginableResponse<Snippet[]>> {
-    //     return this
-    //         .allFromDatabase({
-    //             query: {
-    //                 orderByChild: 'author',
-    //                 equalTo: author.id,
-    //                 limitToFirst: page * config.snippet.maxAuthorDisplayed
-    //             }
-    //         })
-    //         .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
-    //         .map(snippets => ({
-    //             canNext: snippets.length - lastHits.length >= config.snippet.maxAuthorDisplayed,
-    //             hits: snippets.slice(),
-    //             next: () => this.author(author, ++page, snippets)
-    //         }))
-    // }
-
     contributor(author: User): Observable<Snippet[]> {
         return this
             .allContributionsFromDatabase(author)
@@ -103,28 +94,6 @@ export class SnippetService {
             })
             .mergeAll()
     }
-
-    // contributor(author: User, page = 1): Observable<PaginableResponse<Snippet[]>> {
-    //     return this
-    //         .allContributionsFromDatabase(author, {
-    //             query: {
-    //                 limitToFirst: page * config.snippet.maxContributorDisplayed
-    //             }
-    //         })
-    //         .map((contributions: any[]) => {
-    //             if (contributions.length > 0) {
-    //                 return Observable.zip(...contributions.map(contribution => this.find(contribution.$key)))
-    //             }
-
-    //             return Observable.of([])
-    //         })
-    //         .mergeAll()
-    //         .map(snippets => ({
-    //             canNext: snippets.length >= config.snippet.maxAuthorDisplayed,
-    //             hits: snippets.slice(),
-    //             next: () => this.author(author, ++page)
-    //         }))
-    // }
 
     find(id: string): Observable<Snippet> {
         return this

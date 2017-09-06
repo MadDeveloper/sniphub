@@ -4,8 +4,10 @@ export const config = {
         maxLengthName: 70,
         maxLengthDescription: 1000,
         maxLengthDescriptionShort: 100,
-        maxPopularDisplayed: 10,
-        maxLastestAddedDisplayed: 20
+        maxPopularDisplayed: 20,
+        maxLatestAddedDisplayed: 20,
+        popularCacheDuration: 1000 * 3600,
+        latestAddedCacheDuration: 1000 * 3600
     },
     elastic: {
         url: 'https://5s886dfw:z7gjc4csm6ylm3zo@pine-2241382.us-east-1.bonsaisearch.net',
