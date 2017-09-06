@@ -105,7 +105,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
             this.requestsObserver.unsubscribe()
         }
 
-        if  (this.commentsObserver) {
+        if (this.commentsObserver) {
             this.commentsObserver.unsubscribe()
         }
     }
@@ -132,23 +132,31 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     loadComments() {
-        const comments$ = this.responseComments ? this.responseComments.next() as Observable<PaginableResponse<Comment[]>> : this.commentService.all(this.snippet)
+        // we keep the last comments sync with the database, in order to see in real time the new comments
+        this.loadingComments = true
+        this.commentsObserver = this.commentService
+            .all(this.snippet)
+            .subscribe(response => {
+                this.responseComments = response
+
+                if (this.loaded) {
+                    this.comments = response.hits.concat(this.comments.splice(0, response.hits.length))
+                } else {
+                    this.comments = response.hits
+                }
+
+                this.loadingComments = false
+            })
+    }
+
+    loadMoreComments() {
+        const comments$ = this.responseComments.next() as Observable<PaginableResponse<Comment[]>>
 
         this.loadingComments = true
 
-        if (this.commentsObserver) {
-            this.commentsObserver.unsubscribe()
-        }
-
-        this.commentsObserver = comments$.subscribe(response => {
+        comments$.first().subscribe(response => {
             this.responseComments = response
-
-            if (this.loaded) {
-                this.comments.push(...response.hits)
-            } else {
-                this.comments = response.hits
-            }
-
+            this.comments.push(...response.hits)
             this.loadingComments = false
         })
     }
@@ -271,8 +279,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     @HostListener('window:scroll', ['$event'])
     onWindowScroll() {
-        if (this.scroll.documentScrolledBottom() && !this.loadingComments && (!this.responseComments || this.responseComments.canNext)) {
-            this.loadComments()
+        if (this.loaded && this.scroll.documentScrolledBottom() && !this.loadingComments && this.responseComments || this.responseComments.canNext) {
+            this.loadMoreComments()
         }
     }
 }
