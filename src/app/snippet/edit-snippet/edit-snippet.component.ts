@@ -127,13 +127,15 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             return false
         }
 
-        const snippetsFound = await this.snippetService.findByName(this.snippet.name).first().toPromise()
+        if (this.snapshot.name !== this.snippet.name) {
+            const snippetsFound = await this.snippetService.findByName(this.snippet.name).first().toPromise()
 
-        if (snippetsFound.length > 0) {
-            this.errors.name = `The snippet name already exists`
-            this.scrollTo(this.errorName.nativeElement)
+            if (snippetsFound.length > 0) {
+                this.errors.name = `The snippet name already exists`
+                this.scrollTo(this.errorName.nativeElement)
 
-            return false
+                return false
+            }
         }
 
         this.errors.name = null
