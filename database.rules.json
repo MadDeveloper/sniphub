@@ -3,7 +3,7 @@
         ".read": true,
         ".write": true,
         "snippets": {
-            ".indexOn": ["likesCounter", "date", "author"]
+            ".indexOn": ["likesCounter", "date", "author", "name"]
         },
         "users": {
             ".indexOn": ["/email"]

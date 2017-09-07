@@ -90,7 +90,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
     async save() {
         try {
-            if (this.verify()) {
+            if (await this.verify()) {
                 const author = this.authentication.currentUser()
                 const codes = this.codeService.filterEmptyCodes(this.codes)
 
@@ -112,7 +112,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         }
     }
 
-    verify() {
+    async verify() {
         if (!this.snippet.name || this.snippet.name.length < this.minLengthName) {
             this.errors.name = `The snippet name cannot has less than ${this.minLengthName} characters`
             this.scrollTo(this.errorName.nativeElement)
@@ -122,6 +122,15 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
         if (this.snippet.name.length > this.maxLengthName) {
             this.errors.name = `The snippet name cannot exceeds ${this.maxLengthName} characters`
+            this.scrollTo(this.errorName.nativeElement)
+
+            return false
+        }
+
+        const snippetsFound = await this.snippetService.findByName(this.snippet.name).first().toPromise()
+
+        if (snippetsFound.length > 0) {
+            this.errors.name = `The snippet name already exists`
             this.scrollTo(this.errorName.nativeElement)
 
             return false

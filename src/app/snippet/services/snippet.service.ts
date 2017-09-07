@@ -110,6 +110,18 @@ export class SnippetService {
             })
     }
 
+    findByName(name: string): Observable<Snippet[]> {
+        return this
+            .database
+            .list(this.snippetsPath(), {
+                query: {
+                    orderByChild: 'name',
+                    equalTo: name
+                }
+            })
+            .map(snippets => this.forgeAll(snippets))
+    }
+
     create(snippet: Snippet, author: User) {
         return this
             .allFromDatabase()
@@ -244,11 +256,11 @@ export class SnippetService {
         return snippet
     }
 
-    private allFromDatabase(options?: any) {
+    private allFromDatabase(options ? : any) {
         return this.database.list(this.snippetsPath(), options)
     }
 
-    private allContributionsFromDatabase(author: User, options?: any) {
+    private allContributionsFromDatabase(author: User, options ? : any) {
         return this.database.list(this.authorContributionsPath(author), options)
     }
 
