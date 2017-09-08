@@ -139,8 +139,14 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
             .subscribe(response => {
                 this.responseComments = response
 
-                if (this.loaded) {
-                    this.comments = response.hits.concat(this.comments.splice(0, response.hits.length))
+                if (this.loaded && this.comments.length > 0) {
+                    let preservedComments = []
+
+                    if (response.hits.length < this.comments.length) {
+                        preservedComments = this.comments.slice(response.hits.length - 1)
+                    }
+
+                    this.comments = response.hits.concat(preservedComments)
                 } else {
                     this.comments = response.hits
                 }
@@ -155,6 +161,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.loadingComments = true
 
         comments$.first().subscribe(response => {
+            console.log('oh no!')
             this.responseComments = response
             this.comments.push(...response.hits)
             this.loadingComments = false
@@ -200,13 +207,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (content.length > 0) {
             const author = this.authentication.currentUser()
 
-            const commentId = this.commentService.add(content, author, this.snippet, this.snippetAuthor).key
-
-            this.comments.unshift(this.commentService.forge({
-                author: author.id,
-                id: commentId,
-                content
-            }))
+            this.commentService.add(content, author, this.snippet, this.snippetAuthor)
             this.comment.nativeElement.value = ''
         }
     }
@@ -279,7 +280,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     @HostListener('window:scroll', ['$event'])
     onWindowScroll() {
-        if (this.loaded && this.scroll.documentScrolledBottom() && !this.loadingComments && this.responseComments || this.responseComments.canNext) {
+        if (this.loaded && this.scroll.documentScrolledBottom() && !this.loadingComments && this.responseComments && this.responseComments.canNext) {
             this.loadMoreComments()
         }
     }

@@ -41,7 +41,8 @@
         }
     },
     "users": {
-        "email": {
+        "id": {
+            "email": "<string>",
             "username": "<string>",
             "avatar": "<string>"
         }
