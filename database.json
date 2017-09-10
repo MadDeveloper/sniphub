@@ -54,7 +54,8 @@
                 "user": "<user>",
                 "snippetName": "<string>",
                 "snippetId": "<string>",
-                "request?": "<request>"
+                "request?": "<request>",
+                "read": "<boolean>"
             }
         }
     },
