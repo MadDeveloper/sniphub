@@ -16,6 +16,9 @@
           "language": {
             ".validate": "newData.isString() && newData.val().length > 0"
           },
+          "date": {
+            ".validate": "newData.val() > now"
+          },
           "request?": {
             ".validate": "!newData.exists() || newData.isBoolean()"
           },

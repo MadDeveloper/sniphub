@@ -7,6 +7,11 @@
             "date": "<date>"
         }
     },
+    "snippetsByUid": {
+      "<user>": {
+        "<snippet>": true
+      }
+    },
     "contributions": {
         "<id>": {
             "user": "<user>",

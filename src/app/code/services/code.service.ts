@@ -10,6 +10,7 @@ import { languages } from './languages'
 import { Observable } from 'rxjs/Observable'
 import { Language } from '../interfaces/language'
 import find from 'lodash-es/find'
+import * as firebase from 'firebase/app'
 
 @Injectable()
 export class CodeService {
@@ -52,7 +53,8 @@ export class CodeService {
             id: this.uniqFirebaseId(),
             language: this.language.mockOne(),
             code: null,
-            author: null
+            author: null,
+            date: new Date()
         }
     }
 
@@ -66,6 +68,7 @@ export class CodeService {
             language: this.language.find({ value: code.language }),
             author: this.user.find(code.user),
             code: code.code,
+            date: new Date(code.date),
             request: code.request || false,
             validated: code.validated || false
         }
@@ -85,7 +88,8 @@ export class CodeService {
         let codeForDatabase = {
             user: author.id,
             code: code.code,
-            language: code.language.value
+            language: code.language.value,
+            date: firebase.database.ServerValue.TIMESTAMP
         }
 
         if (asRequest) {
