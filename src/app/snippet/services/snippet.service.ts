@@ -73,13 +73,24 @@ export class SnippetService {
 
     author(author: User): Observable<Snippet[]> {
         return this
-            .allFromDatabase({
-                query: {
-                    orderByChild: 'author',
-                    equalTo: author.id,
+            .database
+            .list(this.snippetsByUidPath(author))
+            .switchMap((snippetsFirebase: any[]): Observable<Snippet[]> => {
+                const snippets = snippetsFirebase.map(badge => badge.$key)
+
+                if (0 === snippets.length) {
+                    return Observable.of([])
                 }
+
+                const snippets$ = Observable
+                    .combineLatest(...snippets
+                        .map((snippetId: string): Observable<Snippet> => this
+                            .database
+                            .object(this.snippetPath(snippetId))
+                            .map((snippetFirebase: any): Snippet => this.forge(snippetFirebase))))
+
+                return snippets$
             })
-            .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
     contributor(author: User): Observable<Snippet[]> {
@@ -122,8 +133,8 @@ export class SnippetService {
             .map(snippets => this.forgeAll(snippets))
     }
 
-    create(snippet: Snippet, author: User) {
-        return this
+    create(snippet: Snippet, author: User): Snippet {
+        const snippetId = this
             .allFromDatabase()
             .push({
                 name: snippet.name,
@@ -133,6 +144,17 @@ export class SnippetService {
                 likesCounter: snippet.likesCounter,
                 codesCounter: snippet.codesCounter
             })
+            .key
+
+        this.database
+            .object(this.snippetsByUidPath(author))
+            .update({
+                [snippetId]: true
+            })
+
+        return Object.assign({}, snippet, {
+            id: snippetId
+        })
     }
 
     update(snippet: Snippet) {
@@ -256,11 +278,11 @@ export class SnippetService {
         return snippet
     }
 
-    private allFromDatabase(options ? : any) {
+    private allFromDatabase(options?: any) {
         return this.database.list(this.snippetsPath(), options)
     }
 
-    private allContributionsFromDatabase(author: User, options ? : any) {
+    private allContributionsFromDatabase(author: User, options?: any) {
         return this.database.list(this.authorContributionsPath(author), options)
     }
 
@@ -286,5 +308,9 @@ export class SnippetService {
 
     authorContributionsPath(author: User) {
         return `${this.contributionsPath()}/${author.id}`
+    }
+
+    snippetsByUidPath(author: User) {
+        return `snippetsByUid/${author.id}`
     }
 }

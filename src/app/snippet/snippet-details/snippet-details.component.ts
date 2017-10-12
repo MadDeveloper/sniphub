@@ -161,7 +161,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.loadingComments = true
 
         comments$.first().subscribe(response => {
-            console.log('oh no!')
             this.responseComments = response
             this.comments.push(...response.hits)
             this.loadingComments = false

@@ -100,7 +100,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
                 if (this.editing) {
                     await this.snippetService.update(this.snippet)
                 } else {
-                    this.snippet.id = (await this.snippetService.create(this.snippet, author)).key
+                    this.snippet.id = (await this.snippetService.create(this.snippet, author)).id
                 }
 
                 await this.codeService.saveAll(codes, this.snippet, author)
@@ -127,7 +127,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             return false
         }
 
-        if (this.snapshot.name !== this.snippet.name) {
+        if (this.snapshot && this.snapshot.name !== this.snippet.name) {
             const snippetsFound = await this.snippetService.findByName(this.snippet.name).first().toPromise()
 
             if (snippetsFound.length > 0) {
