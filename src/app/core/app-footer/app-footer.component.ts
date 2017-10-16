@@ -5,4 +5,8 @@ import { Component } from '@angular/core'
   templateUrl: './app-footer.component.html',
   styleUrls: ['./app-footer.component.scss']
 })
-export class AppFooterComponent { }
+export class AppFooterComponent {
+    currentYear() {
+        return new Date().getFullYear()
+    }
+}
