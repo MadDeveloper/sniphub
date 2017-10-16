@@ -65,6 +65,10 @@ export class SearchComponent implements OnInit, OnDestroy {
             })
     }
 
+    hasReachedLastPage(): boolean {
+        return this.snippets.length >= this.total
+    }
+
     async search() {
         if (this.firstLoad) {
             this.loading = true

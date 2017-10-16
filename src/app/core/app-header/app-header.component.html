@@ -17,10 +17,10 @@
                             id="main-search-input"
                             tabindex="1"
                             placeholder="I don't want to code..."
-                            [(ngModel)]="searchTerms"
-                            (keyup.enter)="search()"
-                            (focus)="toggleSearch()"
-                            (blur)="toggleSearch()"
+                            (keyup)="updateSearch(searchInput.value)"
+                            (keyup.enter)="search(searchInput.value)"
+                            (focus)="toggleSearch(searchInput.value)"
+                            (blur)="toggleSearch(searchInput.value)"
                             [ngClass]="searchEnabled ? '' : 'dark-primary clickable'">
                         <i class="fa fa-search icon"></i>
                     </div>
