@@ -12,8 +12,9 @@
             <i class="fa fa-bell-o icon-menu" aria-hidden="true"></i>
             <span *ngIf="hasNotifications" class="notification-alert"></span>
         </a>
-        <a *ngIf="logged" class="clickable" routerLink="/profile">
+        <a *ngIf="logged" class="clickable notification-group" routerLink="/profile">
             <i class="fa fa-user-o icon-menu" aria-hidden="true"></i>
+            <span *ngIf="hasPendingRequests" class="notification-alert"></span>
         </a>
     </div>
 </div>

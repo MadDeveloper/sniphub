@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <div class="d-flex justify-content-center mr-5">
                     <div *ngIf="ownProfile();else normalAvatar" class="image-group avatar" (click)="syncAvatar()">
-                        <img #avatar [src]="user.avatar" alt="" class="image avatar large">
+                        <img #avatar [src]="user.avatar" alt="" class="image avatar large mr-0">
                         <div class="caption icon centered">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
                             <div class="normal-font-size text-center mt-2">
@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <ng-template #normalAvatar>
-                        <img #avatar [src]="user.avatar" alt="" class="image avatar large">
+                        <img #avatar [src]="user.avatar" alt="" class="image avatar large mr-0">
                     </ng-template>
                 </div>
                 <div>

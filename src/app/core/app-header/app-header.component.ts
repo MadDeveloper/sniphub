@@ -1,7 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router'
-import { SearchService } from '../../search/services/search.service'
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+    } from '@angular/core'
 import { NetworkService } from '../services/network/network.service'
+import { SearchService } from '../../search/services/search.service'
 import { Subscription } from 'rxjs/Subscription'
 
 @Component({

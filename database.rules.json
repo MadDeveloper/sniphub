@@ -19,10 +19,10 @@
           "date": {
             ".validate": "newData.val() > now"
           },
-          "request?": {
+          "request": {
             ".validate": "!newData.exists() || newData.isBoolean()"
           },
-          "validated?": {
+          "validated": {
             ".validate": "!newData.exists() || newData.isBoolean()"
           },
           "$other": {
