@@ -133,28 +133,27 @@ export class SnippetService {
             .map(snippets => this.forgeAll(snippets))
     }
 
-    create(snippet: Snippet, author: User): Snippet {
-        const snippetId = this
+    create(snippet: Snippet, author: User): firebase.Promise<Snippet> {
+        const snippetId = this.allFromDatabase().$ref.ref.push().key
+
+        return this
             .allFromDatabase()
-            .push({
+            .update(snippetId, {
                 name: snippet.name,
                 author: author.id,
                 description: snippet.description,
                 date: firebase.database.ServerValue.TIMESTAMP,
-                likesCounter: snippet.likesCounter,
-                codesCounter: snippet.codesCounter
+                likesCounter: snippet.likesCounter || 0,
+                codesCounter: snippet.codesCounter || 0
             })
-            .key
-
-        this.database
-            .object(this.snippetsByUidPath(author))
-            .update({
-                [snippetId]: true
-            })
-
-        return Object.assign({}, snippet, {
-            id: snippetId
-        })
+            .then(() => this.database
+                .object(this.snippetsByUidPath(author))
+                .update({
+                    [snippetId]: true
+                }))
+            .then(() => Object.assign({}, snippet, {
+                id: snippetId
+            }))
     }
 
     update(snippet: Snippet) {
@@ -237,8 +236,8 @@ export class SnippetService {
             date: snippetFetched.date,
             codes: null,
             likes: null,
-            likesCounter: snippetFetched.likesCounter,
-            codesCounter: snippetFetched.codesCounter
+            likesCounter: parseInt(snippetFetched.likesCounter, 10),
+            codesCounter: parseInt(snippetFetched.codesCounter, 10)
         }
 
         if (options.withCodes) {
@@ -263,8 +262,8 @@ export class SnippetService {
             date: snippetSource.date,
             codes: null,
             likes: null,
-            likesCounter: snippetSource.likesCounter,
-            codesCounter: snippetSource.codesCounter
+            likesCounter: parseInt(snippetSource.likesCounter, 10),
+            codesCounter: parseInt(snippetSource.codesCounter, 10)
         }
 
         if (options.withCodes) {
