@@ -54,17 +54,9 @@
     "contributions": {
       "$uid": {
         ".read": true,
-        ".validate": "root.child('users').child($uid).exists()",
-        "$contributionId": {
-          "snippet": {
-            ".validate": "root.child('snippets').child(newData.val()).exists()"
-          },
-          "code": {
-            ".validate": "root.child('codes').child(newData.parent().child('snippet').val()).child(newData.val()).exists()"
-          },
-          "$other": {
-            ".validate": false
-          }
+        ".write": "root.child('users').child($uid).exists()",
+        "$snippetId": {
+          ".validate": "root.child('snippets').child($snippetId).exists()"
         }
       }
     },
@@ -123,7 +115,7 @@
         ".write": "root.child('snippets').child($snippetId).exists()",
         "$requestId": {
           ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === root.child('snippets').child($snippetId).child('author').val())",
-          ".validate": "root.child('codes').child($snippetId).child(newData.val()).exists()"
+          ".validate": "!newData.exists() || root.child('codes').child($snippetId).child(newData.val()).exists()"
         }
       }
     },

@@ -166,10 +166,15 @@ export class SnippetService {
             })
     }
 
-    delete(snippet: Snippet) {
-        return this
+    async delete(snippet: Snippet, author: User) {
+        await this
             .database
             .object(this.snippetPath(snippet.id))
+            .remove()
+
+        return this
+            .database
+            .object(this.snippetByUidPath(snippet, author))
             .remove()
     }
 
@@ -311,5 +316,9 @@ export class SnippetService {
 
     snippetsByUidPath(author: User) {
         return `snippetsByUid/${author.id}`
+    }
+
+    snippetByUidPath(snippet: Snippet, author: User) {
+        return `${this.snippetsByUidPath(author)}/${snippet.id}`
     }
 }

@@ -258,7 +258,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     async delete() {
         try {
-            await this.snippetService.delete(this.snippet)
+            await this.snippetService.delete(this.snippet, this.snippetAuthor)
             this.router.navigate(['/profile'])
         } catch (error) {
             swal({
