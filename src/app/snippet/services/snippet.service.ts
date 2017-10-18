@@ -167,6 +167,8 @@ export class SnippetService {
     }
 
     async delete(snippet: Snippet, author: User) {
+        // todo: remove contributions
+
         await this
             .database
             .object(this.snippetPath(snippet.id))

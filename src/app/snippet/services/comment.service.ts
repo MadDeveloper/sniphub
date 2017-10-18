@@ -72,6 +72,13 @@ export class CommentService {
             })
     }
 
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.commentsSnippetPath(snippet))
+            .remove()
+    }
+
     private commentsPath() {
         return '/comments'
     }

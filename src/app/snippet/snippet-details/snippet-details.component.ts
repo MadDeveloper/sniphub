@@ -60,6 +60,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private likeService: LikeService,
         private codeService: CodeService,
         private snippetService: SnippetService,
+        private requestService: RequestService,
         private scroll: ScrollService) { }
 
     ngOnInit() {
@@ -258,6 +259,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     async delete() {
         try {
+            await this.likeService.deleteAll(this.snippet)
+            await this.commentService.deleteAll(this.snippet)
+            await this.requestService.deleteAll(this.snippet)
+            await this.codeService.deleteAll(this.snippet)
             await this.snippetService.delete(this.snippet, this.snippetAuthor)
             this.router.navigate(['/profile'])
         } catch (error) {

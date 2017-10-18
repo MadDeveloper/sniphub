@@ -47,6 +47,13 @@ export class LikeService {
             .remove()
     }
 
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.likesSnippetPath(snippet))
+            .remove()
+    }
+
     private likesPath() {
         return '/likes'
     }

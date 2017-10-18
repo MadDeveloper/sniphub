@@ -145,6 +145,13 @@ export class RequestService {
         })
     }
 
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.requestsSnippetPath(snippet))
+            .remove()
+    }
+
     requestsPath() {
         return '/requests'
     }
