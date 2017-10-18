@@ -20,18 +20,20 @@
             ".validate": "newData.val() <= now"
           },
           "request": {
-            ".validate": "!newData.exists() || newData.isBoolean()"
+            ".validate": "newData.isBoolean()"
           },
           "validated": {
-            ".validate": "!newData.exists() || newData.isBoolean()"
+            ".validate": "newData.isBoolean()"
           }
         }
       }
     },
     "comments": {
+      ".read": true,
+      ".write": "auth != null",
       "$snippetId": {
         ".read": true,
-        ".validate": "root.child('snippets').child($snippetId).exists()",
+        ".write": "root.child('snippets').child($snippetId).exists()",
         "$commentId": {
           ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('user').val())",
           "user": {
@@ -80,7 +82,7 @@
       ".read": true,
       "$uid": {
         ".read": true,
-        ".validate": "root.child('users').child($uid).exists()",
+        ".write": "root.child('users').child($uid).exists()",
         "$notificationId": {
           ".read": true,
           ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === $uid)",
@@ -97,10 +99,16 @@
             ".validate": "newData.isString() && root.child('snippets').child(newData.val()).exists()"
           },
           "request": {
-            ".validate": "!newData.exists() || newData.isBoolean()"
+            ".validate": "newData.isBoolean()"
+          },
+          "requestId": {
+          	".validate": true
           },
           "read": {
             ".validate": "newData.isBoolean()"
+          },
+          "date": {
+            ".validate": "newData.val() <= now"
           },
           "$other": {
             ".validate": false
@@ -112,12 +120,16 @@
       ".read": true,
       "$snippetId": {
         ".read": true,
-        ".validate": "root.child($snippetId).exists()",
-        ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === root.child('snippets').child($snippetId).child('author').val())"
+        ".write": "root.child('snippets').child($snippetId).exists()",
+        "$requestId": {
+          ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === root.child('snippets').child($snippetId).child('author').val())",
+          ".validate": "root.child('codes').child($snippetId).child(newData.val()).exists()"
+        }
       }
     },
     "snippets": {
       ".read": true,
+      ".write": true,
       ".indexOn": [
         "likesCounter",
         "date",
@@ -126,24 +138,27 @@
       ],
       "$snippetId": {
         ".read": true,
-        ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('author').val())",
-        ".validate": "newData.hasChildren(['author', 'codesCounter', 'date', 'description', 'likesCounter', 'name'])",
+        ".write": true,
         "name": {
+          ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('author').val())",
           ".validate": "newData.isString() && newData.val().length >= 3"
         },
         "date": {
+          ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('author').val())",
           ".validate": "newData.isNumber()"
         },
         "likesCounter": {
-          ".validate": "newData.isNumber()"
+          ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "codesCounter": {
-          ".validate": "newData.isNumber()"
+          ".validate": "newData.isNumber() && newData.val() >= 0"
         },
         "author": {
+          ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('author').val())",
           ".validate": "root.child('users').child(newData.parent().child('author').val()).exists()"
         },
         "description": {
+          ".write": "(!data.exists() && newData.exists()) || (data.exists() && auth.uid === data.child('author').val())",
           ".validate": true
         }
       }
@@ -164,18 +179,15 @@
       ],
       "$uid": {
         ".read": true,
-        ".write": "$uid === auth.uid",
+        ".write": "$uid === auth.uid || data.child('email').val() === auth.token.firebase.identities",
         "avatar": {
-          ".validate": "newData.isString() || !newData.exists()"
+          ".validate": "newData.isString()"
         },
         "email": {
           ".validate": "newData.isString() && newData.val().contains('@')"
         },
         "username": {
           ".validate": "newData.isString()"
-        },
-        "$other": {
-          ".validate": false
         }
       }
     }

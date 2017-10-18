@@ -198,7 +198,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.descriptionExpanded = true
     }
 
-    addComment(event: Event) {
+    async addComment(event: Event) {
         event.preventDefault()
 
         const content = this.comment.nativeElement.value.trim()
@@ -206,8 +206,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (content.length > 0) {
             const author = this.authentication.currentUser()
 
-            this.commentService.add(content, author, this.snippet, this.snippetAuthor)
             this.comment.nativeElement.value = ''
+            await this.commentService.add(content, author, this.snippet, this.snippetAuthor)
         }
     }
 

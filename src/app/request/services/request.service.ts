@@ -69,7 +69,7 @@ export class RequestService {
     }
 
     accept(request: Request, code: Code, author: User, snippet: Snippet) {
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
@@ -83,7 +83,7 @@ export class RequestService {
     }
 
     reject(request: Request, code: Code, snippet: Snippet) {
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 await this.database.object(this.code.codePath(code.id, snippet)).remove()
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
@@ -123,13 +123,20 @@ export class RequestService {
             try {
                 const request = this.forge(author, code, snippet)
 
-                request.id = this
+                await this
+                    .code
+                    .create(code, snippet, author, true)
+
+                request.id = this.database.list(this.requestsSnippetPath(snippet)).$ref.ref.push().key
+
+                await this
                     .database
                     .list(this.requestsSnippetPath(snippet))
-                    .push(code.id).key
+                    .push(code.id)
 
-                await this.code.create(code, snippet, author, true)
-                await this.notification.request(author, snippet, snippetAuthor, request)
+                await this
+                    .notification
+                    .request(author, snippet, snippetAuthor, request)
 
                 resolve(request)
             } catch (error) {

@@ -34,7 +34,7 @@ export class CommentService {
 
         return this
             .database
-            .list(this.commentsPath(snippet), options)
+            .list(this.commentsSnippetPath(snippet), options)
             .map((comments: any[]): Comment[] => comments.map((comment: any): Comment => this.forge(comment)))
             .map(comments => {
                 const clonedComments = comments.slice().reverse()
@@ -51,7 +51,7 @@ export class CommentService {
     forge(comment: any): Comment {
         return {
             id: comment.id || comment.$key || this.firebaseService.uniqId(),
-            author: this.user.find(comment.author),
+            author: this.user.find(comment.user),
             date: comment.date || new Date(),
             content: comment.content || null
         }
@@ -64,15 +64,19 @@ export class CommentService {
 
         return this
             .database
-            .list(this.commentsPath(snippet))
+            .list(this.commentsSnippetPath(snippet))
             .push({
                 content,
                 date: firebase.database.ServerValue.TIMESTAMP,
-                author: author.id
+                user: author.id
             })
     }
 
-    private commentsPath(snippet: Snippet) {
-        return `/comments/${snippet.id}`
+    private commentsPath() {
+        return '/comments'
+    }
+
+    private commentsSnippetPath(snippet: Snippet) {
+        return `${this.commentsPath()}/${snippet.id}`
     }
 }
