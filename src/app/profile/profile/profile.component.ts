@@ -8,7 +8,7 @@ import {
     OnDestroy,
     OnInit,
     ViewChild
-    } from '@angular/core'
+} from '@angular/core'
 import { Code } from '../../code/interfaces/code'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
@@ -20,11 +20,12 @@ import { SnippetService } from '../../snippet/services/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
 import { User } from '../../core/interfaces/user/user'
 import { UserService } from '../../core/services/user/user.service'
+import { config } from '../../../config'
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     authorSnippets: Snippet[] = []
@@ -42,6 +43,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     hasPendingRequests: boolean
     requestsObserver: Subscription
     username: ElementRef
+    promptError: string
     @ViewChild('username') set usernameRef(username: ElementRef) {
         this.username = username
     }
@@ -147,7 +149,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const codesAuthor = this.authorSnippets.reduce((counter, snippet) => counter + snippet.codesCounter, 0)
         const codesContributor = this.contributorSnippets.reduce((counter, snippet) => counter + snippet.codesCounter, 0)
 
-        this.codes =  codesAuthor + codesContributor
+        this.codes = codesAuthor + codesContributor
     }
 
     newUserSnapshot() {
@@ -197,14 +199,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 title: '<i class="fa fa-user title mr-4"></i>Username',
                 html: 'Type here the new username you want to use',
                 input: 'text',
-                inputValue: this.user.username,
+                inputValue: this.user.username || '',
                 inputPlaceholder: 'John Doe',
                 showCancelButton: true
             })
+            const usernameConfig = config.profile.username
 
+            if (username.length < usernameConfig.minLength) {
+                this.promptError = `Username must contains at least ${usernameConfig.minLength} characters`
+
+                return
+            }
+
+            if (username.length > usernameConfig.maxLength) {
+                this.promptError = `Username cannot contains more than ${usernameConfig.maxLength} characters`
+
+                return
+            }
+
+            this.promptError = null
             this.editUsername(username)
         } catch (error) {
-            // todo
+            // TODO: sentry
+            if ('cancel' !== error && 'overlay' !== error) { // swal specific (close event)
+                this.promptError = error.message || error
+            }
         }
     }
 
@@ -227,27 +246,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 title: '<i class="fa fa-github title mr-4"></i>GitHub account',
                 html: 'Copy and paste your <span class="bold">GitHub</span> account link here',
                 input: 'text',
-                inputValue: this.user.github,
+                inputValue: this.user.github || '',
                 inputPlaceholder: 'https://github.com/john.doe',
                 showCancelButton: true
             })
 
             this.changeGitHubAccount(githubAccount)
         } catch (error) {
-            // todo
+            // TODO: sentry
+            if ('cancel' !== error && 'overlay' !== error) { // swal specific (close event)
+                this.promptError = error.message || error
+            }
         }
     }
 
     toggleTab(tab: string) {
         switch (tab) {
             case 'contributor':
-                if (this.contributorSnippets.length > 0) {
+                if (this.contributorSnippets.length > 0)  {
                     this.activeTab = 'contributor'
                 }
                 break
 
             default:
-                if (this.authorSnippets.length > 0) {
+                if (this.authorSnippets.length > 0)  {
                     this.activeTab = 'author'
                 }
                 break

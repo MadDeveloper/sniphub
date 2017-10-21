@@ -18,5 +18,11 @@ export const config = {
     },
     comments: {
         maxPerPage: 10
+    },
+    profile: {
+        username: {
+            minLength: 2,
+            maxLength: 30
+        }
     }
 }

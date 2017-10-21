@@ -1,5 +1,5 @@
 <div *ngIf="user" class="container mt-4">
-	<div class="row">
+    <div class="row">
         <div class="col">
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <div class="d-flex justify-content-center mr-5">
@@ -28,7 +28,8 @@
                                 </li>
                                 <li class="dropdown-item d-flex align-items-center clickable" role="menuitem" (click)="promptGitHubAccount($event)">
                                     <i class="fa fa-github dropdown-icon" aria-hidden="true"></i>
-                                    Change my <span class="bold mx-1">GitHub</span> account
+                                    Change my
+                                    <span class="bold mx-1">GitHub</span> account
                                 </li>
                                 <li class="dropdown-item clickable" role="menuitem" (click)="signOut($event)">
                                     <i class="fa fa-sign-out dropdown-icon" aria-hidden="true"></i>
@@ -37,8 +38,11 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="h4 mt-2">
-                        <div class="d-flex align-items-center meta">
+                    <div class="mt-2">
+                        <div *ngIf="promptError" class="alert alert-danger">
+                            <i class="fa fa-times" aria-hidden="true"></i> {{ promptError }}
+                        </div>
+                        <div class="h4 d-flex align-items-center meta">
                             <span>
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <span class="ml-1">{{ likes }}</span>
@@ -57,7 +61,8 @@
         </div>
         <div *ngIf="ownProfile() && hasPendingRequests" class="col-12 mt-4 clickable" (click)="goToRequests()">
             <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
-                <span><i class="fa fa-code"></i> You have awaiting code requests for your snippets.</span>
+                <span>
+                    <i class="fa fa-code"></i> You have awaiting code requests for your snippets.</span>
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
@@ -95,7 +100,9 @@
             </div>
             <ng-template #noSnippets>
                 <div class="meta">
-                    <h1 class="display-4 text-center"><i class="fa fa-code" aria-hidden="true"></i></h1>
+                    <h1 class="display-4 text-center">
+                        <i class="fa fa-code" aria-hidden="true"></i>
+                    </h1>
                     <div *ngIf="ownProfile();else noSnippetsExternalProfile">
                         <div class="text-center">You don't have created or contributed to snippets for the moment</div>
                         <div class="text-center mt-3">
@@ -113,5 +120,5 @@
                 <app-loader></app-loader>
             </div>
         </ng-template>
-	</div>
+    </div>
 </div>
