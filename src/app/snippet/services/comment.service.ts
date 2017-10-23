@@ -79,6 +79,14 @@ export class CommentService {
             .remove()
     }
 
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.commentsSnippetPath(snippet)] = null
+
+        return updates
+    }
+
     private commentsPath() {
         return '/comments'
     }

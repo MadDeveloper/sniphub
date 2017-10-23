@@ -263,13 +263,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     toggleTab(tab: string) {
         switch (tab) {
             case 'contributor':
-                if (this.contributorSnippets.length > 0)  {
+                if (this.contributorSnippets.length > 0) {
                     this.activeTab = 'contributor'
                 }
                 break
 
             default:
-                if (this.authorSnippets.length > 0)  {
+                if (this.authorSnippets.length > 0) {
                     this.activeTab = 'author'
                 }
                 break

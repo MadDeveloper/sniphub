@@ -180,6 +180,15 @@ export class SnippetService {
             .remove()
     }
 
+    deleteAllAsUpdates(snippet: Snippet, author: User) {
+        const updates = {}
+
+        updates[this.snippetPath(snippet.id)] = null
+        updates[this.snippetByUidPath(snippet, author)] = null
+
+        return updates
+    }
+
     increaseLikesCounter(snippet: Snippet) {
         return this
             .database

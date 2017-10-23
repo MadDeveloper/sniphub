@@ -54,6 +54,14 @@ export class LikeService {
             .remove()
     }
 
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.likesSnippetPath(snippet)] = null
+
+        return updates
+    }
+
     private likesPath() {
         return '/likes'
     }

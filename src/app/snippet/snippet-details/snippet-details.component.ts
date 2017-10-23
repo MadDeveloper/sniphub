@@ -18,6 +18,7 @@ import swal from 'sweetalert2'
 import { ScrollService } from '../../core/services/scroll/scroll.service'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { Observable } from 'rxjs/Observable'
+import { FirebaseService } from '../../core/services/firebase/firebase.service'
 
 @Component({
   selector: 'app-snippet-details',
@@ -61,7 +62,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private codeService: CodeService,
         private snippetService: SnippetService,
         private requestService: RequestService,
-        private scroll: ScrollService) { }
+        private scroll: ScrollService,
+        private firebaseService: FirebaseService) { }
 
     ngOnInit() {
         this.route
@@ -259,11 +261,14 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
     async delete() {
         try {
-            await this.likeService.deleteAll(this.snippet)
-            await this.commentService.deleteAll(this.snippet)
-            await this.requestService.deleteAll(this.snippet)
-            await this.codeService.deleteAll(this.snippet)
-            await this.snippetService.delete(this.snippet, this.snippetAuthor)
+            await this.firebaseService.bulk(
+                this.likeService.deleteAllAsUpdates(this.snippet),
+                this.commentService.deleteAllAsUpdates(this.snippet),
+                this.requestService.deleteAllAsUpdates(this.snippet),
+                this.codeService.deleteAllAsUpdates(this.snippet),
+                this.snippetService.deleteAllAsUpdates(this.snippet, this.snippetAuthor)
+            )
+
             this.router.navigate(['/profile'])
         } catch (error) {
             swal({

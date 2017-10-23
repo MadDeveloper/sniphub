@@ -152,6 +152,14 @@ export class RequestService {
             .remove()
     }
 
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.requestsSnippetPath(snippet)] = null
+
+        return updates
+    }
+
     requestsPath() {
         return '/requests'
     }

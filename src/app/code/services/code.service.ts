@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { LanguageService } from './language.service'
 import { GuidService } from '../../core/services/guid/guid.service'
 import { Code } from '../interfaces/code'
-import { Snippet } from '../../snippet/interfaces/snippet';
+import { Snippet } from '../../snippet/interfaces/snippet'
 import { UserService } from '../../core/services/user/user.service'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { User } from '../../core/interfaces/user/user'
@@ -53,6 +53,14 @@ export class CodeService {
             .database
             .list(this.codesSnippetPath(snippet))
             .remove()
+    }
+
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.codesSnippetPath(snippet)] = null
+
+        return updates
     }
 
     mockOne(): Code {
