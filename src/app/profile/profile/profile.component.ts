@@ -206,22 +206,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
             const usernameConfig = config.profile.username
 
             if (username.length < usernameConfig.minLength) {
-                this.promptError = `Username must contains at least ${usernameConfig.minLength} characters`
-
-                return
+                throw Error(`Username must contains at least ${usernameConfig.minLength} characters`)
             }
 
             if (username.length > usernameConfig.maxLength) {
-                this.promptError = `Username cannot contains more than ${usernameConfig.maxLength} characters`
-
-                return
+                throw Error(`Username cannot contains more than ${usernameConfig.maxLength} characters`)
             }
 
             this.promptError = null
             this.editUsername(username)
         } catch (error) {
-            // TODO: sentry
-            if ('cancel' !== error && 'overlay' !== error) { // swal specific (close event)
+            const swalEvents = ['cancel', 'overlay', 'esc']
+
+            if (!swalEvents.includes(error)) {
+                // TODO: sentry
                 this.promptError = error.message || error
             }
         }

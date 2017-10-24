@@ -18,7 +18,7 @@ export class FirebaseService {
     bulk(...actions) {
         const updates = {}
 
-        actions.forEach(action => Object.assign(updates, action()))
+        actions.forEach(action => Object.assign(updates, action))
 
         return this.database
             .app

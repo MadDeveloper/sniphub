@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     popularSnippets: Snippet[] = []
     popularSnippetsObserver: Subscription
     loading = false
-    activeTab = 'popular'
+    activeTab = 'latestAdded'
 
     constructor(
         private router: Router,

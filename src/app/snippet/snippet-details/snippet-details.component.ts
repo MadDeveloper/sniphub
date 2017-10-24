@@ -271,6 +271,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
 
             this.router.navigate(['/profile'])
         } catch (error) {
+            // TODO: sentry
+            console.log(error)
             swal({
                 title: 'Oops...',
                 text: 'Something went wrong! Please retry again or later.',
@@ -282,7 +284,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     private showSignInPopup() {
         swal({
             title: 'Sign in',
-            html: 'You need to be logged first. <a class="link" routerLink="/signin">Sign in</a>',
+            html: 'You need to be logged first.',
             type: 'info'
         })
     }
