@@ -53,7 +53,7 @@ import { AuthenticationModule } from './authentication/authentication.module'
         RequestModule.forRoot(),
         SnippetModule.forRoot(),
         CodeModule.forRoot(),
-        ProfileModule,
+        ProfileModule.forRoot(),
         RouterModule.forRoot( routes )
     ],
     providers: [],
