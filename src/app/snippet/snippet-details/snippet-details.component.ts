@@ -255,30 +255,43 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.delete()
             }
         } catch (reason) {
-            // we do nothing
+            // TODO: sentry
         }
     }
 
     async delete() {
         try {
+            const authors = await this.collectContributionsAuthors()
+
             await this.firebaseService.bulk(
                 this.likeService.deleteAllAsUpdates(this.snippet),
                 this.commentService.deleteAllAsUpdates(this.snippet),
                 this.requestService.deleteAllAsUpdates(this.snippet),
                 this.codeService.deleteAllAsUpdates(this.snippet),
+                this.snippetService.deleteAllContributionsAsUpdates(this.snippet, authors),
                 this.snippetService.deleteAllAsUpdates(this.snippet, this.snippetAuthor)
             )
 
             this.router.navigate(['/profile'])
         } catch (error) {
             // TODO: sentry
-            console.log(error)
             swal({
                 title: 'Oops...',
                 text: 'Something went wrong! Please retry again or later.',
                 type: 'error'
             })
         }
+    }
+
+    collectContributionsAuthors(): Promise<User[]> {
+        return new Promise(resolve => {
+            const authors = this.codes.map(code => code.author.first())
+
+            Observable
+                .zip(...authors)
+                .first()
+                .subscribe(resolve)
+        })
     }
 
     private showSignInPopup() {

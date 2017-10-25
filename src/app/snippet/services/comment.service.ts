@@ -37,13 +37,20 @@ export class CommentService {
             .list(this.commentsSnippetPath(snippet), options)
             .map((comments: any[]): Comment[] => comments.map((comment: any): Comment => this.forge(comment)))
             .map(comments => {
-                const clonedComments = comments.slice().reverse()
-                const lastComment = clonedComments.pop()
+                const hits = comments.slice().reverse()
+                const canNext = comments.length >= config.comments.maxPerPage
+                let next = null
+                let lastComment = null
+
+                if (canNext) {
+                    lastComment = hits.pop()
+                    next = () => this.all(snippet, lastComment.id)
+                }
 
                 return {
-                    canNext: comments.length >= config.comments.maxPerPage,
-                    hits: clonedComments,
-                    next: () => this.all(snippet, lastComment.id)
+                    canNext,
+                    hits,
+                    next
                 }
             })
     }

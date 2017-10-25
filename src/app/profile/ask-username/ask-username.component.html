@@ -1,10 +1,12 @@
-<div class="container">
-    <h1 class="title">Enter your username</h1>
-    <div class="my-3">
-        <input [(ngModel)]="username" type="text" class="input huge" placeholder="John Doe">
-        <div *ngIf="error" class="alert alert-danger mt-2">
-            <i class="fa fa-times" aria-hidden="true"></i> {{ error }}
+<div class="container container-small">
+    <h1 class="h2 text-center">Enter your username</h1>
+    <form (submit)="setUsername()">
+        <div class="my-4">
+            <input [(ngModel)]="username" name="username" type="text" class="input huge text-center" placeholder="John Doe">
+            <div *ngIf="error" class="alert alert-danger mt-2">
+                <i class="fa fa-times" aria-hidden="true"></i> {{ error }}
+            </div>
         </div>
-    </div>
-    <button class="btn primary outlined" (click)="setUsername()">Continue</button>
+        <button type="submit" class="btn primary outlined w-100" (click)="setUsername()">Continue</button>
+    </form>
 </div>

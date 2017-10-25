@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable'
 import { Snippet } from '../interfaces/snippet'
 import { User } from '../../core/interfaces/user/user'
 import { UserService } from '../../core/services/user/user.service'
+import { Code } from '../../code/interfaces/code'
 
 @Injectable()
 export class SnippetService {
@@ -189,6 +190,14 @@ export class SnippetService {
         return updates
     }
 
+    deleteAllContributionsAsUpdates(snippet: Snippet, authors: User[]) {
+        const updates = {}
+
+        authors.forEach(author => updates[this.authorSnippetContributionPath(author, snippet)] = null)
+
+        return updates
+    }
+
     increaseLikesCounter(snippet: Snippet) {
         return this
             .database
@@ -293,6 +302,8 @@ export class SnippetService {
         return snippet
     }
 
+    forgeAllContributions(contributions: any) { }
+
     private allFromDatabase(options?: any) {
         return this.database.list(this.snippetsPath(), options)
     }
@@ -323,6 +334,10 @@ export class SnippetService {
 
     authorContributionsPath(author: User) {
         return `${this.contributionsPath()}/${author.id}`
+    }
+
+    authorSnippetContributionPath(author: User, snippet: Snippet) {
+        return `${this.authorContributionsPath(author)}/${snippet.id}`
     }
 
     snippetsByUidPath(author: User) {

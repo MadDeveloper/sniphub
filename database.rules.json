@@ -52,8 +52,8 @@
       }
     },
     "contributions": {
+      ".read": true,
       "$uid": {
-        ".read": true,
         ".write": "root.child('users').child($uid).exists()",
         "$snippetId": {
           ".validate": "root.child('snippets').child($snippetId).exists() || root.child('snippets').child($snippetId).child('author').val() === auth.uid"

@@ -13,10 +13,8 @@
       }
     },
     "contributions": {
-        "<id>": {
-            "user": "<user>",
-            "snippet": "<snippet>",
-            "code": "<code>"
+        "<uid>": {
+            "<snippet>": "true"
         }
     },
     "codes": {

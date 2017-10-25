@@ -40,13 +40,20 @@ export class NotificationService {
             .list(this.notificationsUserPath(user), options)
             .map((notifications: any[]) => this.forgeAll(notifications))
             .map(notifications => {
-                const clonedNotifications = notifications.slice().reverse()
-                const lastComment = clonedNotifications.pop()
+                const hits = notifications.slice().reverse()
+                const canNext = notifications.length >= config.notifications.maxPerPage
+                let next = null
+                let lastNotification = null
+
+                if (canNext) {
+                    lastNotification = hits.pop()
+                    next = () => this.all(user, lastNotification.id)
+                }
 
                 return {
-                    canNext: notifications.length >= config.notifications.maxPerPage,
-                    hits: clonedNotifications,
-                    next: () => this.all(user, lastComment.id)
+                    canNext,
+                    hits,
+                    next
                 }
             })
     }
