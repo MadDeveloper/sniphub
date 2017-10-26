@@ -28,7 +28,8 @@ export class AddCodeComponent implements OnInit {
     @Input()
     author: User
     @Input()
-    min = 0
+    min: string
+    @Input()
     requested = false
     requestedSuccessfully = false
 
@@ -40,8 +41,16 @@ export class AddCodeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        if (!Array.isArray(this.codes)) {
-            this.codes = []
+        this.addMinCodesIfNecessary()
+    }
+
+    addMinCodesIfNecessary() {
+        const min = parseInt(this.min, 10)
+
+        if (min && this.codes.length < min) {
+            for (let index = min - this.codes.length; index > 0; index--) {
+                this.codes.push(this.codeService.mockOne())
+            }
         }
     }
 

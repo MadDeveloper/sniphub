@@ -1,8 +1,8 @@
-import { Component } from '@angular/core'
-import { UserService } from '../../core/services/user/user.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
+import { Component } from '@angular/core'
+import { config } from '../../../config'
 import { Router } from '@angular/router'
-import { config } from '../../../config';
+import { UserService } from '../../core/services/user/user.service'
 
 @Component({
     selector: 'app-ask-username',
@@ -12,6 +12,8 @@ import { config } from '../../../config';
 export class AskUsernameComponent {
     username = ''
     error: string
+    usernameMinLength = config.profile.username.minLength
+    usernameMaxLength = config.profile.username.maxLength
 
     constructor(
         private user: UserService,
@@ -27,14 +29,13 @@ export class AskUsernameComponent {
         try {
             // TODO: duplicated code with ProfileComponent, need to be externalized to a service
             const username = this.username
-            const usernameConfig = config.profile.username
 
-            if (username.length < usernameConfig.minLength) {
-                throw new Error(`Username must contains at least ${usernameConfig.minLength} characters`)
+            if (username.length < this.usernameMinLength) {
+                throw new Error(`Username must contains at least ${this.usernameMinLength} characters`)
             }
 
-            if (username.length > usernameConfig.maxLength) {
-                throw new Error(`Username cannot contains more than ${usernameConfig.maxLength} characters`)
+            if (username.length > this.usernameMaxLength) {
+                throw new Error(`Username cannot contains more than ${this.usernameMaxLength} characters`)
             }
 
             this.error = null

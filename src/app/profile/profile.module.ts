@@ -9,6 +9,7 @@ import { CoreModule } from '../core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { AskUsernameComponent } from './ask-username/ask-username.component'
 import { ProfileCompletedGuard } from './guards/profile-completed.guard'
+import { InputCounterModule } from 'ng4-input-counter'
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { ProfileCompletedGuard } from './guards/profile-completed.guard'
         RouterModule,
         CoreModule,
         ProfileRoutingModule,
+        InputCounterModule,
         SnippetModule
     ],
     declarations: [

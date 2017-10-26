@@ -20,7 +20,8 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     snapshot: Snippet
     codeBlocks: any[]
     editing: boolean
-    codes: Code[]
+    codes: Code[] = []
+    newCodes: Code[] =  []
     codesObserver: Subscription
     codesLoaded = false
     code: Code
@@ -92,7 +93,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         try {
             if (await this.verify()) {
                 const author = this.authentication.currentUser()
-                const codes = this.codeService.filterEmptyCodes(this.codes)
+                const codes = this.codeService.filterEmptyCodes(this.codes).concat(this.codeService.filterEmptyCodes(this.newCodes))
 
                 this.saving = true
                 this.snippet.codesCounter = codes.length
@@ -140,7 +141,9 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
         this.errors.name = null
 
-        if (this.codeService.filterEmptyCodes(this.codes).length === 0) {
+        const codes = this.codeService.filterEmptyCodes(this.codes).concat(this.codeService.filterEmptyCodes(this.newCodes))
+
+        if (codes.length === 0) {
             this.errors.code = `At least one complete code has to be added`
             this.scrollTo(this.errorCode.nativeElement)
 

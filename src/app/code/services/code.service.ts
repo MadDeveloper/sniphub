@@ -48,6 +48,13 @@ export class CodeService {
             .set(this.forgeAllForDatabase(codes, author))
     }
 
+    delete(code: Code, snippet: Snippet) {
+        return this
+            .database
+            .object(this.codePath(code.id, snippet))
+            .remove()
+    }
+
     deleteAll(snippet: Snippet) {
         return this
             .database

@@ -2,7 +2,9 @@
     <h1 class="h2 text-center">Enter your username</h1>
     <form (submit)="setUsername()">
         <div class="my-4">
-            <input [(ngModel)]="username" name="username" type="text" class="input huge text-center" placeholder="John Doe">
+            <input-counter [(ngModel)]="username" name="username" [minlength]="usernameMinLength" [maxlength]="usernameMaxLength" placeholder="John Doe"
+                className="input huge text-center">
+            </input-counter>
             <div *ngIf="error" class="alert alert-danger mt-2">
                 <i class="fa fa-times" aria-hidden="true"></i> {{ error }}
             </div>

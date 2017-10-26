@@ -1,22 +1,21 @@
-<div *ngIf="!hideLanguage" class="d-flex mb-4">
-    <ng-select [active]="code.language.value ? [code.language] : null"
-        [items]="languages"
-        (selected)="changeLanguage($event)"
-        placeholder="Search a language"
-        class="mr-3"
-        style="width: 230px">
-    </ng-select>
-</div>
-<div>
-    <codemirror #codemirror
-        [(ngModel)]="code.code"
-        [config]="config">
-    </codemirror>
-    <div *ngIf="withAuthor" class="mt-3">
-        <div *ngIf="code.author | async; let author" class="d-flex align-items-center meta">
-            contribution by
-            <img [src]="author.avatar" alt="" class="image avatar ml-2">
-            <a [routerLink]="'/profile/' + author.id" class="author">{{ author.username }}</a>
+<div *ngIf="code">
+    <div *ngIf="!hideLanguage" class="languages-block">
+        <ng-select [active]="code.language.value ? [code.language] : null" [items]="languages" (selected)="changeLanguage($event)"
+            placeholder="Search a language">
+        </ng-select>
+    </div>
+    <div>
+        <codemirror #codemirror [config]="config" [(ngModel)]="code.code">
+        </codemirror>
+        <div *ngIf="withAuthor" class="mt-3">
+            <div *ngIf="code.author | async; let author" class="d-flex align-items-center meta">
+                contribution by
+                <img [src]="author.avatar" alt="" class="image avatar ml-2">
+                <a [routerLink]="'/profile/' + author.id" class="author">{{ author.username }}</a>
+            </div>
+        </div>
+        <div *ngIf="deleteOption && codes.code" class="mt-3">
+            <button class="btn danger" (click)="confirmDeleteCode()">Remove</button>
         </div>
     </div>
 </div>
