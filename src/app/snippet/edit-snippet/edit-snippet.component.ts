@@ -9,6 +9,7 @@ import { CodeService } from '../../code/services/code.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
 import { config } from '../../../config'
 import { LanguageService } from '../../code/services/language.service'
+import { languages } from '../../code/services/languages'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -21,7 +22,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     codeBlocks: any[]
     editing: boolean
     codes: Code[] = []
-    newCodes: Code[] =  []
+    newCodes: Code[] = []
     codesObserver: Subscription
     codesLoaded = false
     code: Code
@@ -150,9 +151,35 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
             return false
         }
 
+        const dupliactedLanguages = this.detectDuplicatedLanguagesCodes(codes)
+
+        if (dupliactedLanguages.length > 0) {
+            this.errors.code = `You have duplicated languages in your codes: ${dupliactedLanguages.join(', ')}`
+            this.scrollTo(this.errorCode.nativeElement)
+
+            return false
+        }
+
         this.errors.code = null
 
         return true
+    }
+
+    detectDuplicatedLanguagesCodes(codes: Code[]) {
+        const languagesFound = {}
+        const languagesDuplicated = []
+
+        codes.forEach(code => {
+            const language = code.language.text
+
+            if (!languagesFound[language]) {
+                languagesFound[language] = true
+            } else {
+                languagesDuplicated.push(language)
+            }
+        })
+
+        return languagesDuplicated
     }
 
     scrollTo(htmlElement: HTMLElement) {
