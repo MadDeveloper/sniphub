@@ -39,8 +39,18 @@
 }
 
 .ui-select-toggle {
+    background-color: #fff;
+    border: 1px solid $grey-translucent-color;
+    color: $default-color;
+
     &:hover {
-        background-color: transparent;
         border-color: $primary-color;
+        background-color: #fff;
+        color: $default-color;
+    }
+
+    .dropdown-toggle {
+        border-color: $grey-translucent-color;
+        color: $grey-translucent-color;
     }
 }

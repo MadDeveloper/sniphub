@@ -1,16 +1,19 @@
 <div *ngIf="user" class="container mt-4">
-	<div class="row">
+    <div class="row">
         <div class="col">
             <div class="d-flex justify-content-center align-items-center flex-wrap">
                 <div class="d-flex justify-content-center mr-5">
                     <div *ngIf="ownProfile();else normalAvatar" class="image-group avatar" (click)="syncAvatar()">
-                        <img #avatar [src]="user.avatar" alt="" class="image avatar large">
+                        <img #avatar [src]="user.avatar" alt="" class="image avatar large mr-0">
                         <div class="caption icon centered">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
+                            <div class="unselectable normal-font-size text-center mt-2">
+                                Sync from provider
+                            </div>
                         </div>
                     </div>
                     <ng-template #normalAvatar>
-                        <img #avatar [src]="user.avatar" alt="" class="image avatar large">
+                        <img #avatar [src]="user.avatar" alt="" class="image avatar large mr-0">
                     </ng-template>
                 </div>
                 <div>
@@ -25,7 +28,8 @@
                                 </li>
                                 <li class="dropdown-item d-flex align-items-center clickable" role="menuitem" (click)="promptGitHubAccount($event)">
                                     <i class="fa fa-github dropdown-icon" aria-hidden="true"></i>
-                                    Change my <span class="bold mx-1">GitHub</span> account
+                                    Change my
+                                    <span class="bold mx-1">GitHub</span> account
                                 </li>
                                 <li class="dropdown-item clickable" role="menuitem" (click)="signOut($event)">
                                     <i class="fa fa-sign-out dropdown-icon" aria-hidden="true"></i>
@@ -34,8 +38,11 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="h4 unselectable mt-2">
-                        <div class="d-flex align-items-center meta">
+                    <div class="mt-2">
+                        <div *ngIf="promptError" class="alert alert-danger">
+                            <i class="fa fa-times" aria-hidden="true"></i> {{ promptError }}
+                        </div>
+                        <div class="h4 d-flex align-items-center meta">
                             <span>
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <span class="ml-1">{{ likes }}</span>
@@ -52,39 +59,50 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="ownProfile() && containsRequestsNotifications()" class="col-12 mt-4 clickable" (click)="goToRequests()">
+        <div *ngIf="ownProfile() && hasPendingRequests" class="col-12 mt-4 clickable" (click)="goToRequests()">
             <div class="d-block alert alert-info mb-0 d-flex align-items-center" role="alert">
-                <span><i class="fa fa-bell-o"></i> You have awaiting code requests for your snippets.</span>
+                <span>
+                    <i class="fa fa-code"></i> You have awaiting code requests for your snippets.</span>
                 <a routerLink="/requests" class="alert-link ml-1">See requests</a>
             </div>
         </div>
-        <div *ngIf="snippetsLoaded; else loadingSnippets" class="col-12 pt-5">
-            <div *ngIf="authorSnippets.length > 0 || contributorSnippets.length > 0;else noSnippets">
-                <div class="row">
-                    <div class="col">
-                        <h3>Author</h3>
-                        <hr>
+        <div *ngIf="snippetsAuthorLoaded && snippetsContributorLoaded; else loadingSnippets" class="col-12 pt-5">
+            <div *ngIf="authorSnippets.length > 0 || contributorSnippets.length > 0; else noSnippets">
+                <div class="tabs">
+                    <!-- AUTHOR TAB -->
+                    <div class="tab" [ngClass]="{ disabled: authorSnippets.length === 0, active: activeTab === 'author' }" (click)="toggleTab('author')">
+                        <h3 class="mr-3 mb-0">Author</h3>
+                        <span class="badge inverted h4 mb-0">{{ authorSnippets.length }}</span>
+                    </div>
+                    <!-- CONTRIBUTOR TAB -->
+                    <div class="tab" [ngClass]="{ disabled: contributorSnippets.length === 0, active: activeTab === 'contributor' }" (click)="toggleTab('contributor')">
+                        <h3 class="mr-3 mb-0">Contributor</h3>
+                        <span class="badge inverted h4 mb-0">{{ contributorSnippets.length }}</span>
                     </div>
                 </div>
-                <div *ngIf="ownProfile()" class="row pt-2 pb-4">
-                    <div class="col">
-                        <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
-                    </div>
-                </div>
-                <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
-                <div *ngIf="contributorSnippets.length > 0">
-                    <div class="row mt-5 mb-3">
-                        <div class="col">
-                            <h3>Contributor</h3>
-                            <hr>
+
+                <hr>
+
+                <div class="mt-3">
+                    <!-- AUTHOR SNIPPETS -->
+                    <div *ngIf="activeTab === 'author'">
+                        <div *ngIf="ownProfile()" class="row pt-2 pb-4">
+                            <div class="col">
+                                <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
+                            </div>
                         </div>
+                        <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
                     </div>
-                    <app-snippets-list [snippets]="contributorSnippets"></app-snippets-list>
+
+                    <!-- CONTRIBUTOR SNIPPETS -->
+                    <app-snippets-list *ngIf="activeTab === 'contributor'" [snippets]="contributorSnippets"></app-snippets-list>
                 </div>
             </div>
             <ng-template #noSnippets>
                 <div class="meta">
-                    <h1 class="display-4 text-center"><i class="fa fa-code" aria-hidden="true"></i></h1>
+                    <h1 class="display-4 text-center">
+                        <i class="fa fa-code" aria-hidden="true"></i>
+                    </h1>
                     <div *ngIf="ownProfile();else noSnippetsExternalProfile">
                         <div class="text-center">You don't have created or contributed to snippets for the moment</div>
                         <div class="text-center mt-3">
@@ -102,5 +120,5 @@
                 <app-loader></app-loader>
             </div>
         </ng-template>
-	</div>
+    </div>
 </div>

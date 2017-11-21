@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, HostListener } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Comment } from '../interfaces/comment'
-import * as $ from 'jquery'
+import { Comment } from '../interfaces/comment'
 import { Subscription } from 'rxjs/Subscription'
 import { Snippet } from '../interfaces/snippet'
 import { Code } from '../../code/interfaces/code'
@@ -11,11 +10,15 @@ import { RequestService } from '../../request/services/request.service'
 import { LikeService } from '../services/like.service'
 import { CodeService } from '../../code/services/code.service'
 import { CommentService } from '../services/comment.service'
-import { Observable } from 'rxjs/Observable'
 import { Like } from '../interfaces/like'
 import { SnippetService } from '../services/snippet.service'
 import { User } from '../../core/interfaces/user/user'
+import { config } from '../../../config'
 import swal from 'sweetalert2'
+import { ScrollService } from '../../core/services/scroll/scroll.service'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
+import { Observable } from 'rxjs/Observable'
+import { FirebaseService } from '../../core/services/firebase/firebase.service'
 
 @Component({
   selector: 'app-snippet-details',
@@ -25,12 +28,15 @@ import swal from 'sweetalert2'
 export class SnippetDetailsComponent implements OnInit, OnDestroy {
     notification: any
     snippet: Snippet
-    likes: Observable<Like[]>
+    description: string
+    descriptionExpanded = false
     liked = false
     codes: Code[] = []
     codesLoaded = false
     codesObserver: Subscription
-    comments: Observable<Comment[]>
+    comments: Comment[] = []
+    commentsObserver: Subscription
+    responseComments: PaginableResponse<Comment[]>
     @ViewChild('comment')
     comment: ElementRef
     ownSnippet = false
@@ -39,6 +45,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     requestsObserver: Subscription
     hasPendingRequests = false
     loaded = false
+    loadingComments = true
     requestCodes: Code[] = []
     newCodes: Code[] = []
     isAuthenticated: boolean
@@ -53,20 +60,26 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private router: Router,
         private likeService: LikeService,
         private codeService: CodeService,
-        private snippetService: SnippetService) { }
+        private snippetService: SnippetService,
+        private requestService: RequestService,
+        private scroll: ScrollService,
+        private firebaseService: FirebaseService) { }
 
     ngOnInit() {
         this.route
             .data
-            .subscribe(async (data: { snippet: Snippet }) => {
+            .subscribe(data => {
                 this.user = this.authentication.currentUser()
 
                 this.snippet = data[0]
 
                 if (this.snippet) {
+                    this.description = this.snippet.description
+                    this.truncateDescription()
+
                     this.isAuthenticated = this.authentication.logged
-                    this.comments = this.commentService.all(this.snippet)
-                    this.likes = this.likeService.all(this.snippet)
+
+                    this.loadComments()
                     this.loadCodes()
 
                     if (this.user) {
@@ -94,6 +107,10 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (this.requestsObserver) {
             this.requestsObserver.unsubscribe()
         }
+
+        if (this.commentsObserver) {
+            this.commentsObserver.unsubscribe()
+        }
     }
 
     loadSnippetAuthor() {
@@ -117,6 +134,42 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
             })
     }
 
+    loadComments() {
+        // we keep the last comments sync with the database, in order to see in real time the new comments
+        this.loadingComments = true
+        this.commentsObserver = this.commentService
+            .all(this.snippet)
+            .subscribe(response => {
+                this.responseComments = response
+
+                if (this.loaded && this.comments.length > 0) {
+                    let preservedComments = []
+
+                    if (response.hits.length < this.comments.length) {
+                        preservedComments = this.comments.slice(response.hits.length - 1)
+                    }
+
+                    this.comments = response.hits.concat(preservedComments)
+                } else {
+                    this.comments = response.hits
+                }
+
+                this.loadingComments = false
+            })
+    }
+
+    loadMoreComments() {
+        const comments$ = this.responseComments.next() as Observable<PaginableResponse<Comment[]>>
+
+        this.loadingComments = true
+
+        comments$.first().subscribe(response => {
+            this.responseComments = response
+            this.comments.push(...response.hits)
+            this.loadingComments = false
+        })
+    }
+
     loadRequests() {
         this.requestsObserver = this
             .request
@@ -124,33 +177,60 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
     }
 
     focusComment() {
-        this.comment.nativeElement.focus()
+        if (this.isAuthenticated) {
+            this.comment.nativeElement.focus()
+        } else {
+            this.showSignInPopup()
+        }
     }
 
-    addComment(event: Event) {
+    truncateDescription() {
+        if (this.isDescriptionTooLong()) {
+            this.description = `${this.description.substring(0, config.snippet.maxLengthDescription - 3)}...`
+            this.descriptionExpanded = false
+        }
+    }
+
+    isDescriptionTooLong() {
+        return this.description && this.description.length > config.snippet.maxLatestAddedDisplayed
+    }
+
+    expandDescription(event: Event) {
+        event.preventDefault()
+        this.description = this.snippet.description
+        this.descriptionExpanded = true
+    }
+
+    async addComment(event: Event) {
         event.preventDefault()
 
-        const commentContent = this.comment.nativeElement.value.trim()
+        const content = this.comment.nativeElement.value.trim()
 
-        if (commentContent.length > 0) {
+        if (content.length > 0) {
             const author = this.authentication.currentUser()
 
-            this.commentService.add(commentContent, author, this.snippet, this.snippetAuthor)
             this.comment.nativeElement.value = ''
+            await this.commentService.add(content, author, this.snippet, this.snippetAuthor)
         }
     }
 
     like() {
-        if (!this.liked) {
-            this.likeService.like(this.snippet, this.snippetAuthor)
-            this.snippetService.increaseLikesCounter(this.snippet)
-            this.liked = true
+        if (this.isAuthenticated) {
+            if (!this.liked) {
+                this.snippet.likesCounter++
+                this.likeService.like(this.snippet, this.snippetAuthor)
+                this.snippetService.increaseLikesCounter(this.snippet)
+                this.liked = true
+            } else {
+                this.unlike()
+            }
         } else {
-            this.unlike()
+            this.showSignInPopup()
         }
     }
 
     unlike() {
+        this.snippet.likesCounter--
         this.likeService.unlike(this.snippet)
         this.snippetService.decreaseLikesCounter(this.snippet)
         this.liked = false
@@ -175,20 +255,57 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.delete()
             }
         } catch (reason) {
-            // we do nothing
+            // TODO: sentry
         }
     }
 
     async delete() {
         try {
-            await this.snippetService.delete(this.snippet)
+            const authors = await this.collectContributionsAuthors()
+
+            await this.firebaseService.bulk(
+                this.likeService.deleteAllAsUpdates(this.snippet),
+                this.commentService.deleteAllAsUpdates(this.snippet),
+                this.requestService.deleteAllAsUpdates(this.snippet),
+                this.codeService.deleteAllAsUpdates(this.snippet),
+                this.snippetService.deleteAllContributionsAsUpdates(this.snippet, authors),
+                this.snippetService.deleteAllAsUpdates(this.snippet, this.snippetAuthor)
+            )
+
             this.router.navigate(['/profile'])
         } catch (error) {
+            // TODO: sentry
             swal({
                 title: 'Oops...',
                 text: 'Something went wrong! Please retry again or later.',
                 type: 'error'
             })
+        }
+    }
+
+    collectContributionsAuthors(): Promise<User[]> {
+        return new Promise(resolve => {
+            const authors = this.codes.map(code => code.author.first())
+
+            Observable
+                .zip(...authors)
+                .first()
+                .subscribe(resolve)
+        })
+    }
+
+    private showSignInPopup() {
+        swal({
+            title: 'Sign in',
+            html: 'You need to be logged first.',
+            type: 'info'
+        })
+    }
+
+    @HostListener('window:scroll', ['$event'])
+    onWindowScroll() {
+        if (this.loaded && this.scroll.documentScrolledBottom() && !this.loadingComments && this.responseComments && this.responseComments.canNext) {
+            this.loadMoreComments()
         }
     }
 }

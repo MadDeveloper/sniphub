@@ -26,6 +26,6 @@ export class UserResolverGuard implements Resolve<User> {
 
                 return null
             })
-            .take(1)
+            .first()
     }
 }

@@ -4,7 +4,7 @@ header {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 1500;
     width: 100%;
 
     nav {
@@ -39,5 +39,12 @@ header {
                 width: 100%;
             }
         }
+    }
+
+    #offline-wrapper {
+        background-color: $grey-color;
+        color: #fff;
+        padding: .5rem 2rem;
+        text-align: center;
     }
 }

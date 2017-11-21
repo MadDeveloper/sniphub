@@ -51,7 +51,7 @@ export class AuthenticationService {
                 .createIfNotExists({
                     id: userFirebase.uid,
                     email: providerData.email,
-                    username: providerData.displayName,
+                    username: null,
                     avatar: providerData.photoURL,
                     github: null
                 })

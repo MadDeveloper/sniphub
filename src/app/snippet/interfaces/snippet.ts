@@ -9,8 +9,8 @@ export interface Snippet {
     description: string
     date: Date
     author: Observable<User>
-    codes: Code[] | Observable<Code[]>
-    likes?: Like[] | Observable<Like[]>
+    codes: Observable<Code[]>
+    likes: Observable<Like[]>
     likesCounter: number
     codesCounter: number
 }

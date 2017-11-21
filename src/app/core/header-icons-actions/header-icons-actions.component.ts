@@ -1,50 +1,68 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { Router, NavigationEnd } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
-import { NotificationService } from '../../notification/services/notification.service'
+import { Component, OnDestroy, OnInit } from '@angular/core'
+import { NavigationEnd, Router } from '@angular/router'
 import { Notification } from '../../notification/interfaces/notification'
+import { NotificationService } from '../../notification/services/notification.service'
+import { RequestService } from '../../request/services/request.service'
+import { Subscription } from 'rxjs/Subscription'
 import { User } from '../interfaces/user/user'
 
 @Component({
-  selector: 'app-header-icons-actions',
-  templateUrl: './header-icons-actions.component.html',
-  styleUrls: ['./header-icons-actions.component.scss']
+    selector: 'app-header-icons-actions',
+    templateUrl: './header-icons-actions.component.html',
+    styleUrls: ['./header-icons-actions.component.scss']
 })
 export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
     logged: boolean
     hasNotifications = false
     notificationObserver: Subscription
+    hasPendingRequests = false
+    requestsObserver: Subscription
     loggedObserver: Subscription
     user: User
 
     constructor(
         private router: Router,
         private authentication: AuthenticationService,
-        private notification: NotificationService) { }
+        private notification: NotificationService,
+        private request: RequestService) { }
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
         this.router
             .events
             .filter(event => event instanceof NavigationEnd)
-            .subscribe( (event: NavigationEnd) => this.checkAuthentication())
+            .subscribe((event: NavigationEnd) => this.checkAuthentication())
 
         if (this.authentication.logged) {
-            this.notificationObserver = this
-                .notification
-                .unread(this.user)
-                .subscribe(this.checkUnreadNotifications)
+            this.loadNotifications()
+            this.loadRequests()
         }
+    }
+
+    loadNotifications() {
+        this.notificationObserver = this
+            .notification
+            .unread(this.user)
+            .subscribe(this.checkUnreadNotifications)
     }
 
     ngOnDestroy() {
         this.closeSubscriptions()
     }
 
-    private closeSubscriptions() {
-        this.notificationObserver.unsubscribe()
-        this.loggedObserver.unsubscribe()
+    closeSubscriptions() {
+        if (this.notificationObserver) {
+            this.notificationObserver.unsubscribe()
+        }
+
+        if (this.loggedObserver) {
+            this.loggedObserver.unsubscribe()
+        }
+
+        if (this.requestsObserver) {
+            this.requestsObserver.unsubscribe()
+        }
     }
 
     checkUnreadNotifications = (notifications: Notification[]) => {
@@ -56,5 +74,12 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             .authentication
             .logged$
             .subscribe(logged => this.logged = logged)
+    }
+
+    loadRequests() {
+        this.requestsObserver = this
+            .request
+            .all(this.user)
+            .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
     }
 }

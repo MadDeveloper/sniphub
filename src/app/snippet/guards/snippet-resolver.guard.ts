@@ -17,15 +17,11 @@ export class SnippetResolverGuard implements Resolve<Snippet>  {
         return this
             .snippet
             .find(id)
-            .map((snippet: Snippet): Snippet => {
-                if (snippet) {
-                    return snippet
+            .first()
+            .do((snippet: Snippet) => {
+                if (!snippet) {
+                    this.router.navigate(['/404'])
                 }
-
-                this.router.navigate(['/404'])
-
-                return null
             })
-            .take(1)
     }
 }

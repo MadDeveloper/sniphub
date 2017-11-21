@@ -1,38 +1,44 @@
 @import 'variables';
 
 a {
-    color: $primary-color;
+    color: $primary-color !important;
 
     &:hover,
     &:active,
     &:focus {
-        text-decoration: none;
+        text-decoration: none !important;
+        color: $dark-primary-color !important;
     }
 }
 
 .link {
-    color: $primary-color;
+    color: $primary-color !important;
+
+    &:hover {
+        cursor: pointer;
+        color: $dark-primary-color !important;
+    }
 
     &.default {
-        color: $default-color;
+        color: $default-color !important;
 
         &:hover {
-            color: $dark-grey-color;
+            color: $dark-grey-translucent-color !important;
         }
     }
 
     &.white {
-        color: #fff;
+        color: #fff !important;
 
         &:hover {
-            color: $light-color;
+            color: $light-color !important;
         }
     }
     &.meta {
-        color: $dark-grey-color;
+        color: $dark-grey-translucent-color !important;
 
         &:hover {
-            color: $default-color;
+            color: $default-color !important;
         }
     }
 }

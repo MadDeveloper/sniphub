@@ -9,7 +9,8 @@ import { User } from '../../core/interfaces/user/user'
 import { languages } from './languages'
 import { Observable } from 'rxjs/Observable'
 import { Language } from '../interfaces/language'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
+import * as firebase from 'firebase/app'
 
 @Injectable()
 export class CodeService {
@@ -40,18 +41,33 @@ export class CodeService {
             .update(code.id, this.forgeForDatabase(code, author, asRequest))
     }
 
-    createAll(codes: Code[], snippet: Snippet, author: User) {
-        return this
-            .database
-            .list(this.codesPath())
-            .update(snippet.id, this.forgeAllForDatabase(codes, author))
-    }
-
-    updateAll(codes: Code[], snippet: Snippet, author: User) {
+    saveAll(codes: Code[], snippet: Snippet, author: User) {
         return this
             .database
             .object(this.codesSnippetPath(snippet))
             .set(this.forgeAllForDatabase(codes, author))
+    }
+
+    delete(code: Code, snippet: Snippet) {
+        return this
+            .database
+            .object(this.codePath(code.id, snippet))
+            .remove()
+    }
+
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.codesSnippetPath(snippet))
+            .remove()
+    }
+
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.codesSnippetPath(snippet)] = null
+
+        return updates
     }
 
     mockOne(): Code {
@@ -59,7 +75,8 @@ export class CodeService {
             id: this.uniqFirebaseId(),
             language: this.language.mockOne(),
             code: null,
-            author: null
+            author: null,
+            date: new Date()
         }
     }
 
@@ -73,6 +90,7 @@ export class CodeService {
             language: this.language.find({ value: code.language }),
             author: this.user.find(code.user),
             code: code.code,
+            date: new Date(code.date),
             request: code.request || false,
             validated: code.validated || false
         }
@@ -92,7 +110,8 @@ export class CodeService {
         let codeForDatabase = {
             user: author.id,
             code: code.code,
-            language: code.language.value
+            language: code.language.value,
+            date: firebase.database.ServerValue.TIMESTAMP
         }
 
         if (asRequest) {
@@ -127,5 +146,9 @@ export class CodeService {
 
     codePath(id: string, snippet: Snippet) {
         return `${this.codesSnippetPath(snippet)}/${id}`
+    }
+
+    filterEmptyCodes(codes: Code[]): Code[] {
+        return codes.filter(code => code.code && code.code.length > 0 && code.language.text)
     }
 }

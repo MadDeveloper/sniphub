@@ -14,7 +14,7 @@
 
 .segment {
     background-color: #fff;
-    border: 1px solid $grey-color;
+    border: 1px solid $grey-translucent-color;
     transition-property: all;
     transition-duration: 300ms;
     display: -webkit-box;
@@ -112,7 +112,8 @@ hr {
         border-radius: 20px;
         position: absolute;
         right: 0;
-        bottom: -8px;
+        bottom: 0;
+        box-shadow: 0 0 0 2px $primary-color;
     }
 }
 
@@ -141,4 +142,8 @@ hr {
     border-radius: .28571429rem;
     -webkit-transition: background .1s ease;
     transition: background .1s ease;
+}
+
+hr {
+    border-width: 4px;
 }

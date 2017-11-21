@@ -11,7 +11,7 @@ input {
     &[type="password"],
     &[type="email"] {
         border-radius: 3px;
-        border: 1px solid $grey-color;
+        border: 1px solid $grey-translucent-color;
         padding: 0.5rem 1rem;
         outline: none;
         width: 100%;
@@ -23,7 +23,6 @@ input {
         font-weight: inherit;
         font-family: inherit;
 
-
         &:focus,
         &:hover {
             border: 1px solid $primary-color;
@@ -31,6 +30,7 @@ input {
 
         &.ui-select-search {
             border-color: $primary-color;
+            background-color: #fff !important;
         }
 
         &.unbordered {
@@ -60,7 +60,7 @@ input {
 
 textarea {
     border-radius: 3px;
-    border: 1px solid $grey-color;
+    border: 1px solid $grey-translucent-color;
     padding: 0.5rem 1rem;
     outline: none;
     width: 100%;
@@ -102,8 +102,19 @@ textarea {
     }
 }
 
-.ng-invalid:not(form)  {
+.invalid {
     border-color: $danger-color;
+
+    input,
+    textarea {
+        border-color: $danger-color;
+    }
+}
+
+.form-group {
+    .alert-danger {
+        margin-top: 1rem;
+    }
 }
 
 .input-icon {
@@ -147,29 +158,30 @@ textarea {
         position: absolute;
         right: 13px;
         top: 10px;
-        color: $dark-grey-color !important;
+        color: $dark-grey-translucent-color !important;
         pointer-events: none;
     }
 }
 
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px white inset;
+    box-shadow: 0 0 0px 1000px white inset;
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
     opacity:  1;
 }
 ::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
     opacity:  1;
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color:    $dark-grey-color;
+    color:    $dark-grey-translucent-color;
 }

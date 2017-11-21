@@ -15,6 +15,7 @@ import { MomentModule } from 'angular2-moment'
 import { InputCounterModule } from 'ng4-input-counter'
 import { BsDropdownModule } from 'ngx-bootstrap'
 import { CoreModule } from '../core/core.module'
+import { TooltipModule } from 'ngx-bootstrap/tooltip'
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { CoreModule } from '../core/core.module'
         RouterModule,
         MomentModule,
         InputCounterModule,
-        BsDropdownModule
+        BsDropdownModule,
+        TooltipModule
     ],
     declarations: [
         SnippetsListComponent,

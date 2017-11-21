@@ -6,7 +6,7 @@ import { HttpModule } from '@angular/http'
 import { FormsModule } from '@angular/forms'
 import { CoreModule } from './core/core.module'
 import { BsDropdownModule } from 'ngx-bootstrap'
-import { TooltipModule } from 'ngx-bootstrap'
+import { TooltipModule } from 'ngx-bootstrap/tooltip'
 import { InputCounterModule } from 'ng4-input-counter'
 import { NotificationModule } from './notification/notification.module'
 import { SearchModule } from './search/search.module'
@@ -53,7 +53,7 @@ import { AuthenticationModule } from './authentication/authentication.module'
         RequestModule.forRoot(),
         SnippetModule.forRoot(),
         CodeModule.forRoot(),
-        ProfileModule,
+        ProfileModule.forRoot(),
         RouterModule.forRoot( routes )
     ],
     providers: [],

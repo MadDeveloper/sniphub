@@ -24,7 +24,7 @@
 }
 
 .meta {
-    color: $dark-grey-color;
+    color: $dark-grey-translucent-color;
 }
 
 .title {
@@ -41,4 +41,8 @@
 
 .fa {
     font-family: FontAwesome;
+}
+
+.normal-font-size {
+    font-size: $default-font-size;
 }

@@ -5,7 +5,7 @@ import { Request } from '../../request/interfaces/request'
 import { Observable } from 'rxjs/Observable'
 
 export interface Notification {
-    id: number
+    id: string
     type: NotificationType
     user: Observable<User>
     snippetName: string

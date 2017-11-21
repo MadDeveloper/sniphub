@@ -28,7 +28,8 @@ export class AddCodeComponent implements OnInit {
     @Input()
     author: User
     @Input()
-    min = 0
+    min: string
+    @Input()
     requested = false
     requestedSuccessfully = false
 
@@ -40,8 +41,16 @@ export class AddCodeComponent implements OnInit {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
-        if (!Array.isArray(this.codes)) {
-            this.codes = []
+        this.addMinCodesIfNecessary()
+    }
+
+    addMinCodesIfNecessary() {
+        const min = parseInt(this.min, 10)
+
+        if (min && this.codes.length < min) {
+            for (let index = min - this.codes.length; index > 0; index--) {
+                this.codes.push(this.codeService.mockOne())
+            }
         }
     }
 
@@ -74,14 +83,23 @@ export class AddCodeComponent implements OnInit {
 
     async request(code: Code) {
         try {
-            if (!this.asAuthor) {
-                await this.addCodeAsAuthor(code)
-            } else {
-                await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)
-            }
+            if (this.codeService.filterEmptyCodes([code]).length > 0) {
 
-            this.requestedSuccessfully = true
-            this.requested = true
+                if (this.asAuthor) {
+                    await this.addCodeAsAuthor(code)
+                } else {
+                    await this.requestService.add(code, this.authentication.currentUser(), this.snippet, this.author)
+                }
+
+                this.requestedSuccessfully = true
+                this.requested = true
+            } else {
+                swal({
+                    title: 'Request failed',
+                    text: 'You cannot push an empty code (please be sure you have selected a language and entered some code)',
+                    type: 'error'
+                })
+            }
         } catch (error) {
             // todo: error
             console.error(error)

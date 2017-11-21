@@ -33,6 +33,6 @@ export class SnippetRequestResolverGuard implements Resolve<Request> {
 
                 return null
             })
-            .take(1)
+            .first()
     }
 }

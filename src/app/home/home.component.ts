@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core'
-import * as $ from 'jquery'
 import { Router } from '@angular/router'
 import { Snippet } from '../snippet/interfaces/snippet'
 import { SnippetService } from '../snippet/services/snippet.service'
@@ -13,11 +12,12 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-    lastAddedSnippets: Snippet[] = []
-    lastAddedSnippetsObserver: Subscription
+    latestAddedSnippets: Snippet[] = []
+    latestAddedSnippetsObserver: Subscription
     popularSnippets: Snippet[] = []
     popularSnippetsObserver: Subscription
     loading = false
+    activeTab = 'latestAdded'
 
     constructor(
         private router: Router,
@@ -33,8 +33,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     closeSubscriptions() {
-        if (this.lastAddedSnippetsObserver) {
-            this.lastAddedSnippetsObserver.unsubscribe()
+        if (this.latestAddedSnippetsObserver) {
+            this.latestAddedSnippetsObserver.unsubscribe()
         }
 
         if (this.popularSnippetsObserver) {
@@ -44,11 +44,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     loadSnippets() {
         this.enableLoading()
-        this.lastAddedSnippetsObserver = this
+        this.latestAddedSnippetsObserver = this
             .snippetService
-            .lastAdded()
+            .latestAdded()
             .subscribe((snippets: Snippet[]) => {
-                this.lastAddedSnippets = snippets
+                this.latestAddedSnippets = snippets
                 this.loadPopularSnippets()
             })
     }
@@ -70,5 +70,21 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     disableLoading() {
         this.loading = false
+    }
+
+    toggleTab(tab: string) {
+        switch (tab) {
+            case 'latestAdded':
+                if (this.latestAddedSnippets.length > 0) {
+                    this.activeTab = 'latestAdded'
+                }
+                break
+
+            default:
+                if (this.popularSnippets.length > 0) {
+                    this.activeTab = 'popular'
+                }
+                break
+        }
     }
 }

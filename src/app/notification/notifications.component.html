@@ -1,31 +1,44 @@
-<div *ngIf="loaded">
-    <div *ngIf="notifications.length > 0; else noNotifications" class="container segment container-small mt-4 px-0">
-        <div class="list">
-            <div class="item" *ngFor="let notification of notifications" [ngClass]="{ active: !notification.read }">
-                <div *ngIf="notification.user | async; let user" class="d-flex align-items-center">
-                    <a [routerLink]="'/profile/' + user.id">
-                        <img [src]="user.avatar" alt="" class="image avatar small mr-2">
-                    </a>
-                    <div class="ml-2 d-flex flex-column">
-                        <div>
-                            <a [routerLink]="'/profile/' + user.id" class="author">{{ user.username }}</a>
-                            <span *ngIf="isCommentNotification(notification)">
-                                has commented your
-                                <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
-                            </span>
-                            <span *ngIf="isLikeNotification(notification)">
-                                has liked your
-                                <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
-                            </span>
-                            <span *ngIf="isRequestNotification(notification)">
-                                <span>
-                                    has developed your
-                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
+<div *ngIf="loaded; else loading">
+    <div *ngIf="notifications.length > 0; else noNotifications" class="container container-small mt-4 px-0">
+        <h1 class="h2 mb-4 text-center">
+            <i class="fa fa-bell-o"></i>
+            <span class="ml-3">Notifications</span>
+        </h1>
+        <div class="segment">
+            <div class="list">
+                <div class="item" *ngFor="let notification of notifications" [ngClass]="{ active: !notification.read }">
+                    <div *ngIf="notification.user | async; let user" class="d-flex align-items-center">
+                        <a [routerLink]="'/profile/' + user.id">
+                            <img [src]="user.avatar" alt="" class="image avatar small mr-2">
+                        </a>
+                        <div class="ml-2 d-flex flex-column">
+                            <div>
+                                <a [routerLink]="'/profile/' + user.id" class="author">{{ user.username }}</a>
+                                <span *ngIf="isCommentNotification(notification)">
+                                    has commented your
+                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
                                 </span>
-                                <a href="#" (click)="seeRequest(notification, $event)" class="ml-1">See request</a>
-                            </span>
+                                <span *ngIf="isLikeNotification(notification)">
+                                    has liked your
+                                    <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet.
+                                </span>
+                                <span *ngIf="isRequestNotification(notification)">
+                                    <span>
+                                        has developed your
+                                        <a [routerLink]="'/snippets/' + notification.snippetId">{{ notification.snippetName }}</a> snippet in a new code.
+                                    </span>
+                                    <div>
+                                        <a href="#" (click)="seeRequest(notification, $event)">See request</a>
+                                    </div>
+                                </span>
+                            </div>
+                            <span class="meta">{{ notification.date | amTimeAgo }}</span>
                         </div>
-                        <span class="meta">{{ notification.date | amTimeAgo }}</span>
+                    </div>
+                </div>
+                <div *ngIf="loadingNextPage" class="item">
+                    <div class="d-flex justify-content-center">
+                        <app-loader></app-loader>
                     </div>
                 </div>
             </div>
@@ -38,3 +51,12 @@
         </div>
     </ng-template>
 </div>
+<ng-template #loading>
+    <div class="container pt-5">
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+</ng-template>

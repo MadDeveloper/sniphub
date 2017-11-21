@@ -10,15 +10,13 @@
     flex-direction: column;
     border-radius: 3px;
     background-color: #fff;
-    border: 1px solid $light-grey-color;
+    border: 1px solid $grey-translucent-color;
     transition: all .3s;
-    box-shadow: 0;
     position: relative;
 
     &:hover {
         border-color: transparent;
-        background-color: rgba(220, 220, 220, .2);
-        box-shadow: 0 0 0 3px rgba(220, 220, 220, .2);
+        background-color: $light-grey-color;
     }
 
     &::after {
@@ -40,7 +38,7 @@
         }
 
         .meta {
-            color: $dark-grey-color;
+            color: $dark-grey-translucent-color;
         }
 
         .description {
@@ -50,6 +48,6 @@
 
     .extra {
         padding: .75rem 1rem !important;
-        color: $dark-grey-color;
+        color: $dark-grey-translucent-color;
     }
 }

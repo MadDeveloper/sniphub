@@ -1,11 +1,15 @@
 export const environment = {
     production: true,
     firebase: {
-        apiKey: 'AIzaSyDkAAFfXsr3wvzVem2uQBd3sWGWPyunY8M',
-        authDomain: 'snipz-dev.firebaseapp.com',
-        databaseURL: 'https://snipz-dev.firebaseio.com',
-        projectId: 'snipz-dev',
-        storageBucket: 'snipz-dev.appspot.com',
-        messagingSenderId: '750034482061'
+        apiKey: 'AIzaSyD_WQDAkekvaAB2c0m3YNz9eGoDSSs1DOQ',
+        authDomain: 'sniphub-prod.firebaseapp.com',
+        databaseURL: 'https://sniphub-prod.firebaseio.com',
+        projectId: 'sniphub-prod',
+        storageBucket: 'sniphub-prod.appspot.com',
+        messagingSenderId: '628588964087'
+    },
+    elastic: {
+        url: 'https://ricvk5wr:n5qqept7ugxexcu4@ash-2842286.eu-west-1.bonsaisearch.net',
+        sizePerResults: 20
     }
 }

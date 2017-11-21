@@ -21,7 +21,9 @@ export class LikeService {
     like(snippet: Snippet, snippetAuthor: User) {
         const user = this.authentication.currentUser()
 
-        this.notification.like(snippet, user, snippetAuthor)
+        if (user.id !== snippetAuthor.id) {
+            this.notification.like(snippet, user, snippetAuthor)
+        }
 
         return this.database
             .object(this.likesSnippetPath(snippet))
@@ -43,6 +45,21 @@ export class LikeService {
         this.database
             .object(this.likePath(user, snippet))
             .remove()
+    }
+
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.likesSnippetPath(snippet))
+            .remove()
+    }
+
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.likesSnippetPath(snippet)] = null
+
+        return updates
     }
 
     private likesPath() {

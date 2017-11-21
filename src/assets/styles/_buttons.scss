@@ -8,7 +8,7 @@
     }
 
     font-family: inherit;
-    min-width: 90px;
+    min-width: 130px;
     padding: 0.5rem 1rem;
     line-height: inherit;
     transition: all .3s;
@@ -24,6 +24,7 @@
 
         &:hover {
             border-color: black;
+            background-color: $light-color !important;
         }
     }
 
@@ -31,7 +32,7 @@
         background-color: $primary-color;
 
         &:hover {
-            background-color: $dark-primary-color;
+            background-color: $dark-primary-color !important;
         }
     }
 

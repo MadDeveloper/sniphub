@@ -1,41 +1,54 @@
-import { Injectable } from '@angular/core'
-import { find } from 'lodash'
-import { Snippet } from '../interfaces/snippet'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { UserService } from '../../core/services/user/user.service'
-import { LikeService } from './like.service'
-import { Observable } from 'rxjs/Observable'
-import { User } from '../../core/interfaces/user/user'
 import * as firebase from 'firebase'
+import { AngularFireDatabase } from 'angularfire2/database'
 import { CodeService } from '../../code/services/code.service'
 import { config } from '../../../config'
+import { Injectable } from '@angular/core'
+import { LikeService } from './like.service'
+import { Observable } from 'rxjs/Observable'
+import { Snippet } from '../interfaces/snippet'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
+import { Code } from '../../code/interfaces/code'
 
 @Injectable()
 export class SnippetService {
+    cache = {
+        latestAdded: null,
+        popular: null,
+        popularCacheEndValid: null,
+        latestAddedCacheEndValid: null
+    }
+
     constructor(
         private database: AngularFireDatabase,
         private user: UserService,
         private like: LikeService,
         private code: CodeService) { }
 
-    all(options?: any): Observable<Snippet[]> {
-        return this
-            .allFromDatabase(options)
-            .map((snippets: any[]) => this.forgeAll(snippets))
-    }
+    latestAdded(): Observable<Snippet[]> {
+        if (this.cache.latestAdded && this.cache.latestAddedCacheEndValid >= Date.now()) {
+            return Observable.of(this.cache.latestAdded)
+        }
 
-    lastAdded(): Observable<Snippet[]> {
         return this
             .allFromDatabase({
                 query: {
                     orderByChild: 'date',
-                    limitToLast: config.snippet.maxLastestAddedDisplayed
+                    limitToLast: config.snippet.maxLatestAddedDisplayed
                 }
             })
             .map((snippets: any[]) => this.forgeAll(snippets).reverse())
+            .do(snippets => {
+                this.cache.latestAdded = snippets
+                this.cache.latestAddedCacheEndValid = Date.now() + config.snippet.latestAddedCacheDuration
+            })
     }
 
     popular() {
+        if (this.cache.popular && this.cache.popularCacheEndValid >= Date.now()) {
+            return Observable.of(this.cache.popular)
+        }
+
         return this
             .allFromDatabase({
                 query: {
@@ -53,17 +66,32 @@ export class SnippetService {
 
                 return 0
             }))
+            .do(snippets => {
+                this.cache.popular = snippets
+                this.cache.popularCacheEndValid = Date.now() + config.snippet.popularCacheDuration
+            })
     }
 
     author(author: User): Observable<Snippet[]> {
         return this
-            .allFromDatabase({
-                query: {
-                    orderByChild: 'author',
-                    equalTo: author.id
+            .database
+            .list(this.snippetsByUidPath(author))
+            .switchMap((snippetsFirebase: any[]): Observable<Snippet[]> => {
+                const snippets = snippetsFirebase.map(badge => badge.$key)
+
+                if (0 === snippets.length) {
+                    return Observable.of([])
                 }
+
+                const snippets$ = Observable
+                    .combineLatest(...snippets
+                        .map((snippetId: string): Observable<Snippet> => this
+                            .database
+                            .object(this.snippetPath(snippetId))
+                            .map((snippetFirebase: any): Snippet => this.forge(snippetFirebase))))
+
+                return snippets$
             })
-            .map((snippets: any[]): Snippet[] => this.forgeAll(snippets))
     }
 
     contributor(author: User): Observable<Snippet[]> {
@@ -94,32 +122,39 @@ export class SnippetService {
             })
     }
 
-    findAsSnapshot(id: string): Observable<Snippet> {
+    findByName(name: string): Observable<Snippet[]> {
         return this
             .database
-            .object(this.snippetPath(id), { preserveSnapshot: true })
-            .map(snapshot => {
-                let snippet: Snippet = null
-
-                if (snapshot.exists()) {
-                    snippet = this.forgeFromSnapshot(snapshot)
+            .list(this.snippetsPath(), {
+                query: {
+                    orderByChild: 'name',
+                    equalTo: name
                 }
-
-                return snippet
             })
+            .map(snippets => this.forgeAll(snippets))
     }
 
-    create(snippet: Snippet, author: User) {
+    create(snippet: Snippet, author: User): firebase.Promise<Snippet> {
+        const snippetId = this.allFromDatabase().$ref.ref.push().key
+
         return this
             .allFromDatabase()
-            .push({
+            .update(snippetId, {
                 name: snippet.name,
                 author: author.id,
                 description: snippet.description,
                 date: firebase.database.ServerValue.TIMESTAMP,
-                likesCounter: snippet.likesCounter,
-                codesCounter: snippet.codesCounter
+                likesCounter: snippet.likesCounter || 0,
+                codesCounter: snippet.codesCounter || 0
             })
+            .then(() => this.database
+                .object(this.snippetsByUidPath(author))
+                .update({
+                    [snippetId]: true
+                }))
+            .then(() => Object.assign({}, snippet, {
+                id: snippetId
+            }))
     }
 
     update(snippet: Snippet) {
@@ -132,57 +167,71 @@ export class SnippetService {
             })
     }
 
-    delete(snippet: Snippet) {
-        return this
+    async delete(snippet: Snippet, author: User) {
+        // todo: remove contributions
+
+        await this
             .database
             .object(this.snippetPath(snippet.id))
             .remove()
+
+        return this
+            .database
+            .object(this.snippetByUidPath(snippet, author))
+            .remove()
+    }
+
+    deleteAllAsUpdates(snippet: Snippet, author: User) {
+        const updates = {}
+
+        updates[this.snippetPath(snippet.id)] = null
+        updates[this.snippetByUidPath(snippet, author)] = null
+
+        return updates
+    }
+
+    deleteAllContributionsAsUpdates(snippet: Snippet, authors: User[]) {
+        const updates = {}
+
+        authors.forEach(author => updates[this.authorSnippetContributionPath(author, snippet)] = null)
+
+        return updates
     }
 
     increaseLikesCounter(snippet: Snippet) {
-        if (isNaN(snippet.likesCounter)) {
-            snippet.likesCounter = 0
-        }
-
-        return this.updateLikesCounter(snippet, ++snippet.likesCounter)
+        return this
+            .database
+            .object(this.likesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count + 1)
     }
 
     decreaseLikesCounter(snippet: Snippet) {
-        if (snippet.likesCounter > 0) {
-            return this.updateLikesCounter(snippet, --snippet.likesCounter )
-        }
-
-        return Promise.reject('Cannot decrease to a negative likes counter')
-    }
-
-    updateLikesCounter(snippet: Snippet, counter: number) {
         return this
             .database
-            .object(this.snippetPath(snippet.id))
-            .update({ likesCounter: counter })
+            .object(this.likesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count - 1)
     }
 
     increaseCodesCounter(snippet: Snippet) {
-        if (isNaN(snippet.codesCounter)) {
-            snippet.codesCounter = 0
-        }
-
-        return this.updateCodesCounter(snippet, ++snippet.codesCounter)
+        return this
+            .database
+            .object(this.codesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count + 1)
     }
 
     decreaseCodesCounter(snippet: Snippet) {
-        if (snippet.codesCounter > 0) {
-            return this.updateCodesCounter(snippet, --snippet.codesCounter )
-        }
-
-        return Promise.reject('Cannot decrease to a negative codes counter')
-    }
-
-    updateCodesCounter(snippet: Snippet, counter: number) {
         return this
             .database
-            .object(this.snippetPath(snippet.id))
-            .update({ codesCounter: counter })
+            .object(this.codesCounterPath(snippet))
+            .$ref
+            .ref
+            .transaction(count => count - 1)
     }
 
     mockOne(): Snippet {
@@ -203,7 +252,7 @@ export class SnippetService {
         return snippets.map((snippet: any): Snippet => this.forge(snippet))
     }
 
-    forge(snippetFetched): Snippet {
+    forge(snippetFetched, options = { withCodes: false, withLikes: false }): Snippet {
         const snippet: Snippet = {
             id: snippetFetched.$key,
             name: snippetFetched.name,
@@ -212,39 +261,71 @@ export class SnippetService {
             date: snippetFetched.date,
             codes: null,
             likes: null,
-            likesCounter: snippetFetched.likesCounter,
-            codesCounter: snippetFetched.codesCounter
+            likesCounter: parseInt(snippetFetched.likesCounter, 10),
+            codesCounter: parseInt(snippetFetched.codesCounter, 10)
         }
 
-        snippet.codes = this.code.all(snippet)
-        snippet.likes = this.like.all(snippet)
+        if (options.withCodes) {
+            snippet.codes = this.code.all(snippet)
+        }
+
+        if (options.withLikes) {
+            snippet.likes = this.like.all(snippet)
+        }
 
         return snippet
     }
+
+    forgeFromElastic(snippetElastic, options = { withCodes: false, withLikes: false }): Snippet {
+        const snippetSource = snippetElastic._source
+
+        const snippet: Snippet = {
+            id: snippetElastic._id,
+            name: snippetSource.name,
+            author: this.user.find(snippetSource.author),
+            description: snippetSource.description,
+            date: snippetSource.date,
+            codes: null,
+            likes: null,
+            likesCounter: parseInt(snippetSource.likesCounter, 10),
+            codesCounter: parseInt(snippetSource.codesCounter, 10)
+        }
+
+        if (options.withCodes) {
+            snippet.codes = this.code.all(snippet)
+        }
+
+        if (options.withLikes) {
+            snippet.likes = this.like.all(snippet)
+        }
+
+        return snippet
+    }
+
+    forgeAllContributions(contributions: any) { }
 
     private allFromDatabase(options?: any) {
         return this.database.list(this.snippetsPath(), options)
     }
 
     private allContributionsFromDatabase(author: User, options?: any) {
-        return this.database.list(this.authorContributionsPath(author))
+        return this.database.list(this.authorContributionsPath(author), options)
     }
 
-    private forgeFromSnapshot(snapshot): Snippet {
-        const id = snapshot.key
-        const snippetFetched = snapshot.val()
-
-        snippetFetched.$key = id
-
-        return this.forge(snippetFetched)
-    }
-
-    private snippetsPath() {
+    snippetsPath() {
         return '/snippets'
     }
 
-    private snippetPath(id: string) {
+    snippetPath(id: string) {
         return `${this.snippetsPath()}/${id}`
+    }
+
+    likesCounterPath(snippet: Snippet) {
+        return `${this.snippetPath(snippet.id)}/likesCounter`
+    }
+
+    codesCounterPath(snippet: Snippet) {
+        return `${this.snippetPath(snippet.id)}/codesCounter`
     }
 
     contributionsPath() {
@@ -253,5 +334,17 @@ export class SnippetService {
 
     authorContributionsPath(author: User) {
         return `${this.contributionsPath()}/${author.id}`
+    }
+
+    authorSnippetContributionPath(author: User, snippet: Snippet) {
+        return `${this.authorContributionsPath(author)}/${snippet.id}`
+    }
+
+    snippetsByUidPath(author: User) {
+        return `snippetsByUid/${author.id}`
+    }
+
+    snippetByUidPath(snippet: Snippet, author: User) {
+        return `${this.snippetsByUidPath(author)}/${snippet.id}`
     }
 }

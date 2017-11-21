@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
+import find from 'lodash-es/find'
 import { languages } from './languages'
 import { Language } from '../interfaces/language'
 
@@ -9,7 +9,7 @@ export class LanguageService {
         return languages
     }
 
-    find( props: any ): Language {
+    find(props: any): Language {
         return find(languages, props)
     }
 
@@ -22,6 +22,6 @@ export class LanguageService {
     }
 
     plainText(): Language {
-        return find(languages, { value: 'text/plain' })
+        return this.find({ value: 'text/plain' })
     }
 }

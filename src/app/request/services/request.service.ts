@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
 import { UserService } from '../../core/services/user/user.service'
 import { CodeEditorService } from '../../code/services/code-editor.service'
 import { LanguageService } from '../../code/services/language.service'
@@ -30,7 +29,7 @@ export class RequestService {
         return this
             .snippet
             .author(user)
-            .map((snippets: Snippet[]) => Observable.zip(...snippets.map((snippet: Snippet) => this.forSnippet(snippet))))
+            .map(snippets => Observable.zip(...snippets.map((snippet: Snippet) => this.forSnippet(snippet))))
             .mergeAll()
             .map((snippets: Request[][]): Request[] => [].concat(...snippets).reverse())
     }
@@ -70,8 +69,9 @@ export class RequestService {
     }
 
     accept(request: Request, code: Code, author: User, snippet: Snippet) {
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
+                // TODO: bulk
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 await this.addContribution(author, snippet)
@@ -84,7 +84,7 @@ export class RequestService {
     }
 
     reject(request: Request, code: Code, snippet: Snippet) {
-        return new Promise( async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 await this.database.object(this.code.codePath(code.id, snippet)).remove()
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
@@ -124,19 +124,41 @@ export class RequestService {
             try {
                 const request = this.forge(author, code, snippet)
 
-                request.id = this
+                await this
+                    .code
+                    .create(code, snippet, author, true)
+
+                request.id = this.database.list(this.requestsSnippetPath(snippet)).$ref.ref.push().key
+
+                await this
                     .database
                     .list(this.requestsSnippetPath(snippet))
-                    .push(code.id).key
+                    .push(code.id)
 
-                await this.code.create(code, snippet, author, true)
-                await this.notification.request(author, snippet, snippetAuthor, request)
+                await this
+                    .notification
+                    .request(author, snippet, snippetAuthor, request)
 
                 resolve(request)
             } catch (error) {
                 reject(error)
             }
         })
+    }
+
+    deleteAll(snippet: Snippet) {
+        return this
+            .database
+            .list(this.requestsSnippetPath(snippet))
+            .remove()
+    }
+
+    deleteAllAsUpdates(snippet: Snippet) {
+        const updates = {}
+
+        updates[this.requestsSnippetPath(snippet)] = null
+
+        return updates
     }
 
     requestsPath() {

@@ -7,11 +7,14 @@
             "date": "<date>"
         }
     },
+    "snippetsByUid": {
+      "<user>": {
+        "<snippet>": true
+      }
+    },
     "contributions": {
-        "<id>": {
-            "user": "<user>",
-            "snippet": "<snippet>",
-            "code": "<code>"
+        "<uid>": {
+            "<snippet>": "true"
         }
     },
     "codes": {
@@ -41,7 +44,8 @@
         }
     },
     "users": {
-        "email": {
+        "id": {
+            "email": "<string>",
             "username": "<string>",
             "avatar": "<string>"
         }
@@ -53,7 +57,8 @@
                 "user": "<user>",
                 "snippetName": "<string>",
                 "snippetId": "<string>",
-                "request?": "<request>"
+                "request?": "<request>",
+                "read": "<boolean>"
             }
         }
     },

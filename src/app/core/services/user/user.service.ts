@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { find } from 'lodash'
 import { User } from '../../interfaces/user/user'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { Observable } from 'rxjs/Observable'

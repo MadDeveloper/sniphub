@@ -1,40 +1,49 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core'
+import swal from 'sweetalert2'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Subscription } from 'rxjs/Subscription'
-import { Snippet } from '../../snippet/interfaces/snippet'
-import { User } from '../../core/interfaces/user/user'
-import { SnippetService } from '../../snippet/services/snippet.service'
 import { AuthenticationService } from '../../authentication/services/authentication.service'
-import { NotificationService } from '../../notification/services/notification.service'
-import { Notification } from '../../notification/interfaces/notification'
-import { Observable } from 'rxjs/Observable'
-import { UserService } from '../../core/services/user/user.service'
+import {
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core'
+import { Code } from '../../code/interfaces/code'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
 import { Like } from '../../snippet/interfaces/like'
-import { Code } from '../../code/interfaces/code'
-import { find } from 'lodash'
-import swal from 'sweetalert2'
+import { Observable } from 'rxjs/Observable'
+import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
+import { RequestService } from '../../request/services/request.service'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { SnippetService } from '../../snippet/services/snippet.service'
+import { Subscription } from 'rxjs/Subscription'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
+import { config } from '../../../config'
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+    selector: 'app-profile',
+    templateUrl: './profile.component.html',
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
     authorSnippets: Snippet[] = []
     contributorSnippets: Snippet[] = []
-    snippetsLoaded = false
-    snippetsObserver: Subscription
+    snippetsAuthorLoaded = false
+    snippetsContributorLoaded = false
+    snippetsAuthorObserver: Subscription
+    snippetsContributorObserver: Subscription
+    activeTab = 'author'
     user: User
     codes = 0
     likes = 0
     userSnapshot: User
     loggedUser: User
-    pendingNotifications: boolean
-    notifications: Notification[]
-    notificationsObserver: Subscription
-    notificationsLoaded = false
+    hasPendingRequests: boolean
+    requestsObserver: Subscription
     username: ElementRef
+    promptError: string
     @ViewChild('username') set usernameRef(username: ElementRef) {
         this.username = username
     }
@@ -44,7 +53,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private authentication: AuthenticationService,
-        private notification: NotificationService,
+        private request: RequestService,
         private userService: UserService,
         private firebaseService: FirebaseService,
         private cdr: ChangeDetectorRef) { }
@@ -56,7 +65,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.newUserSnapshot()
 
             if (this.ownProfile()) {
-                this.loadNotifications()
+                this.loadRequests()
             }
         }
 
@@ -79,32 +88,57 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.loadSnippets()
     }
 
-    loadNotifications() {
-        this.notificationsObserver = this
-            .notification
+    ngOnDestroy() {
+        this.closeSubscriptions()
+    }
+
+    closeSubscriptions() {
+        if (this.snippetsAuthorObserver) {
+            this.snippetsAuthorObserver.unsubscribe()
+        }
+
+        if (this.snippetsContributorObserver) {
+            this.snippetsContributorObserver.unsubscribe()
+        }
+
+        if (this.requestsObserver) {
+            this.requestsObserver.unsubscribe()
+        }
+    }
+
+    loadRequests() {
+        this.requestsObserver = this
+            .request
             .all(this.user)
-            .subscribe(notifications => {
-                this.notifications = notifications
-                this.notificationsLoaded = true
-                this.pendingNotifications = this.notifications.length > 0
-            })
+            .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
     }
 
     loadSnippets() {
-        this.snippetsObserver = this
-            .snippet
-            .author(this.user)
-            .mergeMap(authorSnippets => {
-                this.authorSnippets = authorSnippets
+        this.loadAuthorSnippets()
+        this.loadContributorSnippets()
+    }
 
-                return this.snippet.contributor(this.user)
-            })
-            .subscribe(contributorSnippets => {
-                this.contributorSnippets = contributorSnippets.filter(snippet => !find(this.authorSnippets, { id: snippet.id }))
+    loadAuthorSnippets() {
+        this.snippetsAuthorObserver = this.snippet.author(this.user).subscribe(snippets => {
+            this.authorSnippets = snippets
+            this.snippetsAuthorLoaded = true
+            this.countLikes()
+
+            if (this.snippetsContributorLoaded) {
                 this.countCodes()
-                this.countLikes()
-                this.snippetsLoaded = true
-            })
+            }
+        })
+    }
+
+    loadContributorSnippets() {
+        this.snippetsContributorObserver = this.snippet.contributor(this.user).subscribe(snippets => {
+            this.contributorSnippets = snippets
+            this.snippetsContributorLoaded = true
+
+            if (this.snippetsAuthorLoaded) {
+                this.countCodes()
+            }
+        })
     }
 
     countLikes() {
@@ -115,17 +149,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const codesAuthor = this.authorSnippets.reduce((counter, snippet) => counter + snippet.codesCounter, 0)
         const codesContributor = this.contributorSnippets.reduce((counter, snippet) => counter + snippet.codesCounter, 0)
 
-        this.codes =  codesAuthor + codesContributor
-    }
-
-
-    ngOnDestroy() {
-        this.closeSubscriptions()
-    }
-
-    closeSubscriptions() {
-        this.snippetsObserver.unsubscribe()
-        this.notificationsObserver.unsubscribe()
+        this.codes = codesAuthor + codesContributor
     }
 
     newUserSnapshot() {
@@ -139,10 +163,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     signOut(event: Event) {
         event.preventDefault()
         this.authentication.logout()
-    }
-
-    containsRequestsNotifications() {
-        return this.notification.containsRequestsNotifications(this.notifications)
     }
 
     goToRequests() {
@@ -179,14 +199,29 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 title: '<i class="fa fa-user title mr-4"></i>Username',
                 html: 'Type here the new username you want to use',
                 input: 'text',
-                inputValue: this.user.username,
+                inputValue: this.user.username || '',
                 inputPlaceholder: 'John Doe',
                 showCancelButton: true
             })
+            const usernameConfig = config.profile.username
 
+            if (username.length < usernameConfig.minLength) {
+                throw Error(`Username must contains at least ${usernameConfig.minLength} characters`)
+            }
+
+            if (username.length > usernameConfig.maxLength) {
+                throw Error(`Username cannot contains more than ${usernameConfig.maxLength} characters`)
+            }
+
+            this.promptError = null
             this.editUsername(username)
         } catch (error) {
-            // todo
+            const swalEvents = ['cancel', 'overlay', 'esc']
+
+            if (!swalEvents.includes(error)) {
+                // TODO: sentry
+                this.promptError = error.message || error
+            }
         }
     }
 
@@ -209,14 +244,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 title: '<i class="fa fa-github title mr-4"></i>GitHub account',
                 html: 'Copy and paste your <span class="bold">GitHub</span> account link here',
                 input: 'text',
-                inputValue: this.user.github,
+                inputValue: this.user.github || '',
                 inputPlaceholder: 'https://github.com/john.doe',
                 showCancelButton: true
             })
 
             this.changeGitHubAccount(githubAccount)
         } catch (error) {
-            // todo
+            // TODO: sentry
+            if ('cancel' !== error && 'overlay' !== error) { // swal specific (close event)
+                this.promptError = error.message || error
+            }
+        }
+    }
+
+    toggleTab(tab: string) {
+        switch (tab) {
+            case 'contributor':
+                if (this.contributorSnippets.length > 0) {
+                    this.activeTab = 'contributor'
+                }
+                break
+
+            default:
+                if (this.authorSnippets.length > 0) {
+                    this.activeTab = 'author'
+                }
+                break
         }
     }
 }

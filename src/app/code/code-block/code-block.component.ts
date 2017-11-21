@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core'
+import { Component, OnInit, ViewChild, Input, EventEmitter } from '@angular/core'
 import { CodemirrorComponent } from 'ng2-codemirror'
 import { Code } from '../interfaces/code'
 import { CodeService } from '../services/code.service'
@@ -6,19 +6,22 @@ import { LanguageService } from '../services/language.service'
 import { CodeEditorService } from '../services/code-editor.service'
 import { Language } from '../interfaces/language'
 import { languages } from '../services/languages'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import swal from 'sweetalert2'
 
 @Component({
-  selector: 'app-code-block',
-  templateUrl: './code-block.component.html',
-  styleUrls: ['./code-block.component.scss']
+    selector: 'app-code-block',
+    templateUrl: './code-block.component.html',
+    styleUrls: ['./code-block.component.scss']
 })
 export class CodeBlockComponent implements OnInit {
     @ViewChild(CodemirrorComponent)
     codemirror: CodemirrorComponent
+
+    @Input()
+    snippet: Snippet
     @Input()
     config = null
-    @Output()
-    onChangeLanguage = new EventEmitter<any>()
     @Input()
     hideLanguage = false
     @Input()
@@ -28,9 +31,12 @@ export class CodeBlockComponent implements OnInit {
     @Input()
     code: Code
     @Input()
-    codes: Code[]
+    codes: Code[] = []
     @Input()
     withAuthor = false
+    @Input()
+    deleteOption = false
+
     languages: Language[]
     usingMock = false
 
@@ -40,46 +46,42 @@ export class CodeBlockComponent implements OnInit {
         private codeEditor: CodeEditorService) { }
 
     ngOnInit() {
-        if (!Array.isArray(this.codes) || this.codes.length === 0) {
-            this.codes = [this.codeService.mockOne()]
-            this.usingMock = true
-        }
-
-        if (!this.code) {
+        if (!this.code && this.codes.length > 0) {
             this.code = this.codes[0]
         }
 
         this.languages = this.extractLanguages()
 
         if (!this.config) {
+            const mode = this.code ? this.code.language.value : this.languageService.plainText().value
+
             this.config = Object.assign({}, this.codeEditor.config, {
-                mode: this.code.language.value || this.languageService.plainText().value,
+                mode,
                 extraKeys: { 'Ctrl-Space': 'autocomplete' },
-                readOnly: this.readonly ? 'nocursor' : false,
-                change: this.changeCode
+                readOnly: this.readonly ? 'nocursor' : false
             })
         }
     }
-
-    changeCode = (code: string) => this.code.code = code
 
     changeLanguage(language: any) {
         const foundLanguage = this.findLanguage(language)
 
         if (foundLanguage) {
-            this.changeMode(foundLanguage)
-            const code = this.codeService.findCodeByLanguage(this.codes, foundLanguage)
+            const code: Code = this.codeService.findCodeByLanguage(this.codes, foundLanguage)
 
-            if (this.usingMock) {
-                this.code.language = foundLanguage
-            } else {
+            this.changeMode(foundLanguage)
+
+            if (code) {
                 this.code = code
+            } else {
+                // code does not exists yet
+                this.code.language = foundLanguage
             }
         }
     }
 
     extractLanguages(): Language[] {
-        if (this.usingMock || this.useAllLanguages) {
+        if (this.useAllLanguages) {
             return languages
         } else {
             return this.codes.map(code => code.language)
@@ -98,5 +100,56 @@ export class CodeBlockComponent implements OnInit {
         }
 
         return null
+    }
+
+    async confirmDeleteCode() {
+        try {
+            const rejected = await swal({
+                title: 'Are you sure?',
+                text: `You won't be able to get back this code.`,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            })
+
+            if (rejected) {
+                this.deleteCode()
+            }
+        } catch (reason) {
+            // TODO: sentry
+        }
+    }
+
+    async deleteCode() {
+        try {
+            const code = this.code
+
+            await this.codeService.delete(code, this.snippet)
+            this.removeCodeFromList(code)
+
+            if (this.isCurrentCode(code)) {
+                this.updateCurrentCode()
+            }
+        } catch (error) {
+            // TODO: sentry
+        }
+    }
+
+    removeCodeFromList(code: Code) {
+        this.codes = this.codes.filter(current => current.id !== code.id)
+        this.languages = this.languages.filter(language => language.id !== code.language.id)
+    }
+
+    isCurrentCode(code: Code) {
+        return code.id === this.code.id
+    }
+
+    updateCurrentCode() {
+        if (this.codes.length > 0) {
+            this.code = this.codes[0]
+        } else {
+            this.code = this.codeService.mockOne()
+        }
     }
 }
