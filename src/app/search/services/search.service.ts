@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable'
 import { ElasticService } from '../../core/services/elastic/elastic.service'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { config } from '../../../config'
+import { environment } from '../../../environments/environment.prod'
 
 @Injectable()
 export class SearchService {
@@ -46,7 +47,7 @@ export class SearchService {
     }
 
     private calculateCanNext(response: Elasticsearch.SearchResponse<any>, page: number): boolean {
-        const indexLastItem = page * config.elastic.sizePerResults
+        const indexLastItem = page * environment.elastic.sizePerResults
 
         return indexLastItem < response.hits.total
     }

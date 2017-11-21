@@ -1,15 +1,17 @@
 import { Client } from 'elasticsearch'
-import { config } from '../../../../config'
 import { Injectable } from '@angular/core'
 import { PaginableResponse } from '../../interfaces/response/paginable-response'
+import { environment } from 'environments/environment'
 
 @Injectable()
 export class ElasticService {
     client = new Client({
-        host: config.elastic.url
+        host: environment.elastic.url
     })
 
     async search(terms: string, page = 1) {
+        const sizePerResults = environment.elastic.sizePerResults
+
         try {
             return await this.client.search({
                 index: 'firebase',
@@ -22,8 +24,8 @@ export class ElasticService {
                             split_on_whitespace: true
                         }
                     },
-                    size: config.elastic.sizePerResults,
-                    from: (page - 1) * config.elastic.sizePerResults
+                    size: sizePerResults,
+                    from: (page - 1) * sizePerResults
                 }
             })
         } catch (error) {
