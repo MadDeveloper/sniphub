@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
 import { RequestService } from '../services/request.service'
@@ -9,28 +9,30 @@ import { Observable } from 'rxjs/Observable'
 import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
 import swal from 'sweetalert2'
+import { CodeService } from '../../code/services/code.service'
 
 @Component({
     selector: 'app-snippet-request',
     templateUrl: './snippet-request.component.html',
     styleUrls: ['./snippet-request.component.scss']
 })
-export class SnippetRequestComponent implements OnInit, OnDestroy {
+export class SnippetRequestComponent implements OnInit {
     request: Request
     snippet: Snippet
+    snippetCodes: Code[]
     author: User
     code: Code
+    codeAlreadyExists = false
+    currentCode: Code
     loaded = false
     accepted = false
     rejected = false
-    private authorObserver: Subscription
-    private codeObserver: Subscription
-    private snippetObserver: Subscription
 
     constructor(
         private requestService: RequestService,
         private snippetService: SnippetService,
-        private route: ActivatedRoute) { }
+        private route: ActivatedRoute,
+        private codeService: CodeService) { }
 
     ngOnInit() {
         this
@@ -38,36 +40,56 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
             .data
             .subscribe((data: { request: Request }) => {
                 this.request = data[0]
-                this.loadCode()
                 this.loadSnippet()
             })
     }
 
-    ngOnDestroy() {
-        this.closeSubscriptions()
-    }
-
-    closeSubscriptions() {
-        this.authorObserver.unsubscribe()
-        this.codeObserver.unsubscribe()
-        this.snippetObserver.unsubscribe()
-    }
-
     loadSnippet() {
-        this.snippetObserver = this.request.snippet.subscribe(snippet => this.snippet = snippet)
+        this.request
+            .snippet
+            .first()
+            .subscribe(snippet => {
+                this.snippet = snippet
+                this.loadSnippetCodes()
+            })
     }
 
-    loadCode() {
-        this.codeObserver = this.request.code.subscribe(code => {
-            this.code = code
-            this.loadAuthor()
-        })
+    loadSnippetCodes() {
+        this.codeService
+            .all(this.snippet)
+            .first()
+            .subscribe(codes => {
+                this.snippetCodes = codes
+                this.loadRequestCode()
+            })
+    }
+
+    loadRequestCode() {
+        this.request
+            .code
+            .first()
+            .subscribe(code => {
+                this.code = code
+                this.detectIfCodeAlreadyExists()
+                this.loadAuthor()
+            })
     }
 
     loadAuthor() {
-        this.authorObserver = this.code.author.subscribe(author => {
-            this.author = author
-            this.loaded = true
+        this.code
+            .author
+            .first()
+            .subscribe(author => {
+                this.author = author
+                this.loaded = true
+            })
+    }
+
+    detectIfCodeAlreadyExists() {
+        this.snippetCodes.forEach(code => {
+            if (this.code.language.text === code.language.text) {
+                this.currentCode = code
+            }
         })
     }
 
@@ -82,15 +104,18 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
             })
 
             if (accepted) {
-                this.accept()
+                await this.accept()
             }
         } catch (reason) {
-            // we do nothing
+            // TODO: sentry
+            // TODO: display UI error
         }
     }
 
-    accept() {
-        this.requestService.accept(this.request, this.code, this.author, <Snippet>this.requestService.storedSnippet)
+    async accept() {
+        const snippet: Snippet = <Snippet>this.requestService.storedSnippet
+
+        await this.requestService.accept(this.request, this.code, this.author, snippet)
         this.accepted = true
     }
 
@@ -105,15 +130,18 @@ export class SnippetRequestComponent implements OnInit, OnDestroy {
             })
 
             if (rejected) {
-                this.reject()
+                await this.reject()
             }
         } catch (reason) {
-            // we do nothing
+            // TODO: sentry
+            // TODO: display UI error
         }
     }
 
-    reject = () => {
-        this.requestService.reject(this.request, this.code, <Snippet>this.requestService.storedSnippet)
+    async reject() {
+        const snippet: Snippet = <Snippet>this.requestService.storedSnippet
+
+        await this.requestService.reject(this.request, this.code, snippet)
         this.rejected = true
     }
 }

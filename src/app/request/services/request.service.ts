@@ -71,6 +71,7 @@ export class RequestService {
     accept(request: Request, code: Code, author: User, snippet: Snippet) {
         return new Promise(async (resolve, reject) => {
             try {
+                // TODO: bulk
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 await this.addContribution(author, snippet)
