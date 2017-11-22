@@ -2,7 +2,7 @@ export const config = {
     snippet: {
         minLengthName: 3,
         maxLengthName: 70,
-        maxLengthDescription: 1000,
+        maxLengthDescription: 500,
         maxLengthDescriptionShort: 100,
         maxPopularDisplayed: 20,
         maxLatestAddedDisplayed: 20,
