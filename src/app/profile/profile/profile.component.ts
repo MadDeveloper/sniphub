@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs/Subscription'
 import { User } from '../../core/interfaces/user/user'
 import { UserService } from '../../core/services/user/user.service'
 import { config } from '../../../config'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
     selector: 'app-profile',
@@ -56,7 +57,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private request: RequestService,
         private userService: UserService,
         private firebaseService: FirebaseService,
-        private cdr: ChangeDetectorRef) { }
+        private cdr: ChangeDetectorRef,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         if (this.authentication.logged) {
@@ -85,6 +87,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             }
         }
 
+        this.changeMeta()
         this.loadSnippets()
     }
 
@@ -104,6 +107,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         if (this.requestsObserver) {
             this.requestsObserver.unsubscribe()
         }
+    }
+
+    changeMeta() {
+        this.meta.setTitle(this.user.username, true)
     }
 
     loadRequests() {

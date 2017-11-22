@@ -3,11 +3,21 @@ import { NotificationsComponent } from './notifications.component'
 import { NgModule } from '@angular/core'
 import { AuthenticationGuard } from '../authentication/guards/authentication.guard'
 import { ProfileCompletedGuard } from '../profile/guards/profile-completed.guard'
+import { MetaGuard } from '@ngx-meta/core';
 
 @NgModule({
-    imports: [ RouterModule.forChild([
-        { path: 'notifications', component: NotificationsComponent, canActivate: [ AuthenticationGuard, ProfileCompletedGuard ] }
+    imports: [RouterModule.forChild([
+        {
+            path: 'notifications',
+            component: NotificationsComponent,
+            canActivate: [AuthenticationGuard, ProfileCompletedGuard, MetaGuard],
+            data: {
+                meta: {
+                    title: 'Notifications'
+                }
+            }
+        }
     ])],
-    exports: [ RouterModule ]
+    exports: [RouterModule]
 })
-export class NotificationRoutingModule { }
+export class NotificationRoutingModule {  }

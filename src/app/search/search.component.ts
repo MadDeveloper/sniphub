@@ -13,6 +13,7 @@ import { SnippetService } from '../snippet/services/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
 import { PaginableResponse } from '../core/interfaces/response/paginable-response'
 import { ScrollService } from '../core/services/scroll/scroll.service'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
   selector: 'app-search',
@@ -34,7 +35,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         private snippetService: SnippetService,
         private searchService: SearchService,
         private router: Router,
-        private scroll: ScrollService) { }
+        private scroll: ScrollService,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         this.observeTerms()
@@ -46,6 +48,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     closeSubscriptions() {
         this.termsObserver.unsubscribe()
+    }
+
+    changeMeta() {
+        this.meta.setTitle(`Search - ${this.terms}`)
     }
 
     observeTerms() {
@@ -60,6 +66,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                         this.firstLoad = true
                         this.terms = terms
                         this.search()
+                        this.changeMeta()
                     }
                 }
             })
