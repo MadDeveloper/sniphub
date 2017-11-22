@@ -21,9 +21,12 @@ before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 before_script:
-- npm install -g @angular/cli
-- npm install @angular/cli
-- npm install -g karma
+- npm install -g @angular/cli karma
 - npm install
-- ng build
-script: karma start karma.conf.js --single-run
+- ng build --prod
+
+# script: karma start karma.conf.js --single-run
+
+env:
+  global:
+    secure: Q4lLBMbKEISm6pPurCUNLyzFPorsNLpmOernWFKPR5o4weYRkZCubPiHSboWFUoohzq+lSEwW3o7/6jspmKpcRqCnjOEMID06dYozFc16/mMzTRmL8luzY5FyKiL2ydHUkwYO2S61gyojnk8s/+rOL1M6QqrVsqz7VmbDecioNPyZaNnrPEiKyVjYYaQ4t1F2fGURkEpK7DHnA234WKwFxbRYxmQTDayy3mmSJKcdF16lRGI3xYeP6HtRGGZ6FE7HXyCHgK067owy1rFwc7Q6cMO7G01F8gXaX8CgTAzvOMdnYJg9Bcf/OuaRhES48DWb4MI9Y3K6gA44vkqxmlr/Pw0LiGge7YNDxMTSz+bg+7WmCOSo8/RfNQV0Z+81qKW7Vu4zhhYOcfT0hk3Ba1TUJOHyzQPd+emhWdop4H+1kOmrOHvU9Xc8nQsbXdAcNAS6ESDbrRZeyoXBBWyCEYJ/gpmXto+Ji9NIGoEv8plx24bNA0hn2DdkEqrQv7qPNOqjF7Kbhr7Qc+0eNNeX2qXvGHpdKxlHaXTyQ/qSyuC1GdLLWsx1FQqioiJxRFQP9pNfGRWOD29KEFGFTfh/DGiYeV/ZJvAPXck6T3xmEzfKKSeTX3zWOmHzp3pjctUoa1zN+9is4lXKRRkggpVsFl/j/vgIuPWGn2z0cJUPgYbghE=
