@@ -23,6 +23,12 @@
                 font-size: 19px;
                 margin-right: 1rem;
             }
+
+            &.github,
+            &.facebook {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
         }
     }
 }

@@ -16,12 +16,13 @@ import { ProfileModule } from './profile/profile.module'
 import { AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { AngularFireAuthModule } from 'angularfire2/auth'
+import { Angulartics2Module } from 'angulartics2'
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga'
+import { MetaModule } from '@ngx-meta/core'
 
 // === configurations
 import { routes } from './app-routing.module'
 import { environment } from '../environments/environment'
-
-// === Services
 
 // === Components
 import { AppComponent } from './app.component'
@@ -54,7 +55,9 @@ import { AuthenticationModule } from './authentication/authentication.module'
         SnippetModule.forRoot(),
         CodeModule.forRoot(),
         ProfileModule.forRoot(),
-        RouterModule.forRoot( routes )
+        RouterModule.forRoot( routes ),
+        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics], environment.angulartics),
+        MetaModule.forRoot()
     ],
     providers: [],
     bootstrap: [ AppComponent ]

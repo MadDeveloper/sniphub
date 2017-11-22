@@ -1,3 +1,24 @@
+<section *ngIf="!logged" class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6 d-flex align-items-center">
+                <div>
+                    <h1 class="title mb-4">Find your dream code</h1>
+                    <h3 class="subtitle mb-4">
+                        SnipHub is a platform created by developers for developers.<br>
+                        Any developer has already develop many times a piece of code.<br>
+                        SnipHub was built to search the snippet you do not want code again.
+                    </h3>
+                    <button id="signin-button" class="btn w-100" (click)="goToSignIn()">Sign in</button>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 d-none d-md-flex align-items-center">
+                <img src="/assets/images/code.png" alt="code" class="w-100">
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="container mt-4">
     <div *ngIf="!loading; else loadingSnippets">
         <div class="row mt-4">

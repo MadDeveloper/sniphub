@@ -1,0 +1,16 @@
+@import '../../assets/styles/variables';
+
+.jumbotron:first-child {
+    margin-top: -26px;
+
+    .subtitle {
+        line-height: 1.3em;
+        font-weight: 300;
+    }
+
+    #signin-button {
+        font-size: 20px;
+        background-color: $primary-color;
+        color: #fff;
+    }
+}

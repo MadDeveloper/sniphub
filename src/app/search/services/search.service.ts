@@ -21,21 +21,17 @@ export class SearchService {
     }
 
     async search(terms: string, page = 1): Promise<PaginableResponse<Snippet[]>> {
-        try {
-            const responseElastic = await this.elastic.search(terms, page)
-            const snippets = this.parse(responseElastic)
-            const response = {
-                hits: snippets,
-                raw: Object.assign({}, responseElastic),
-                total: responseElastic.hits.total,
-                next: () => this.search(terms, ++page),
-                canNext: this.calculateCanNext(responseElastic, page)
-            }
-
-            return response
-        } catch (error) {
-            console.error(`Error when searching with search service.\n${error}`)
+        const responseElastic = await this.elastic.search(terms, page)
+        const snippets = this.parse(responseElastic)
+        const response = {
+            hits: snippets,
+            raw: Object.assign({}, responseElastic),
+            total: responseElastic.hits.total,
+            next: () => this.search(terms, ++page),
+            canNext: this.calculateCanNext(responseElastic, page)
         }
+
+        return response
     }
 
     private parse(response: Elasticsearch.SearchResponse<any>): Snippet[] {

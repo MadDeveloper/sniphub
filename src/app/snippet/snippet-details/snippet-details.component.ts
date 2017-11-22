@@ -19,6 +19,7 @@ import { ScrollService } from '../../core/services/scroll/scroll.service'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { Observable } from 'rxjs/Observable'
 import { FirebaseService } from '../../core/services/firebase/firebase.service'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
   selector: 'app-snippet-details',
@@ -63,7 +64,8 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         private snippetService: SnippetService,
         private requestService: RequestService,
         private scroll: ScrollService,
-        private firebaseService: FirebaseService) { }
+        private firebaseService: FirebaseService,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         this.route
@@ -72,6 +74,7 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
                 this.user = this.authentication.currentUser()
 
                 this.snippet = data[0]
+                this.changeMeta()
 
                 if (this.snippet) {
                     this.description = this.snippet.description
@@ -111,6 +114,11 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         if (this.commentsObserver) {
             this.commentsObserver.unsubscribe()
         }
+    }
+
+    changeMeta() {
+        this.meta.setTitle(`Snippet - ${this.snippet.name}`, true)
+        this.meta.setTag('description', `Snippet ${this.snippet.name}: ${this.snippet.description}`)
     }
 
     loadSnippetAuthor() {

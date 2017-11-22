@@ -13,6 +13,7 @@ import { SnippetService } from '../snippet/services/snippet.service'
 import { Subscription } from 'rxjs/Subscription'
 import { PaginableResponse } from '../core/interfaces/response/paginable-response'
 import { ScrollService } from '../core/services/scroll/scroll.service'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
   selector: 'app-search',
@@ -28,13 +29,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     termsObserver: Subscription
     total: number
     response: PaginableResponse<Snippet[]>
+    error = null
 
     constructor(
         private route: ActivatedRoute,
         private snippetService: SnippetService,
         private searchService: SearchService,
         private router: Router,
-        private scroll: ScrollService) { }
+        private scroll: ScrollService,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         this.observeTerms()
@@ -46,6 +49,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     closeSubscriptions() {
         this.termsObserver.unsubscribe()
+    }
+
+    changeMeta() {
+        this.meta.setTitle(`Search - ${this.terms}`)
     }
 
     observeTerms() {
@@ -60,6 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                         this.firstLoad = true
                         this.terms = terms
                         this.search()
+                        this.changeMeta()
                     }
                 }
             })
@@ -76,16 +84,24 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadingNextPage = true
         }
 
-        this.response = this.response ? (await this.response.next()) as PaginableResponse<Snippet[]> : await this.searchService.search(this.terms)
-        this.total = this.response.total
+        try {
+            this.response = this.response ? (await this.response.next()) as PaginableResponse<Snippet[]> : await this.searchService.search(this.terms)
+            this.total = this.response.total
 
-        if (this.firstLoad) {
-            this.snippets = this.response.hits
+            if (this.firstLoad) {
+                this.snippets = this.response.hits
+                this.loading = false
+                this.firstLoad = false
+            } else {
+                this.snippets.push(...this.response.hits)
+                this.loadingNextPage = false
+            }
+        } catch (error) {
+            // TODO: sentry
+            console.error(`Impossible to performs search with remote ElasticSearch server: ${error}`)
+            this.error = `An error occurs while searching results,
+                if the problem persists please <a href="mailto:contact@sniphub.io">contact us</a>.`
             this.loading = false
-            this.firstLoad = false
-        } else {
-            this.snippets.push(...this.response.hits)
-            this.loadingNextPage = false
         }
     }
 

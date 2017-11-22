@@ -1,21 +1,37 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>SnipHub</title>
     <base href="/">
+    <meta name="description" content="SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever wanted never code again." />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all" />
     <meta name="theme-color" content="#0277BD">
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <!-- Enable bootstrap 4 theme -->
     <script>window.__theme = 'bs4';</script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110069686-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110069686-1');
+
+        // For Angulartics
+        ga = gtag;
+    </script>
 </head>
+
 <body>
     <noscript>
         <h1>Sorry, SnipHub needs JavaScript to be enabled in order tu run.</h1>
     </noscript>
     <app-root></app-root>
 </body>
+
 </html>
