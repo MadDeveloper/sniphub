@@ -162,7 +162,7 @@ export class SnippetService {
             .database
             .object(this.snippetPath(snippet.id))
             .update({
-                description: snippet.description,
+                description: snippet.description || null,
                 name: snippet.name
             })
     }
