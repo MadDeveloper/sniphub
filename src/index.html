@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>SnipHub</title>
@@ -11,11 +12,25 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <!-- Enable bootstrap 4 theme -->
     <script>window.__theme = 'bs4';</script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110069686-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110069686-1');
+
+        // For Angulartics
+        ga = gtag;
+    </script>
 </head>
+
 <body>
     <noscript>
         <h1>Sorry, SnipHub needs JavaScript to be enabled in order tu run.</h1>
     </noscript>
     <app-root></app-root>
 </body>
+
 </html>
