@@ -10,6 +10,7 @@ import { Code } from '../../code/interfaces/code'
 import { User } from '../../core/interfaces/user/user'
 import swal from 'sweetalert2'
 import { CodeService } from '../../code/services/code.service'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
     selector: 'app-snippet-request',
@@ -32,7 +33,8 @@ export class SnippetRequestComponent implements OnInit {
         private requestService: RequestService,
         private snippetService: SnippetService,
         private route: ActivatedRoute,
-        private codeService: CodeService) { }
+        private codeService: CodeService,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         this
@@ -44,6 +46,10 @@ export class SnippetRequestComponent implements OnInit {
             })
     }
 
+    changeMeta() {
+        this.meta.setTitle(`Request for snippet ${this.snippet.name}`, true)
+    }
+
     loadSnippet() {
         this.request
             .snippet
@@ -51,6 +57,7 @@ export class SnippetRequestComponent implements OnInit {
             .subscribe(snippet => {
                 this.snippet = snippet
                 this.loadSnippetCodes()
+                this.changeMeta()
             })
     }
 

@@ -5,13 +5,19 @@ import { AuthenticationGuard } from '../authentication/guards/authentication.gua
 import { SnippetRequestComponent } from './snippet-request/snippet-request.component'
 import { SnippetRequestResolverGuard } from './guards/snippet-request-resolver.guard'
 import { ProfileCompletedGuard } from '../profile/guards/profile-completed.guard'
+import { MetaGuard } from '@ngx-meta/core'
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: 'requests',
             component: SnippetsRequestsComponent,
-            canActivate: [AuthenticationGuard, ProfileCompletedGuard]
+            canActivate: [AuthenticationGuard, ProfileCompletedGuard, MetaGuard],
+            data: {
+                meta: {
+                    title: 'Requests'
+                }
+            }
         },
         {
             path: 'requests/:id',

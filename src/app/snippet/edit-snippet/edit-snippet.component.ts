@@ -10,6 +10,7 @@ import { AuthenticationService } from '../../authentication/services/authenticat
 import { config } from '../../../config'
 import { LanguageService } from '../../code/services/language.service'
 import { languages } from '../../code/services/languages'
+import { MetaService } from '@ngx-meta/core'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -45,7 +46,8 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         private codeService: CodeService,
         private router: Router,
         private authentication: AuthenticationService,
-        private language: LanguageService) { }
+        private language: LanguageService,
+        private readonly meta: MetaService) { }
 
     ngOnInit() {
         if (this.route.snapshot.params['id']) {
@@ -56,12 +58,14 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
                     this.snippet = data[0]
                     this.snapshot = Object.assign({}, this.snippet)
                     this.loadCodes()
+                    this.changeMeta()
                 })
         } else {
             this.editing = false
             this.snippet = this.snippetService.mockOne()
             this.codes = [this.codeService.mockOne()]
             this.loaded = true
+            this.changeMeta()
         }
     }
 
@@ -73,6 +77,18 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
         if (this.codesObserver) {
             this.codesObserver.unsubscribe()
         }
+    }
+
+    changeMeta() {
+        let title = ''
+
+        if (this.editing) {
+            title = `Editing - ${this.snippet.name}`
+        } else {
+            title = 'Creating new snippet'
+        }
+
+        this.meta.setTitle(title, true)
     }
 
     extractLanguages(): Language[] {
