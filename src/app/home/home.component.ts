@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     popularSnippetsObserver: Subscription
     loading = false
     activeTab = 'latestAdded'
+    logged = false
 
     constructor(
         private router: Router,
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private authentication: AuthenticationService) { }
 
     ngOnInit() {
+        this.logged = this.authentication.logged
         this.loadSnippets()
     }
 
@@ -40,6 +42,11 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (this.popularSnippetsObserver) {
             this.popularSnippetsObserver.unsubscribe()
         }
+    }
+
+    goToSignIn() {
+        this.router
+            .navigateByUrl('/signin')
     }
 
     loadSnippets() {

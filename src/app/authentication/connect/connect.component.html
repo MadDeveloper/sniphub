@@ -43,7 +43,7 @@
                 <div class="row social-connect">
                     <div class="col-md-6 col-12 my-1">
                         <button (click)="githubLogin()" class="btn github w-100">
-                            <i class="fa fa-github-square fa-2" aria-hidden="true"></i>Connect with GitHub
+                            <i class="fa fa-github-square fa-2" aria-hidden="true"></i>Sign in with GitHub
                         </button>
                     </div>
                     <!-- <div class="col-md-4 col-12 my-1">
@@ -53,15 +53,15 @@
                     </div> -->
                     <div class="col-md-6 col-12 my-1">
                         <button (click)="facebookLogin()" class="btn facebook w-100">
-                            <i class="fa fa-facebook-square fa-2" aria-hidden="true"></i>Connect with Facebook
+                            <i class="fa fa-facebook-square fa-2" aria-hidden="true"></i>Sign in with Facebook
                         </button>
                     </div>
                 </div>
-                <div *ngIf="!inError;else errorMessage" class="row mt-3">
+                <!-- <div *ngIf="!inError;else errorMessage" class="row mt-3">
                     <div class="col">
                         <div class="alert alert-info mb-0"><i class="fa fa-info-circle text bold" aria-hidden="true"></i>If you share the same email address between two or more providers, yours accounts will be linked.</div>
                     </div>
-                </div>
+                </div> -->
                 <ng-template #errorMessage>
                     <div class="row mt-3">
                         <div class="col">
