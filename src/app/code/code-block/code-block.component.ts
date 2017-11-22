@@ -58,7 +58,7 @@ export class CodeBlockComponent implements OnInit {
             this.config = Object.assign({}, this.codeEditor.config, {
                 mode,
                 extraKeys: { 'Ctrl-Space': 'autocomplete' },
-                readOnly: this.readonly ? 'nocursor' : false
+                readOnly: !!this.readonly
             })
         }
     }
