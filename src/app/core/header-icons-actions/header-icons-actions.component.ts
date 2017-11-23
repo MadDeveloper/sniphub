@@ -35,16 +35,18 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             .subscribe((event: NavigationEnd) => this.checkAuthentication())
 
         if (this.authentication.logged) {
-            this.loadNotifications()
-            this.loadRequests()
+            this.watchNotifications()
+            this.watchRequests()
         }
     }
 
-    loadNotifications() {
-        this.notificationObserver = this
-            .notification
-            .unread(this.user)
-            .subscribe(this.checkUnreadNotifications)
+    watchNotifications() {
+        if (!this.notificationObserver) {
+            this.notificationObserver = this
+                .notification
+                .unread(this.user)
+                .subscribe(this.checkUnreadNotifications)
+        }
     }
 
     ngOnDestroy() {
@@ -73,13 +75,22 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         this.loggedObserver = this
             .authentication
             .logged$
-            .subscribe(logged => this.logged = logged)
+            .subscribe(logged => {
+                if (logged !== this.logged && !this.logged) {
+                    this.watchNotifications()
+                    this.watchRequests()
+                }
+
+                this.logged = logged
+            })
     }
 
-    loadRequests() {
-        this.requestsObserver = this
-            .request
-            .all(this.user)
-            .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
+    watchRequests() {
+        if (!this.requestsObserver) {
+            this.requestsObserver = this
+                .request
+                .all(this.user)
+                .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
+        }
     }
 }
