@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "snipz"
+    "name": "sniphub"
   },
   "apps": [
     {
@@ -35,6 +35,7 @@
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
+        "staging": "environments/environment.staging.ts",
         "prod": "environments/environment.prod.ts"
       }
     }

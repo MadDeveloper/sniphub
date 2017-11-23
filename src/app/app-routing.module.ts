@@ -13,7 +13,7 @@ export const routes: Routes = [
         data: {
             meta: {
                 title: 'Home',
-                description: 'SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever wanted never code again.'
+                description: 'SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever dream never code again.'
             }
         }
     },

@@ -131,9 +131,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
             this.snippetsAuthorLoaded = true
             this.countLikes()
 
-            if (this.snippetsContributorLoaded) {
-                this.countCodes()
-            }
+            // TODO: can't use codesCounter
+            // if (this.snippetsContributorLoaded) {
+            //     this.countCodes()
+            // }
         })
     }
 

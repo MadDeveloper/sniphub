@@ -96,7 +96,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     seeRequest(notification: Notification, event: Event) {
         event.preventDefault()
         this.request.storedSnippet = { id: notification.snippetId }
-        this.router.navigate([`/requests/${notification.requestId}`])
+        this.router.navigateByUrl(`/requests/${notification.requestId}`)
     }
 
     @HostListener('window:scroll', ['$event'])
