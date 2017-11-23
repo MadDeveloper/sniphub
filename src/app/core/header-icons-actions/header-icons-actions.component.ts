@@ -13,7 +13,7 @@ import { User } from '../interfaces/user/user'
     styleUrls: ['./header-icons-actions.component.scss']
 })
 export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
-    logged: boolean
+    logged = false
     hasNotifications = false
     notificationObserver: Subscription
     hasPendingRequests = false
@@ -76,7 +76,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             .authentication
             .logged$
             .subscribe(logged => {
-                if (logged !== this.logged && !this.logged) {
+                if (logged !== this.logged && false === this.logged) {
                     this.watchNotifications()
                     this.watchRequests()
                 }
