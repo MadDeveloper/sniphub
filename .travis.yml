@@ -14,12 +14,14 @@ deploy:
     token:
       secure: "Q4lLBMbKEISm6pPurCUNLyzFPorsNLpmOernWFKPR5o4weYRkZCubPiHSboWFUoohzq+lSEwW3o7/6jspmKpcRqCnjOEMID06dYozFc16/mMzTRmL8luzY5FyKiL2ydHUkwYO2S61gyojnk8s/+rOL1M6QqrVsqz7VmbDecioNPyZaNnrPEiKyVjYYaQ4t1F2fGURkEpK7DHnA234WKwFxbRYxmQTDayy3mmSJKcdF16lRGI3xYeP6HtRGGZ6FE7HXyCHgK067owy1rFwc7Q6cMO7G01F8gXaX8CgTAzvOMdnYJg9Bcf/OuaRhES48DWb4MI9Y3K6gA44vkqxmlr/Pw0LiGge7YNDxMTSz+bg+7WmCOSo8/RfNQV0Z+81qKW7Vu4zhhYOcfT0hk3Ba1TUJOHyzQPd+emhWdop4H+1kOmrOHvU9Xc8nQsbXdAcNAS6ESDbrRZeyoXBBWyCEYJ/gpmXto+Ji9NIGoEv8plx24bNA0hn2DdkEqrQv7qPNOqjF7Kbhr7Qc+0eNNeX2qXvGHpdKxlHaXTyQ/qSyuC1GdLLWsx1FQqioiJxRFQP9pNfGRWOD29KEFGFTfh/DGiYeV/ZJvAPXck6T3xmEzfKKSeTX3zWOmHzp3pjctUoa1zN+9is4lXKRRkggpVsFl/j/vgIuPWGn2z0cJUPgYbghE="
     project: "sniphub-prod"
+    skip_cleanup: true
     on:
       branch: master
   - provider: firebase
     token:
       secure: "Loe4gGwadYi1sUtVQuiDhJh4Bha7RHBgS48hWflTg1678Abyfbk3dxzZSPUo18H5MlavdLXr/71AntSjmIZJj1yYQrXh6XVskf8pjhjd0JdzLJ+zQTc4FN3sp7oQHusjFUvD/W5tg/wklD22+ELb1pvn1hgaKjNrSg9OyDjk9r+Aejk4+YPwT2bu1J7wohKatmoIsIppuia94z8glySVXaCdY9muTRgshxuCFg/KVRxaFjZYumNvPxhtv4r6BF2YvJliAXOdjVUOq5C1Hu0Jxgv9gh/wzoXohEP25HrHZiznXDlaSb/UB7tYWDwydFjqrYwVDRn1Wf3uc9pHrd9562gVVfnWcyPTyYSHXAm2VWg8t8bAfYVGZhCggkXJzdXOMQO02pb9ArbB22YRQWgEHD+OYW5HMYqSAq7ZKPCdc38a3gQVh4tu/PMEPV9GmfqGRAPCEjWXJxqFiPNHI2GDjAaEmLz74d/EAAfsAR/mwxxe2s/vldpED/2Mal4zgH3IjhJFMY8S7t88LJJkemKOzAoAXeKvePANjnDGlBRx6LmsDVt9k8BTTYIcyJKtT8ltlalVlvD1MNGWrR3d9JoIH7UO4USl2TE6L5JBoteK/yqAPUP6i5YvHOTrRQjbamp75rhumPv0j1YFJaY7HyvtHER98Sw/82DAWjMcaQuWOEA="
     project: "snipz-dev"
+    skip_cleanup: true
     on:
       branch: staging
 
