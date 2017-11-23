@@ -56,16 +56,7 @@ export class SnippetService {
                     limitToLast: config.snippet.maxPopularDisplayed
                 }
             })
-            .map((snippets: any[]) => this.forgeAll(snippets))
-            .map((snippets: Snippet[]) => snippets.sort((snippetA: Snippet, snippetB: Snippet): number => {
-                if (snippetA.date > snippetB.date) {
-                    return 1
-                } else if (snippetA.date < snippetB.date) {
-                    return -1
-                }
-
-                return 0
-            }))
+            .map((snippets: any[]) => this.forgeAll(snippets).reverse())
             .do(snippets => {
                 this.cache.popular = snippets
                 this.cache.popularCacheEndValid = Date.now() + config.snippet.popularCacheDuration
