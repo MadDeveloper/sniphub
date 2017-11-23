@@ -1,5 +1,5 @@
 {
-  "name": "snipz",
+  "name": "sniphub",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -7,7 +7,7 @@
     "start": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "build:prod": "ng build --prod --aot",
-    "test": "ng test",
+    "test": "echo \"Warning: no test specified\" && exit 0",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "deploy": "npm run build:prod && firebase deploy",
@@ -33,7 +33,7 @@
     "codemirror": "^5.29.0",
     "core-js": "^2.5.0",
     "elasticsearch": "^13.3.1",
-    "firebase": "^4.3.0",
+    "firebase": "4.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.2.1",
     "lodash-es": "^4.17.4",

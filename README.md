@@ -1,8 +1,8 @@
-# Snipz ![build](https://travis-ci.org/MadDeveloper/snipz.svg?branch=staging)
+# SnipHub
 
 # Application
 
-Develop with Angular 4 framework.
+Developed with Angular 4 framework.
 
 ## Commands
 
