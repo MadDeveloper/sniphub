@@ -6,12 +6,12 @@
 export const environment = {
     production: false,
     firebase: {
-        apiKey: 'AIzaSyDkAAFfXsr3wvzVem2uQBd3sWGWPyunY8M',
-        authDomain: 'snipz-dev.firebaseapp.com',
-        databaseURL: 'https://snipz-dev.firebaseio.com',
-        projectId: 'snipz-dev',
-        storageBucket: 'snipz-dev.appspot.com',
-        messagingSenderId: '750034482061'
+        apiKey: 'AIzaSyAfABMXsnNiSjKeL-ohZ3PpOSn42BifMTs',
+        authDomain: 'sniphub-staging.firebaseapp.com',
+        databaseURL: 'https://sniphub-staging.firebaseio.com',
+        projectId: 'sniphub-staging',
+        storageBucket: 'sniphub-staging.appspot.com',
+        messagingSenderId: '539914875775'
     },
     elastic: {
         url: 'https://5s886dfw:z7gjc4csm6ylm3zo@pine-2241382.us-east-1.bonsaisearch.net',
