@@ -10,13 +10,22 @@ export class AuthenticationGuard implements CanActivate {
         private router: Router) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (this.authentication.logged) {
+        const loginPage = '/signin' === state.url
+        const logged = this.authentication.logged
+
+        if (logged && loginPage) {
+            this.router.navigateByUrl('/')
+
+            return false
+        }
+
+        if ((logged && !loginPage) || (!logged && loginPage)) {
             return true
         }
 
         this.authentication.redirectUrl = state.url
         this.router.navigate(['/signin'])
 
-        return false
+        return true
     }
 }

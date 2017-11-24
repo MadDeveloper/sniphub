@@ -1,15 +1,16 @@
-import { RouterModule } from '@angular/router'
-import { NgModule } from '@angular/core'
+import { AuthenticationGuard } from './guards/authentication.guard'
 import { ConnectComponent } from './connect/connect.component'
-import { SignupComponent } from './signup/signup.component'
 import { MetaGuard } from '@ngx-meta/core'
+import { NgModule } from '@angular/core'
+import { RouterModule } from '@angular/router'
+import { SignupComponent } from './signup/signup.component'
 
 @NgModule({
     imports: [RouterModule.forChild([
         {
             path: 'signin',
             component: ConnectComponent,
-            canActivate: [MetaGuard],
+            canActivate: [MetaGuard, AuthenticationGuard],
             data: {
                 meta: {
                     title: 'Sign in'

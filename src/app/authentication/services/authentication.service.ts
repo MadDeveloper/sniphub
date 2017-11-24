@@ -80,7 +80,7 @@ export class AuthenticationService {
         this.logged = true
         this.userChanged()
         this.loggedChanged()
-        this.router.navigate([url])
+        this.router.navigateByUrl(url)
         this.redirectUrl = null
     }
 
