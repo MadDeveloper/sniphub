@@ -67,7 +67,7 @@ export class CodeBlockComponent implements OnInit {
         const foundLanguage = this.findLanguage(language)
 
         if (foundLanguage) {
-            const code: Code = this.codeService.findCodeByLanguage(this.codes, foundLanguage)
+            const code: Code = this.codeService.findCodeByLanguageWithProvidedList(this.codes, foundLanguage)
 
             this.changeMode(foundLanguage)
 

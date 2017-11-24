@@ -71,13 +71,24 @@ export class RequestService {
     accept(request: Request, code: Code, author: User, snippet: Snippet) {
         return new Promise(async (resolve, reject) => {
             try {
+                const existingCode = await this.code.findCodeByLanguage(code, snippet)
+
+                if (existingCode) {
+                    await this.code.delete(existingCode, snippet)
+                }
+
                 // TODO: bulk
                 await this.database.object(this.code.codePath(code.id, snippet)).update({ validated: true })
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 await this.addContribution(author, snippet)
-                await this.snippet.increaseCodesCounter(snippet)
+
+                if (!existingCode) {
+                    await this.snippet.increaseCodesCounter(snippet)
+                }
+
                 resolve()
             } catch (error) {
+                // TODO: sentry
                 reject(error)
             }
         })
@@ -90,6 +101,7 @@ export class RequestService {
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 resolve()
             } catch (error) {
+                // TODO: sentry
                 reject(error)
             }
         })
