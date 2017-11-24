@@ -17,7 +17,7 @@ import { AngularFireModule } from 'angularfire2'
 import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { AngularFireAuthModule } from 'angularfire2/auth'
 import { Angulartics2Module } from 'angulartics2'
-import { Angulartics2GoogleAnalytics } from 'angulartics2/ga'
+import { Angulartics2GoogleTagManager } from 'angulartics2/gtm'
 import { MetaModule } from '@ngx-meta/core'
 
 // === configurations
@@ -56,7 +56,7 @@ import { AuthenticationModule } from './authentication/authentication.module'
         CodeModule.forRoot(),
         ProfileModule.forRoot(),
         RouterModule.forRoot( routes ),
-        Angulartics2Module.forRoot([Angulartics2GoogleAnalytics], environment.angulartics),
+        Angulartics2Module.forRoot([Angulartics2GoogleTagManager], environment.angulartics),
         MetaModule.forRoot()
     ],
     providers: [],

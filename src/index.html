@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>SnipHub</title>
     <base href="/">
-    <meta name="description" content="SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever dream never code again." />
+    <meta name="description" content="SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever dream never code again."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all" />
     <meta name="theme-color" content="#0277BD">
@@ -13,22 +15,36 @@
     <!-- Enable bootstrap 4 theme -->
     <script>window.__theme = 'bs4';</script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110069686-1"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110069686-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'UA-110069686-1');
-
-        // For Angulartics
-        ga = gtag;
-    </script>
+    </script> -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MKPCS4M');</script>
+    <!-- End Google Tag Manager -->
 </head>
+
 <body>
     <noscript>
-        <h1>Sorry, SnipHub needs JavaScript to be enabled in order tu run.</h1>
+        <h1>Find your dream code</h1>
+        <h2>
+            SnipHub is a platform created by developers for developers.
+            <br> Any developer has already written many times a piece of code.
+            <br> It makes easy to search the snippet you do not want to code anymore.
+        </h2>
+        <p>Sorry, SnipHub needs JavaScript to be enabled in order tu run.</p>
+
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MKPCS4M" height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <app-root></app-root>
 </body>
+
 </html>
