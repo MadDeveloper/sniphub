@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
-import { Angulartics2GoogleAnalytics } from 'angulartics2/ga'
+import { Angulartics2GoogleTagManager } from 'angulartics2/gtm'
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/ga'
 export class AppComponent implements OnInit {
     constructor(
         private router: Router,
-        angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics) { }
+        angulartics2GoogleTagManager: Angulartics2GoogleTagManager) { }
 
     ngOnInit() {
         this.router
