@@ -12,10 +12,5 @@ export const environment = {
         url: 'https://ricvk5wr:n5qqept7ugxexcu4@ash-2842286.eu-west-1.bonsaisearch.net',
         sizePerResults: 20
     },
-    angulartics: {
-        developerMode: false,
-        pageTracking: {
-            clearIds: true,
-        }
-    }
+    angulartics: {}
 }
