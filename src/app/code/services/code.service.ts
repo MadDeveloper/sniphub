@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core'
-import { LanguageService } from './language.service'
-import { GuidService } from '../../core/services/guid/guid.service'
-import { Code } from '../interfaces/code'
-import { Snippet } from '../../snippet/interfaces/snippet'
-import { UserService } from '../../core/services/user/user.service'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { User } from '../../core/interfaces/user/user'
-import { languages } from './languages'
-import { Observable } from 'rxjs/Observable'
-import { Language } from '../interfaces/language'
-import find from 'lodash-es/find'
 import * as firebase from 'firebase/app'
+import find from 'lodash-es/find'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { Code } from '../interfaces/code'
+import { GuidService } from '../../core/services/guid/guid.service'
+import { Injectable } from '@angular/core'
+import { Language } from '../interfaces/language'
+import { languages } from './languages'
+import { LanguageService } from './language.service'
+import { Observable } from 'rxjs/Observable'
+import { Snippet } from '../../snippet/interfaces/snippet'
+import { User } from '../../core/interfaces/user/user'
+import { UserService } from '../../core/services/user/user.service'
 
 @Injectable()
 export class CodeService {
@@ -124,8 +124,28 @@ export class CodeService {
         return codeForDatabase
     }
 
-    findCodeByLanguage(codes: Code[], language: Language) {
+    findCodeByLanguageWithProvidedList(codes: Code[], language: Language) {
         return find(codes, current => current.language.value === language.value)
+    }
+
+    findCodeByLanguage(code: Code, snippet: Snippet) {
+        return this
+            .database
+            .list(this.codesSnippetPath(snippet), {
+                query: {
+                    orderByChild: 'language',
+                    equalTo: code.language.value
+                }
+            })
+            .map((codesFound: any[]) => {
+                if (codesFound.length > 0) {
+                    return this.forge(codesFound[0])
+                }
+
+                return null
+            })
+            .first()
+            .toPromise()
     }
 
     filterRequestsNotValidated(codes: Code[]): Code[] {

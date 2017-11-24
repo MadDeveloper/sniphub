@@ -29,24 +29,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
-        this.router
-            .events
-            .filter(event => event instanceof NavigationEnd)
-            .subscribe((event: NavigationEnd) => this.checkAuthentication())
-
-        if (this.authentication.logged) {
-            this.watchNotifications()
-            this.watchRequests()
-        }
-    }
-
-    watchNotifications() {
-        if (!this.notificationObserver) {
-            this.notificationObserver = this
-                .notification
-                .unread(this.user)
-                .subscribe(this.checkUnreadNotifications)
-        }
+        this.watchAuthentication()
     }
 
     ngOnDestroy() {
@@ -62,27 +45,20 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             this.loggedObserver.unsubscribe()
         }
 
-        if (this.requestsObserver) {
+        if (this.requestsObserver)  {
             this.requestsObserver.unsubscribe()
         }
     }
 
-    checkUnreadNotifications = (notifications: Notification[]) => {
+    checkUnreadNotifications(notifications: Notification[]) {
         this.hasNotifications = notifications.length > 0
     }
 
-    checkAuthentication() {
+    watchAuthentication() {
         this.loggedObserver = this
             .authentication
             .logged$
-            .subscribe(logged => {
-                if (logged !== this.logged && false === this.logged) {
-                    this.watchNotifications()
-                    this.watchRequests()
-                }
-
-                this.logged = logged
-            })
+            .subscribe(logged => this.logged = logged)
     }
 
     watchRequests() {
@@ -90,7 +66,24 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             this.requestsObserver = this
                 .request
                 .all(this.user)
-                .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
+                .subscribe(requests => {
+                    if (this.logged) {
+                        this.hasPendingRequests = requests && requests.length > 0
+                    }
+                })
+        }
+    }
+
+    watchNotifications() {
+        if (!this.notificationObserver) {
+            this.notificationObserver = this
+                .notification
+                .unread(this.user)
+                .subscribe(notifications => {
+                    if (this.logged) {
+                        this.checkUnreadNotifications(notifications)
+                    }
+                })
         }
     }
 }
