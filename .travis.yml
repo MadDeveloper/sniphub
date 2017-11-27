@@ -6,7 +6,7 @@ node_js:
 
 branches:
   only:
-    - master
+    - production
     - staging
 
 deploy:
@@ -16,7 +16,7 @@ deploy:
     project: "sniphub-prod"
     skip_cleanup: true
     on:
-      branch: master
+      branch: production
   - provider: firebase
     token:
       secure: "FDDcIim5pFhxlUth2pMNwrd7eRPUxs/D/prhLNpblPGDIUMHuQgObjtwcBcbtJXo86L9PWIvJieGMKvVgDSFerhxPVBTcm/ZJ5tiPPiV4UB+Bwyu8xBzV5ikxsecG7Mb6Gg03ql3lXG/RMjM78eZbLyUcQGg2PYYV1gWucrcijF/M/YKCaEhNMT4/ZcYrZYSdBTBO59TdgWNjM4rXuN34eObQp8ta+oUC4cLHmvibO5JvunZHdKW25m9V7ai9AJN0OcyVOYql3ZTMSWl26MRDDNEzvVtBk4jEWlPYKw7qKv0NsDok9n6Qnx8PGOad9OTIyJAQFC6wBWNleeX3fXRf0rALKUhZHVS7LMzX/goyi+dFORRiWNiwHIOWpWL7QkZJ1WUwt2/HLuc+6OhFv7D1eN3uTnu52GIKvyRgLK6FLNWMw1HzckfZUDY/p89MMO37os0zEr+s/tndmEXR8gEOsR/WIGpFtfOw2aw4yiFI1KG4XGqQbEnmG07aGZPiKl2WupvBQ1XCOSzivr0n1BUsGmXa7QJsM0bcqtWrsKKgM7vVDKBx1r0/p4dk9yNoKld/NubERdvMI7M2qAG4sUSsKKT8Rvqw/hj83VIuwBYIDm75DJxwXYEcD4/OUgTqitHS9Ck+91vIpgzAF7NUy82EF2YskWDxUAcIhkUtqp19fo="
