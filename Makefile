@@ -1,5 +1,5 @@
 build:
-ifeq ($(TRAVIS_BRANCH),master)
+ifeq ($(TRAVIS_BRANCH),production)
 	ng build --prod
 else
 	ng build --prod --env=staging
