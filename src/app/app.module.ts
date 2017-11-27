@@ -38,7 +38,7 @@ import { AuthenticationModule } from './authentication/authentication.module'
         ContactComponent
     ],
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({appId: 'sniphub'}),
         HttpModule,
         FormsModule,
         AngularFireModule.initializeApp(environment.firebase),
