@@ -84,15 +84,14 @@
                 <hr>
 
                 <div class="mt-3">
-                    <!-- AUTHOR SNIPPETS -->
-                    <div *ngIf="activeTab === 'author'">
-                        <div *ngIf="ownProfile()" class="row pt-2 pb-4">
-                            <div class="col">
-                                <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
-                            </div>
+                    <div *ngIf="ownProfile()" class="row pt-2 pb-4">
+                        <div class="col">
+                            <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
                         </div>
-                        <app-snippets-list [snippets]="authorSnippets"></app-snippets-list>
                     </div>
+
+                    <!-- AUTHOR SNIPPETS -->
+                    <app-snippets-list *ngIf="activeTab === 'author'" [snippets]="authorSnippets"></app-snippets-list>
 
                     <!-- CONTRIBUTOR SNIPPETS -->
                     <app-snippets-list *ngIf="activeTab === 'contributor'" [snippets]="contributorSnippets"></app-snippets-list>
