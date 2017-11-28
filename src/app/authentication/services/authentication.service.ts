@@ -79,7 +79,7 @@ export class AuthenticationService {
 
         this.logged = true
         this.userChanged()
-        this.loggedChanged()
+        this.loggedChanged() // FIXME: stream is blocked after this line if the user login after page loaded (because of header-icons component, with watchers)
         this.router.navigateByUrl(url)
         this.redirectUrl = null
     }
