@@ -7,7 +7,7 @@ import * as firebase from 'firebase/app'
 import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { Subscriber } from 'rxjs/Subscriber'
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs/Subject'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { StorageService } from '../../core/services/storage/storage.service'
 
@@ -19,6 +19,7 @@ export class AuthenticationService {
     logged: boolean
     logged$: BehaviorSubject<boolean>
     fails$: Subject<any>
+    providerData: firebase.UserInfo
     private storageNamespace = 'authentication'
 
     constructor(
@@ -29,6 +30,7 @@ export class AuthenticationService {
 
         this.logged = storage.find(this.storageNamespace, 'logged') || false
         this.user = storage.find(this.storageNamespace, 'user') || null
+        this.providerData = storage.find(this.storageNamespace, 'providerData') || null
         this.fails$ = new Subject()
         this.logged$ = new BehaviorSubject<boolean>(this.logged)
         this.user$ = new BehaviorSubject<User>(this.user)
@@ -39,7 +41,7 @@ export class AuthenticationService {
 
     private authEventReceived = userFirebase => {
         if (!this.logged && userFirebase && Array.isArray(userFirebase.providerData) && userFirebase.providerData.length > 0) {
-            const providerData = userFirebase.providerData[0]
+            const providerData: firebase.UserInfo = userFirebase.providerData[0]
 
             if (!providerData.email) {
                 this.failsSignIn(
@@ -47,12 +49,13 @@ export class AuthenticationService {
                     Please check if you have authorized the application to access your informations`)
             }
 
+            this.providerData = providerData
             this.userService
                 .createIfNotExists({
                     id: userFirebase.uid,
                     email: providerData.email,
                     username: null,
-                    avatar: providerData.photoURL,
+                    avatar: this.userService.photoURL(providerData.photoURL, providerData.uid),
                     github: null
                 })
                 .subscribe(async (userPromise: Promise<User>) => {
@@ -86,7 +89,8 @@ export class AuthenticationService {
 
     private userChanged() {
         this.storage.update(this.storageNamespace, {
-            user: this.user
+            user: this.user,
+            providerData: this.providerData
         })
         this.user$.next(this.user)
     }
@@ -150,5 +154,13 @@ export class AuthenticationService {
     reloadUser(user: User) {
         this.user = Object.assign({}, user)
         this.userChanged()
+    }
+
+    isAuthenticatedWithFacebook() {
+        return this.providerData && 'facebook.com' === this.providerData.providerId
+    }
+
+    isAuthenticatedWithGitHub() {
+        return this.providerData && 'github.com' === this.providerData.providerId
     }
 }

@@ -191,9 +191,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     syncAvatar() {
         const firebaseUser = this.firebaseService.currentUser()
+        const newPhotoURL = this.userService.photoURL(firebaseUser.photoURL, this.authentication.providerData.uid)
 
-        if (this.user.avatar !== firebaseUser.photoURL) {
-            this.user.avatar = firebaseUser.photoURL
+        if (this.user.avatar !== newPhotoURL) {
+            this.user.avatar = newPhotoURL
             this.userService.changeAvatar(this.user)
             this.authentication.reloadUser(this.user)
         }
