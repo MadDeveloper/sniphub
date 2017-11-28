@@ -126,7 +126,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     loadAuthorSnippets() {
-        this.snippetsAuthorObserver = this.snippet.author(this.user).subscribe(snippets => {
+        this.snippetsAuthorObserver = this.snippet.author(this.user).first().subscribe(snippets => {
             this.authorSnippets = snippets
             this.snippetsAuthorLoaded = true
             this.countLikes()
@@ -135,18 +135,31 @@ export class ProfileComponent implements OnInit, OnDestroy {
             // if (this.snippetsContributorLoaded) {
             //     this.countCodes()
             // }
+
+            if (this.snippetsContributorLoaded) {
+                this.displayCorrectTab()
+            }
         })
     }
 
     loadContributorSnippets() {
-        this.snippetsContributorObserver = this.snippet.contributor(this.user).subscribe(snippets => {
+        this.snippetsContributorObserver = this.snippet.contributor(this.user).first().subscribe(snippets => {
             this.contributorSnippets = snippets
             this.snippetsContributorLoaded = true
 
             if (this.snippetsAuthorLoaded) {
                 this.countCodes()
+                this.displayCorrectTab()
             }
         })
+    }
+
+    displayCorrectTab() {
+        if (0 === this.authorSnippets.length && this.contributorSnippets.length > 0) {
+            this.activeTab = 'contributor'
+        } else {
+            this.activeTab = 'author'
+        }
     }
 
     countLikes() {
