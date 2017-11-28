@@ -130,6 +130,18 @@ export class UserService {
         }
     }
 
+    photoURL(url, providerUid) {
+        if (this.isFacebookPhoto(url)) {
+            return `http://graph.facebook.com/${providerUid}/picture?width=800&height=800`
+        }
+
+        return url
+    }
+
+    private isFacebookPhoto(url: string) {
+        return url.includes('fbcdn')
+    }
+
     private usersPath() {
         return `/users`
     }

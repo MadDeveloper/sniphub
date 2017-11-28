@@ -45,6 +45,8 @@
             <button class="btn outlined success mr-3" (click)="confirmAccept()">Accept</button>
             <button class="btn outlined danger" (click)="confirmReject()">Reject</button>
         </div>
+    </div>
+    <div class="row">
         <div class="col">
             <div *ngIf="accepted" class="alert alert-success mb-0" role="alert">
                 <i class="fa fa-check" aria-hidden="true"></i> You have accepted this code request.
