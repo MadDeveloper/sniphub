@@ -57,28 +57,16 @@
                         </button>
                     </div>
                 </div>
-                <!-- <div *ngIf="!inError;else errorMessage" class="row mt-3">
-                    <div class="col">
-                        <div class="alert alert-info mb-0"><i class="fa fa-info-circle text bold" aria-hidden="true"></i>If you share the same email address between two or more providers, yours accounts will be linked.</div>
-                    </div>
-                </div> -->
-                <ng-template #errorMessage>
+                <div *ngIf="inError">
                     <div class="row mt-3">
                         <div class="col">
                             <div class="alert alert-danger mb-0">
-                                <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ error }}.
+                                <i class="fa fa-exclamation-triangle text bold" aria-hidden="true"></i>{{ error }}
                             </div>
                         </div>
                     </div>
-                </ng-template>
+                </div>
             </form>
         </div>
     </div>
-    <!--<div class="row">
-        <div class="col segment mt-2 py-2 text-center">
-            <p>
-                Don't have an account? <a routerLink="/signup">Sign Up </a>
-            </p>
-        </div>
-    </div>-->
 </div>

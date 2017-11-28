@@ -107,11 +107,11 @@ export class AuthenticationService {
     }
 
     // login(email, password) {
-        // const url = this.redirectUrl || '/'
-        // this.afAuth.auth.createUserWithEmailAndPassword('test@est.fr', '123regeg')
-        // this.afAuth.auth.signInWithEmailAndPassword('test@est.fr', '123regeg')
-        // this.user = user
-        // this.router.navigate([url])
+    //     const url = this.redirectUrl || '/'
+    //     this.afAuth.auth.createUserWithEmailAndPassword('test@est.fr', '123regeg')
+    //     this.afAuth.auth.signInWithEmailAndPassword('test@est.fr', '123regeg')
+    //     this.user = user
+    //     this.router.navigate([url])
     // }
 
     async loginGoogle() {
@@ -124,7 +124,7 @@ export class AuthenticationService {
 
     async loginGitHub() {
         try {
-            await this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider())
+            await firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider())
         } catch (error) {
             this.failsSignIn(error)
         }
@@ -132,9 +132,9 @@ export class AuthenticationService {
 
     async loginFacebook() {
         try {
-            await this.afAuth.auth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
+            await firebase.auth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
         } catch (error) {
-            this.failsSignIn(error)
+            this.failsSignIn(error.message)
         }
     }
 

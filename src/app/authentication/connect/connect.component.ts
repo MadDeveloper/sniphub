@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { Router } from '@angular/router'
-import { User } from '../../core/interfaces/user/user'
-import { AuthenticationService } from '../services/authentication.service'
-
 import { AngularFireAuth } from 'angularfire2/auth'
+import { AuthenticationService } from '../services/authentication.service'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
+import { Router } from '@angular/router'
 import { Subscription } from 'rxjs/Subscription'
+import { User } from '../../core/interfaces/user/user'
+
 
 @Component({
     selector: 'app-connect',
@@ -24,30 +24,22 @@ export class ConnectComponent implements OnInit, OnDestroy {
 
     }
 
-
-    // let provider = new firebase.auth.GoogleAuthProvider()
     ngOnInit() {
-        this.authFailsObserver = this.authentication.fails$.subscribe(cause => {
-            this.inError = true
-            this.error = cause
-        })
+        this.watchAuthFails()
     }
 
     ngOnDestroy() {
         this.authFailsObserver.unsubscribe()
     }
 
-    login() {
-        // const user: User = {
-        //     id: 1,
-        //     avatar: '/assets/images/unknown-2.jpg',
-        //     username: 'Madeveloper',
-        //     email: 'sergent.julien@icloud.com'
-        // }
-
-        // this.authentication.login('test@es.fr', '236')
-
+    watchAuthFails() {
+        this.authFailsObserver = this.authentication.fails$.subscribe(cause => {
+            this.inError = true
+            this.error = cause
+        })
     }
+
+    login() { }
 
     googleLogin() {
         this.authentication.loginGoogle()
