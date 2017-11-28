@@ -29,9 +29,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
-        this.watchAuthentication()
-        this.watchNotifications()
-        this.watchRequests()
+        this.watchRouting()
     }
 
     ngOnDestroy() {
@@ -47,7 +45,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             this.loggedObserver.unsubscribe()
         }
 
-        if (this.requestsObserver)  {
+        if (this.requestsObserver) {
             this.requestsObserver.unsubscribe()
         }
     }
@@ -56,11 +54,26 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         this.hasNotifications = notifications.length > 0
     }
 
-    watchAuthentication() {
-        this.loggedObserver = this
-            .authentication
-            .logged$
-            .subscribe(logged => this.logged = logged)
+    watchRouting() {
+        this.router
+            .events
+            .subscribe(event => {
+                if (event instanceof NavigationEnd) {
+                    const logged = this.authentication.logged
+                    const wasLogged = this.logged
+
+                    this.logged = logged
+
+                    if (this.logged) {
+                        this.user = this.authentication.user
+                        this.watchNotifications()
+                        this.watchRequests()
+                    } else if (wasLogged) {
+                        this.user = null
+                        this.closeSubscriptions()
+                    }
+                }
+            })
     }
 
     watchRequests() {
@@ -68,11 +81,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             this.requestsObserver = this
                 .request
                 .all(this.user)
-                .subscribe(requests => {
-                    if (this.logged) {
-                        this.hasPendingRequests = requests && requests.length > 0
-                    }
-                })
+                .subscribe(requests => this.hasPendingRequests = requests && requests.length > 0)
         }
     }
 
@@ -81,11 +90,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
             this.notificationObserver = this
                 .notification
                 .unread(this.user)
-                .subscribe(notifications => {
-                    if (this.logged) {
-                        this.checkUnreadNotifications(notifications)
-                    }
-                })
+                .subscribe(notifications => this.checkUnreadNotifications(notifications))
         }
     }
 }
