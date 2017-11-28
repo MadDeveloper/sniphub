@@ -1,0 +1,14 @@
+@import 'variables';
+
+.label {
+    padding: 6px 12px;
+    border-radius: 3px;
+    border-color: $default-color;
+    color: $default-color;
+    background-color: transparent;
+
+    &.success {
+        border-color: $success-color;
+        color: $success-color;
+    }
+}

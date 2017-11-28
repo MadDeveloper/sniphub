@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs/Subscription'
   styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
-    notifications: Notification[]
+    notifications: Notification[] = []
     loadingNextPage = false
     loaded = false
     user: User
@@ -37,7 +37,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
-        this.loadNotifications()
+        this.watchNotifications()
     }
 
     ngOnDestroy() {
@@ -50,21 +50,25 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         }
     }
 
-    loadNotifications() {
+    watchNotifications() {
         // we keep the last notifications sync with the database, in order to see in real time the new notifications
         this.notificationsObserver = this.notificationService
             .all(this.user)
             .subscribe(response => {
                 this.response = response
 
-                if (this.loaded) {
-                    this.notifications = response.hits.concat(this.notifications.splice(0, response.hits.length))
-                } else {
-                    this.notifications = response.hits
+                if (this.response.hits.length !== this.notifications.length) {
+                    if (this.loaded) {
+                        this.notifications.splice(0, response.hits.length - 1)
+                        this.notifications = response.hits.concat(this.notifications)
+                    } else {
+                        this.notifications = response.hits
+                    }
+
+                    this.notificationService.markAllAsRead(response.hits, this.user)
                 }
 
                 this.loaded = true
-                this.notificationService.markAllAsRead(response.hits, this.user)
             })
     }
 

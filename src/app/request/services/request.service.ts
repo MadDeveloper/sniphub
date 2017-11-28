@@ -140,12 +140,12 @@ export class RequestService {
                     .code
                     .create(code, snippet, author, true)
 
-                request.id = this.database.list(this.requestsSnippetPath(snippet)).$ref.ref.push().key
-
-                await this
+                // TODO: bulk
+                request.id = await this
                     .database
                     .list(this.requestsSnippetPath(snippet))
                     .push(code.id)
+                    .key
 
                 await this
                     .notification
