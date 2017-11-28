@@ -7,7 +7,7 @@ import { FirebaseListFactoryOpts } from 'angularfire2/interfaces'
 import { Injectable } from '@angular/core'
 import { Like } from '../../snippet/interfaces/like'
 import { Notification } from '../interfaces/notification'
-import { NotificationType } from '../interfaces/notification-type.enum'
+import { NotificationType } from '../interfaces/notification-type.enum';
 import { Observable } from 'rxjs/Observable'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { Request } from '../../request/interfaces/request'
@@ -115,6 +115,38 @@ export class NotificationService {
             })
     }
 
+    requestAccepted(author: User, snippet: Snippet, toUser: User, request: Request, language: string) {
+        return this
+            .database
+            .list(this.notificationsUserPath(toUser))
+            .push({
+                type: NotificationType.REQUEST_ACCEPTED,
+                user: author.id,
+                snippetName: snippet.name,
+                snippetId: snippet.id,
+                read: false,
+                date: firebase.database.ServerValue.TIMESTAMP,
+                requestId: request.id,
+                language
+            })
+    }
+
+    requestRejected(author: User, snippet: Snippet, toUser: User, request: Request, language: string) {
+        return this
+            .database
+            .list(this.notificationsUserPath(toUser))
+            .push({
+                type: NotificationType.REQUEST_REJECTED,
+                user: author.id,
+                snippetName: snippet.name,
+                snippetId: snippet.id,
+                read: false,
+                date: firebase.database.ServerValue.TIMESTAMP,
+                requestId: request.id,
+                language
+            })
+    }
+
     markAllAsRead(notifications: Notification[], user: User) {
         notifications.forEach(notification => {
             if (!notification.read) {
@@ -127,6 +159,14 @@ export class NotificationService {
 
     isRequestNotification(notification: Notification) {
         return notification.type === NotificationType.REQUEST
+    }
+
+    isRequestAcceptedNotification(notification: Notification) {
+        return notification.type === NotificationType.REQUEST_ACCEPTED
+    }
+
+    isRequestRejectedNotification(notification: Notification) {
+        return notification.type === NotificationType.REQUEST_REJECTED
     }
 
     isLikeNotification(notification: Notification) {

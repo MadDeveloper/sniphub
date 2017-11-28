@@ -12,7 +12,7 @@ export const routes: Routes = [
         canActivate: [ProfileCompletedGuard, MetaGuard],
         data: {
             meta: {
-                title: 'Home',
+                title: 'Find your dream code - SnipHub',
                 description: 'SnipHub is a platform which permits you to retrieve or publish all the snippets code you ever dream never code again.'
             }
         }

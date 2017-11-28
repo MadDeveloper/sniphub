@@ -4,7 +4,7 @@ import {
     HostListener,
     OnInit,
     OnDestroy
-    } from '@angular/core'
+} from '@angular/core'
 import { Notification } from './interfaces/notification'
 import { NotificationService } from './services/notification.service'
 import { RequestService } from '../request/services/request.service'
@@ -16,12 +16,12 @@ import { Observable } from 'rxjs/Observable'
 import { Subscription } from 'rxjs/Subscription'
 
 @Component({
-  selector: 'app-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss']
+    selector: 'app-notifications',
+    templateUrl: './notifications.component.html',
+    styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit, OnDestroy {
-    notifications: Notification[]
+    notifications: Notification[] = []
     loadingNextPage = false
     loaded = false
     user: User
@@ -37,7 +37,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.authentication.currentUser()
-        this.loadNotifications()
+        this.watchNotifications()
     }
 
     ngOnDestroy() {
@@ -50,21 +50,25 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         }
     }
 
-    loadNotifications() {
+    watchNotifications() {
         // we keep the last notifications sync with the database, in order to see in real time the new notifications
         this.notificationsObserver = this.notificationService
             .all(this.user)
             .subscribe(response => {
                 this.response = response
 
-                if (this.loaded) {
-                    this.notifications = response.hits.concat(this.notifications.splice(0, response.hits.length))
-                } else {
-                    this.notifications = response.hits
+                if (this.response.hits.length !== this.notifications.length) {
+                    if (this.loaded) {
+                        this.notifications.splice(0, response.hits.length - 1)
+                        this.notifications = response.hits.concat(this.notifications)
+                    } else {
+                        this.notifications = response.hits
+                    }
+
+                    this.notificationService.markAllAsRead(response.hits, this.user)
                 }
 
                 this.loaded = true
-                this.notificationService.markAllAsRead(response.hits, this.user)
             })
     }
 
@@ -85,6 +89,14 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         return this.notificationService.isRequestNotification(notification)
     }
 
+    isRequestAcceptedNotification(notification: Notification) {
+        return this.notificationService.isRequestAcceptedNotification(notification)
+    }
+
+    isRequestRejectedNotification(notification: Notification) {
+        return this.notificationService.isRequestRejectedNotification(notification)
+    }
+
     isCommentNotification(notification: Notification) {
         return this.notificationService.isCommentNotification(notification)
     }
@@ -95,7 +107,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     seeRequest(notification: Notification, event: Event) {
         event.preventDefault()
-        this.request.storedSnippet = { id: notification.snippetId }
+        this.request.storedSnippet = { id: notification.snippetId }
         this.router.navigateByUrl(`/requests/${notification.requestId}`)
     }
 
