@@ -7,7 +7,7 @@ import { FirebaseListFactoryOpts } from 'angularfire2/interfaces'
 import { Injectable } from '@angular/core'
 import { Like } from '../../snippet/interfaces/like'
 import { Notification } from '../interfaces/notification'
-import { NotificationType } from '../interfaces/notification-type.enum';
+import { NotificationType } from '../interfaces/notification-type.enum'
 import { Observable } from 'rxjs/Observable'
 import { PaginableResponse } from '../../core/interfaces/response/paginable-response'
 import { Request } from '../../request/interfaces/request'
@@ -194,6 +194,7 @@ export class NotificationService {
             snippetId: notification.snippetId,
             request: notification.request || null,
             requestId: notification.requestId || null,
+            language: notification.language || null,
             read: notification.read,
             date: new Date(notification.date)
         }

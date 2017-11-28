@@ -76,7 +76,7 @@ export class RequestService {
                 const existingCode = await this.code.findCodeByLanguage(code, snippet)
                 const currentUser = this.authentication.user
 
-                if (existingCode) {
+                if (existingCode && existingCode.id !== code.id) {
                     await this.code.delete(existingCode, snippet)
                 }
 
@@ -94,6 +94,7 @@ export class RequestService {
                 resolve()
             } catch (error) {
                 // TODO: sentry
+                console.error(error)
                 reject(error)
             }
         })
@@ -104,12 +105,14 @@ export class RequestService {
             const currentUser = this.authentication.user
 
             try {
+                // TODO: bulk
                 await this.database.object(this.code.codePath(code.id, snippet)).remove()
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
                 await this.notification.requestRejected(currentUser, snippet, author, request, code.language.text)
                 resolve()
             } catch (error) {
                 // TODO: sentry
+                console.error(error)
                 reject(error)
             }
         })
