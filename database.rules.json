@@ -5,6 +5,9 @@
       "$snippetId": {
         ".read": true,
         ".write": "root.child('snippets').child($snippetId).exists()",
+        ".indexOn": [
+          "language"
+        ],
         "$codeId": {
           ".write": "(data.exists() && newData.exists() && newData.child('user').val() === auth.uid) || root.child('snippets').child($snippetId).child('author').val() === auth.id",
           "user": {
@@ -94,6 +97,9 @@
           },
           "requestId": {
           	".validate": true
+          },
+          "language": {
+            ".validate": "newData.isString()"
           },
           "read": {
             ".validate": "newData.isBoolean()"

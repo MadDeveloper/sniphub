@@ -31,6 +31,7 @@ export class HeaderIconsActionsComponent implements OnInit, OnDestroy {
         this.user = this.authentication.currentUser()
         this.watchAuthentication()
         this.watchNotifications()
+        this.watchRequests()
     }
 
     ngOnDestroy() {

@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core'
-import { UserService } from '../../core/services/user/user.service'
+import { AngularFireDatabase } from 'angularfire2/database'
+import { AuthenticationService } from '../../authentication/services/authentication.service'
+import { Code } from '../../code/interfaces/code'
 import { CodeEditorService } from '../../code/services/code-editor.service'
-import { LanguageService } from '../../code/services/language.service'
-import { SnippetService } from '../../snippet/services/snippet.service'
 import { CodeService } from '../../code/services/code.service'
+import { Injectable } from '@angular/core'
+import { LanguageService } from '../../code/services/language.service'
+import { NotificationService } from '../../notification/services/notification.service'
+import { Observable } from 'rxjs/Observable'
 import { Request } from '../interfaces/request'
 import { Snippet } from '../../snippet/interfaces/snippet'
-import { Code } from '../../code/interfaces/code'
+import { SnippetService } from '../../snippet/services/snippet.service'
 import { User } from '../../core/interfaces/user/user'
-import { Observable } from 'rxjs/Observable'
-import { AngularFireDatabase } from 'angularfire2/database'
-import { NotificationService } from '../../notification/services/notification.service'
+import { UserService } from '../../core/services/user/user.service'
 
 @Injectable()
 export class RequestService {
@@ -23,7 +24,8 @@ export class RequestService {
         private code: CodeService,
         private database: AngularFireDatabase,
         private notification: NotificationService,
-        private snippet: SnippetService) { }
+        private snippet: SnippetService,
+        private authentication: AuthenticationService) { }
 
     all(user: User): Observable<Request[]> {
         return this
@@ -72,6 +74,7 @@ export class RequestService {
         return new Promise(async (resolve, reject) => {
             try {
                 const existingCode = await this.code.findCodeByLanguage(code, snippet)
+                const currentUser = this.authentication.user
 
                 if (existingCode) {
                     await this.code.delete(existingCode, snippet)
@@ -86,6 +89,8 @@ export class RequestService {
                     await this.snippet.increaseCodesCounter(snippet)
                 }
 
+                await this.notification.requestAccepted(currentUser, snippet, author, request, code.language.text)
+
                 resolve()
             } catch (error) {
                 // TODO: sentry
@@ -94,11 +99,14 @@ export class RequestService {
         })
     }
 
-    reject(request: Request, code: Code, snippet: Snippet) {
+    reject(request: Request, code: Code, author: User, snippet: Snippet) {
         return new Promise(async (resolve, reject) => {
+            const currentUser = this.authentication.user
+
             try {
                 await this.database.object(this.code.codePath(code.id, snippet)).remove()
                 await this.database.object(this.requestPath(request.id, snippet)).remove()
+                await this.notification.requestRejected(currentUser, snippet, author, request, code.language.text)
                 resolve()
             } catch (error) {
                 // TODO: sentry

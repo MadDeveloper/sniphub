@@ -148,7 +148,7 @@ export class SnippetRequestComponent implements OnInit {
     async reject() {
         const snippet: Snippet = <Snippet>this.requestService.storedSnippet
 
-        await this.requestService.reject(this.request, this.code, snippet)
+        await this.requestService.reject(this.request, this.code, this.author, snippet)
         this.rejected = true
     }
 }
