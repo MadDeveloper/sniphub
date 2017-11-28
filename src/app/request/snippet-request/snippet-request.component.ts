@@ -116,13 +116,12 @@ export class SnippetRequestComponent implements OnInit {
         } catch (reason) {
             // TODO: sentry
             // TODO: display UI error
+            console.error(reason)
         }
     }
 
     async accept() {
-        const snippet: Snippet = <Snippet>this.requestService.storedSnippet
-
-        await this.requestService.accept(this.request, this.code, this.author, snippet)
+        await this.requestService.accept(this.request, this.code, this.author, this.snippet)
         this.accepted = true
     }
 
@@ -142,13 +141,12 @@ export class SnippetRequestComponent implements OnInit {
         } catch (reason) {
             // TODO: sentry
             // TODO: display UI error
+            console.error(reason)
         }
     }
 
     async reject() {
-        const snippet: Snippet = <Snippet>this.requestService.storedSnippet
-
-        await this.requestService.reject(this.request, this.code, this.author, snippet)
+        await this.requestService.reject(this.request, this.code, this.author, this.snippet)
         this.rejected = true
     }
 }

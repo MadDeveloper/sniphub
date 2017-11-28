@@ -12,6 +12,7 @@ export interface Notification {
     snippetId: string
     request?: boolean
     requestId?: string
+    language?: string
     read: boolean
     date: Date
 }
