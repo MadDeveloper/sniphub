@@ -154,7 +154,8 @@ export class SnippetService {
             .object(this.snippetPath(snippet.id))
             .update({
                 description: snippet.description || null,
-                name: snippet.name
+                name: snippet.name,
+                codesCounter: snippet.codesCounter
             })
     }
 

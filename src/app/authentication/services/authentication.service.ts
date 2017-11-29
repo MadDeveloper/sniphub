@@ -8,7 +8,7 @@ import { AngularFireDatabase } from 'angularfire2/database'
 import { UserService } from '../../core/services/user/user.service'
 import { Subscriber } from 'rxjs/Subscriber'
 import { Subject } from 'rxjs/Subject'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject }  from 'rxjs/BehaviorSubject'
 import { StorageService } from '../../core/services/storage/storage.service'
 
 @Injectable()
@@ -44,9 +44,9 @@ export class AuthenticationService {
             const providerData: firebase.UserInfo = userFirebase.providerData[0]
 
             if (!providerData.email) {
-                this.failsSignIn(
+                return this.failsSignIn(
                     `User email was not provided by the provider.
-                    Please check if you have authorized the application to access your informations`)
+                    Please check if you have authorized the application to access your informations.`)
             }
 
             this.providerData = providerData
@@ -66,7 +66,7 @@ export class AuthenticationService {
                             if (this.user) {
                                 this.successSignIn()
                             } else {
-                                this.failsSignIn('User was not found')
+                                this.failsSignIn('User was not found.')
                             }
                         } catch (error) {
                             this.failsSignIn(error)
@@ -120,9 +120,9 @@ export class AuthenticationService {
 
     async loginGoogle() {
         try {
-            await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+            await firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider())
         } catch (error) {
-            this.failsSignIn(error)
+            this.failsSignIn(error.message)
         }
     }
 
@@ -130,7 +130,7 @@ export class AuthenticationService {
         try {
             await firebase.auth().signInWithPopup(new firebase.auth.GithubAuthProvider())
         } catch (error) {
-            this.failsSignIn(error)
+            this.failsSignIn(error.message)
         }
     }
 
@@ -162,5 +162,9 @@ export class AuthenticationService {
 
     isAuthenticatedWithGitHub() {
         return this.providerData && 'github.com' === this.providerData.providerId
+    }
+
+    isAuthenticatedWithGoogle() {
+        return this.providerData && 'google.com' === this.providerData.providerId
     }
 }
