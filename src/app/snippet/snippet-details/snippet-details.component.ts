@@ -125,8 +125,6 @@ export class SnippetDetailsComponent implements OnInit, OnDestroy {
         this.authorObserver = this.snippet.author.subscribe(author => {
             this.snippetAuthor = author
 
-            console.log(author)
-
             if (author) {
                 this.ownSnippet = this.user.id === author.id
             }
