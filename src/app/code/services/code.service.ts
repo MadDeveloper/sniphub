@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app'
 import find from 'lodash-es/find'
 import { AngularFireDatabase } from 'angularfire2/database'
-import { Code } from '../interfaces/code'
+import { Code } from '../interfaces/code';
 import { GuidService } from '../../core/services/guid/guid.service'
 import { Injectable } from '@angular/core'
 import { Language } from '../interfaces/language'
@@ -20,11 +20,19 @@ export class CodeService {
         private user: UserService,
         private database: AngularFireDatabase) { }
 
-    all(snippet: Snippet): Observable<Code[]> {
+    all(snippet: Snippet, includeRequests?: boolean): Observable<Code[]> {
         return this
             .database
             .list(this.codesSnippetPath(snippet))
-            .map((codes: any[]): Code[] => this.filterRequestsNotValidated(this.forgeAll(codes)))
+            .map((codesRaw: any[]): Code[] => {
+                const codes: Code[] = this.forgeAll(codesRaw)
+
+                if (includeRequests) {
+                    return codes
+                }
+
+                return this.filterRequestsNotValidated(codes)
+            })
     }
 
     find(id: string, snippet: Snippet) {
@@ -45,7 +53,7 @@ export class CodeService {
         return this
             .database
             .object(this.codesSnippetPath(snippet))
-            .set(this.forgeAllForDatabase(codes, author))
+            .update(this.forgeAllForDatabase(codes, author))
     }
 
     delete(code: Code, snippet: Snippet) {
@@ -76,7 +84,9 @@ export class CodeService {
             language: this.language.mockOne(),
             code: null,
             author: null,
-            date: new Date()
+            date: new Date(),
+            request: null,
+            validated: null
         }
     }
 
@@ -91,8 +101,8 @@ export class CodeService {
             author: this.user.find(code.user),
             code: code.code,
             date: new Date(code.date),
-            request: code.request || false,
-            validated: code.validated || false
+            request: 'request' in code ? code.request : null,
+            validated: 'validated' in code ? code.validated : null
         }
     }
 
@@ -107,11 +117,13 @@ export class CodeService {
     }
 
     forgeForDatabase(code: Code, author: User, asRequest = false) {
-        let codeForDatabase = {
+        let codeForDatabase = { // FIXME: should be typed, or properties can be forgot when we translate code for database
             user: author.id,
             code: code.code,
             language: code.language.value,
-            date: firebase.database.ServerValue.TIMESTAMP
+            date: firebase.database.ServerValue.TIMESTAMP,
+            request: code.request,
+            validated: code.validated,
         }
 
         if (asRequest) {
@@ -128,28 +140,40 @@ export class CodeService {
         return find(codes, current => current.language.value === language.value)
     }
 
-    findCodeByLanguage(code: Code, snippet: Snippet) {
+    findCodeByLanguage(language: Language, snippet: Snippet, excluded?: Code): Promise<Code> {
         return this
             .database
             .list(this.codesSnippetPath(snippet), {
                 query: {
                     orderByChild: 'language',
-                    equalTo: code.language.value
+                    equalTo: language.value
                 }
             })
-            .map((codesFound: any[]) => {
-                if (codesFound.length > 0) {
-                    return this.forge(codesFound[0])
+            .map((codesFound: any[]): Code => codesFound.reduce((previousCode, codeRaw) => {
+                const code = this.forge(codeRaw)
+
+                if (!excluded || excluded.id !== code.id) { // in case of request, we will get two codes, we can exclude one code here
+                    return code
                 }
 
-                return null
-            })
+                return previousCode
+            }, null))
             .first()
             .toPromise()
     }
 
     filterRequestsNotValidated(codes: Code[]): Code[] {
         return codes.filter((code: Code) => !code.request || (code.request && code.validated))
+    }
+
+    extractCodesAndCodesFromRequests(allCodes: Code[]): { codes: Code[], codesFromRequests: Code[] } {
+        const codes = this.filterRequestsNotValidated(allCodes)
+        const codesFromRequests = allCodes.filter(code => !codes.find(current => current.id === code.id))
+
+        return {
+            codes,
+            codesFromRequests
+        }
     }
 
     private uniqFirebaseId() {

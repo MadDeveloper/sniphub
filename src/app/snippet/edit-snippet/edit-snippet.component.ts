@@ -11,6 +11,7 @@ import { config } from '../../../config'
 import { LanguageService } from '../../code/services/language.service'
 import { languages } from '../../code/services/languages'
 import { MetaService } from '@ngx-meta/core'
+import {  uniq } from 'lodash-es'
 
 @Component({
     selector: 'app-edit-snippet',
@@ -23,6 +24,7 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     codeBlocks: any[]
     editing: boolean
     codes: Code[] = []
+    codesFromRequests: Code[] = []
     newCodes: Code[] = []
     codesObserver: Subscription
     codesLoaded = false
@@ -98,9 +100,13 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
     loadCodes() {
         this.codesObserver = this
             .codeService
-            .all(this.snippet)
-            .subscribe((codes: Code[]) => {
+            .all(this.snippet, true)
+            .subscribe((allCodes: Code[]) => {
+                // we keep the codes from requests aside as we don't want see them here
+                const { codes, codesFromRequests } = this.codeService.extractCodesAndCodesFromRequests(allCodes)
+
                 this.codes = codes
+                this.codesFromRequests = codesFromRequests
                 this.codesLoaded = true
                 this.loaded = true
             })
@@ -171,6 +177,28 @@ export class EditSnippetComponent implements OnInit, OnDestroy {
 
         if (dupliactedLanguages.length > 0) {
             this.errors.code = `You have duplicated languages in your codes: ${dupliactedLanguages.join(', ')}`
+            this.scrollTo(this.errorCode.nativeElement)
+
+            return false
+        }
+
+        const languagesInConflictsWithCodesRequests: string[] = uniq(this.codesFromRequests
+            .filter(codeFromRequest =>
+                !!this.newCodes.find(code => code.language.id === codeFromRequest.language.id))
+            .map(code => code.language.text))
+
+        if (languagesInConflictsWithCodesRequests.length > 0) {
+            const manyConflicts = languagesInConflictsWithCodesRequests.length > 1
+            const errorSingular = `
+                You cannot add a new code
+                in <strong>${languagesInConflictsWithCodesRequests[0]}</strong>
+                because a request already exists for this language.`
+            const errorPlural = `
+                You cannot add new codes
+                in <strong>${languagesInConflictsWithCodesRequests.join(', ')}</strong>
+                because requests already exist for these languages.`
+
+            this.errors.code = manyConflicts ? errorPlural : errorSingular
             this.scrollTo(this.errorCode.nativeElement)
 
             return false
