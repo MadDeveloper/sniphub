@@ -73,10 +73,10 @@ export class RequestService {
     accept(request: Request, code: Code, author: User, snippet: Snippet) {
         return new Promise(async (resolve, reject) => {
             try {
-                const existingCode = await this.code.findCodeByLanguage(code, snippet)
+                const existingCode = await this.code.findCodeByLanguage(code.language, snippet, code)
                 const currentUser = this.authentication.user
 
-                if (existingCode && existingCode.id !== code.id) {
+                if (existingCode) {
                     await this.code.delete(existingCode, snippet)
                 }
 
