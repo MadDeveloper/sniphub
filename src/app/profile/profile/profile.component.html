@@ -71,22 +71,25 @@
                 <div class="tabs">
                     <!-- AUTHOR TAB -->
                     <div class="tab" [ngClass]="{ disabled: authorSnippets.length === 0, active: activeTab === 'author' }" (click)="toggleTab('author')">
-                        <h3 class="mr-3 mb-0">Author</h3>
+                        <h3 class="mr-3 mb-0">
+                            <i class="fa fa-user title-icon" aria-hidden="true"></i>
+                            Author
+                        </h3>
                         <span class="badge inverted h4 mb-0">{{ authorSnippets.length }}</span>
                     </div>
                     <!-- CONTRIBUTOR TAB -->
                     <div class="tab" [ngClass]="{ disabled: contributorSnippets.length === 0, active: activeTab === 'contributor' }" (click)="toggleTab('contributor')">
-                        <h3 class="mr-3 mb-0">Contributor</h3>
+                        <h3 class="mr-3 mb-0">
+                            <i class="fa fa-pencil title-icon" aria-hidden="true"></i>
+                            Contributor
+                        </h3>
                         <span class="badge inverted h4 mb-0">{{ contributorSnippets.length }}</span>
                     </div>
                 </div>
-
-                <hr>
-
-                <div class="mt-3">
+                <div class="mt-4">
                     <div *ngIf="ownProfile()" class="row pt-2 pb-4">
                         <div class="col">
-                            <a class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
+                            <a id="create-snippet-link" class="btn outlined primary" routerLink="/snippets/new">Create new snippet</a>
                         </div>
                     </div>
 

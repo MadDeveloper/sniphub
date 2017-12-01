@@ -3,16 +3,17 @@
 .tabs {
     display: flex;
     align-items: center;
+    border-bottom: 1px solid $light-blue-color;
 
     .tab {
         margin: 0 .5rem;
-        padding: .5rem 1rem;
-        border-radius: 4px;
+        padding: 1rem;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $default-color;
-        transition: background-color .3s;
+        color: $disabled-primary-color;
+        transition: background-color .3s, opacity .3s;
+        border-bottom: 1px solid transparent;
 
         &:first-child {
             margin-left: 0;
@@ -23,12 +24,16 @@
         }
 
         &:hover {
-            background-color: $light-grey-color;
             cursor: pointer;
+
+            &:not(.active) {
+                border-bottom-color: $disabled-primary-color;
+            }
         }
 
         &.active {
-            background-color: $light-grey-color;
+            color: $primary-color;
+            border-bottom-color: $primary-color;
         }
 
         &.disabled {

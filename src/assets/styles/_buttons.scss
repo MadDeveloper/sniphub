@@ -2,16 +2,15 @@
 
 .btn {
     border-radius: 3px;
+    font-family: inherit;
+    min-width: 140px;
+    padding: 0.5rem 1rem;
+    line-height: inherit;
+    transition: all .3s;
 
     &:disabled:hover {
         cursor: not-allowed;
     }
-
-    font-family: inherit;
-    min-width: 130px;
-    padding: 0.5rem 1rem;
-    line-height: inherit;
-    transition: all .3s;
 
     &:hover {
         cursor: pointer;
