@@ -18,7 +18,9 @@ export class AskUsernameComponent {
     constructor(
         private user: UserService,
         private authentication: AuthenticationService,
-        private router: Router) { }
+        private router: Router) {
+            this.username = this.authentication.user.username || ''
+        }
 
 
     async setUsername() {
@@ -38,7 +40,7 @@ export class AskUsernameComponent {
                 throw new Error(`Username cannot contains more than ${this.usernameMaxLength} characters`)
             }
 
-            const exists = await this.user.findByUsername(username)
+            const exists = await this.user.findByUsername(username).toPromise()
 
             if (exists) {
                 throw new Error(`This username is already taken`)
