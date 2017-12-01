@@ -10,9 +10,9 @@ export class ProfileCompletedGuard implements CanActivate {
         private router: Router) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-         if (!this.authentication.logged) {
-             return true
-         }
+        if (!this.authentication.logged) {
+            return true
+        }
 
         if (!this.authentication.user.username) {
             this.router.navigateByUrl('/profile/ask-username')

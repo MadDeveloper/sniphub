@@ -33,6 +33,7 @@ export class UserService {
                 }
             })
             .map((usersFetched: any[]): User => this.extractUserWithFindBy(usersFetched))
+            .first()
     }
 
 
@@ -49,17 +50,15 @@ export class UserService {
     }
 
     private extractUserWithFindBy(usersFetched: any[]): User {
-        let user = null
-
         if (usersFetched.length > 0) {
             const userFetched = usersFetched[0]
 
             if (userFetched.$exists()) {
-                user = this.forgeFromDatabase(userFetched)
+                return this.forgeFromDatabase(userFetched)
             }
         }
 
-        return user
+        return null
     }
 
     createIfNotExists(user: User): Observable<Promise<User>> {
