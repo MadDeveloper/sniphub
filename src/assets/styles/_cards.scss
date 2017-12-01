@@ -1,6 +1,10 @@
 @import 'variables';
+@import 'mixins';
 
 .card {
+    @include sampleBoxShadow();
+    @include sampleBorder();
+
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -10,13 +14,20 @@
     flex-direction: column;
     border-radius: 3px;
     background-color: #fff;
-    border: 1px solid $grey-translucent-color;
     transition: all .3s;
     position: relative;
 
     &:hover {
-        border-color: transparent;
-        background-color: $light-grey-color;
+        @include extendedBoxShadow();
+
+        // border-color: $primary-color;
+        background-color: rgba(253, 253, 253, .9);
+
+        .content {
+            .header {
+                color: $primary-color;
+            }
+        }
     }
 
     &::after {

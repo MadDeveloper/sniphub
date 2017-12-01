@@ -38,6 +38,12 @@ export class AskUsernameComponent {
                 throw new Error(`Username cannot contains more than ${this.usernameMaxLength} characters`)
             }
 
+            const exists = await this.user.findByUsername(username)
+
+            if (exists) {
+                throw new Error(`This username is already taken`)
+            }
+
             this.error = null
             await this.user.changeUsername(user)
             this.authentication.reloadUser(user)

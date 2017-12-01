@@ -23,6 +23,19 @@ export class UserService {
             })
     }
 
+    findByUsername(username: string): Observable<User> {
+        return this
+            .database
+            .list(this.usersPath(), {
+                query: {
+                    orderByChild: 'username',
+                    equalTo: username
+                }
+            })
+            .map((usersFetched: any[]): User => this.extractUserWithFindBy(usersFetched))
+    }
+
+
     findByEmail(email: string): Observable<User> {
         return this
             .database
@@ -32,19 +45,21 @@ export class UserService {
                     equalTo: email
                 }
             })
-            .map((usersFetched: any[]): User => {
-                let user = null
+            .map((usersFetched: any[]): User => this.extractUserWithFindBy(usersFetched))
+    }
 
-                if (usersFetched.length > 0) {
-                    const userFetched = usersFetched[0]
+    private extractUserWithFindBy(usersFetched: any[]): User {
+        let user = null
 
-                    if (userFetched.$exists()) {
-                        user = this.forgeFromDatabase(userFetched)
-                    }
-                }
+        if (usersFetched.length > 0) {
+            const userFetched = usersFetched[0]
 
-                return user
-            })
+            if (userFetched.$exists()) {
+                user = this.forgeFromDatabase(userFetched)
+            }
+        }
+
+        return user
     }
 
     createIfNotExists(user: User): Observable<Promise<User>> {

@@ -81,7 +81,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
             this.response = response
             this.notifications.push(...response.hits)
             this.loadingNextPage = false
-            this.notificationService.markAllAsRead(response.hits, this.user)
+            // this.notificationService.markAllAsRead(response.hits, this.user)
         })
     }
 

@@ -5,10 +5,14 @@ $fa-font-path : '../node_modules/font-awesome/fonts';
 $default-color: #292b2c;
 $light-default-color: rgba(0,0,0,.6);
 $primary-color: #0277BD;
+$disabled-primary-color: #7D95B6;
 $dark-primary-color: #0168a5;
 $darker-primary-color: #27496d;
 $secondary-color: #446CB3;
 $light-color: #f8f8f8;
+$light-blue-color: #DAE1E9;
+$ultralight-blue-color: #F4F7FA;
+$background-color: $light-blue-color;
 $medium-light-color: #E0E0E0;
 $light-grey-color: #eee;
 $grey-color: rgb(100, 100, 100);
@@ -18,11 +22,13 @@ $dark-grey-translucent-color: rgba(0, 0, 0, .4);
 $danger-color: #d9534f;
 $dark-danger-color: #c0392b;
 $warning-color: #f39c12;
+$notification-color: #F9BF3B;
 $success-color: #5cb85c;
 $dark-success-color: #16a085;
 $tooltip-color: ​#434a54;
 $cyan-color: #4EBFD1;
 $code-editor-theme-color: #282a36;
+$border-ultralight-grey-color: rgba(0, 0, 0, 0.05);
 
 //== Sizes
 $max-container-width: 850px;
